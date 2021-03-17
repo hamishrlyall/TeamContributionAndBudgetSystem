@@ -1,7 +1,7 @@
 ﻿@model TeamContributionAndBudgetSystemWebApp.Models.UserModel
 
 <div>
-    <h4>UserModel</h4>
+    <h4>@Html.DisplayFor(model => model.Username) Details</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -45,35 +45,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ConfirmEmailAddress)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ConfirmEmailAddress)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.PhoneNumber)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ConfirmPassword)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ConfirmPassword)
         </dd>
 
     </dl>

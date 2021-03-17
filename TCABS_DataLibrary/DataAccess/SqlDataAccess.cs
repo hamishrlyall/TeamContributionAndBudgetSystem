@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TCABS_DataLibrary.Models;
 
 namespace TCABS_DataLibrary.DataAccess
 {
@@ -30,7 +31,8 @@ namespace TCABS_DataLibrary.DataAccess
       {
          using( IDbConnection _Cnn = new SqlConnection( GetConnectionString( ) ) )
          {
-            return ( T )_Cnn.Query( _Sql, _Data );
+            var record = _Cnn.QuerySingle<T>( _Sql, _Data );
+            return (T) record;
          }
       }
 

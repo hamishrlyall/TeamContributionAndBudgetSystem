@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Dapper;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
@@ -21,11 +24,17 @@ namespace TCABS_DataLibrary.BusinessLogic
             Email = _Email,
             PhoneNo = _PhoneNo
          };
-
-         string sql = @"insert into [dbo].[User] (Username, FirstName, LastName, Email, PhoneNo, Password )
+         try
+         {
+            string sql = @"insert into [dbo].[User] (Username, FirstName, LastName, Email, PhoneNo, Password )
                         values ( @Username, @FirstName, @LastName, @Email, @PhoneNo, @Password );";
 
-         return SqlDataAccess.SaveData( sql, data );
+            return SqlDataAccess.SaveData( sql, data );
+         }
+         catch( Exception _Ex )
+         {
+            return 0;
+         }
       }
 
       public static List<UserModel> LoadUsers( )
@@ -38,15 +47,10 @@ namespace TCABS_DataLibrary.BusinessLogic
       public static UserModel SelectUser( int _Id )
       {
          UserModel data = new UserModel { UserId = _Id };
-         string sql = @"@UserId
-                        BEGIN
-                           SET NOCOUNT ON;
-                           SELECT [UserId], [Username], [Firstname], [Lastname], [Email], [PhoneNo]
-                           FROM [dbo].[User]
-                           WHERE [UserId] = @UserId
-                        END;";
+         string sql = @"SELECT * FROM [dbo].[User]
+                         WHERE UserId = @UserId";
 
-         return SqlDataAccess.LoadSingleRecord<UserModel>( sql, data );
+         return SqlDataAccess.LoadSingleRecord( sql, new UserModel { UserId = _Id } );
       }
    }
 }

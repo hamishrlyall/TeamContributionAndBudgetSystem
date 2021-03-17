@@ -15,17 +15,17 @@ BEGIN
 
 MERGE INTO [User] AS Target USING ( 
    VALUES
-   (1, 'superadmin', 'superadmin@email.com', 0400000000, 'password'),
-   (2, 'admin', 'admin@email.com', 0400000000, 'password'),
-   (3, 'convener', 'convener@email.com', 0400000000, 'password'),
-   (4, 'student', 'student@email.com', 0400000000, 'password'),
-   (5, 'supervisor', 'supervisor@email.com', 0400000000, 'password')
+   (1, 'superadmin', 'super', 'user', 'superadmin@email.com', 0400000000, 'password'),
+   (2, 'admin','admin', 'user', 'admin@email.com', 0400000000, 'password'),
+   (3, 'convenor','convenor', 'user', 'convener@email.com', 0400000000, 'password'),
+   (4, 'student','student', 'user', 'student@email.com', 0400000000, 'password'),
+   (5, 'supervisor','supervisor', 'user', 'supervisor@email.com', 0400000000, 'password')
 )
-AS Source ([UserId], [UserName], [Email], [PhoneNo], [Password]) 
+AS Source ([UserId], [UserName], [FirstName], [LastName], [Email], [PhoneNo], [Password]) 
 ON Target.UserId = Source.UserId
 WHEN NOT MATCHED BY TARGET THEN
-INSERT ([UserName], [Email], [PhoneNo], [Password])
-VALUES ([UserName], [Email], [PhoneNo], [Password]);
+INSERT ([UserName], [FirstName], [LastName], [Email], [PhoneNo], [Password])
+VALUES ([UserName], [FirstName], [LastName], [Email], [PhoneNo], [Password]);
 
 MERGE INTO [Role] AS Target USING (
    VALUES
