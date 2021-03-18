@@ -18,6 +18,23 @@ namespace TCABS_DataLibrary.BusinessLogic
       {
          return ConfigurationManager.ConnectionStrings[ _ConnectionName ].ConnectionString;
       }
+      public static UserRoleModel SelectUserRole( int _Id )
+      {
+         UserRoleModel data = new UserRoleModel { UserRoleId = _Id };
+         string sql = @"SELECT * FROM [dbo].[UserRole]
+                         WHERE UserRoleId = @UserRoleId";
+
+         return SqlDataAccess.LoadSingleRecord( sql, data );
+      }
+
+      public static int DeleteUserRole( int _Id )
+      {
+         UserRoleModel data = new UserRoleModel { UserRoleId = _Id };
+         string sql = @"DELETE [UserRole] WHERE UserRoleId = @UserRoleId";
+
+         return SqlDataAccess.DeleteRecord( sql, data );
+      }
+
       //public static int CreateUserRole( int _UserId, int _RoleId )
       //{
       //   UserRoleModel data = new UserRoleModel
@@ -46,15 +63,15 @@ namespace TCABS_DataLibrary.BusinessLogic
          {
             using( IDbConnection _Cnn = new SqlConnection( GetConnectionString( ) ) )
             {
-               _Cnn.Execute( sql, new { UserId = _UserId, RoleId = _RoleId, UserRoleId = 0 }, commandType: CommandType.StoredProcedure );
+               var userRole = _Cnn.Query<UserRoleModel>( sql, new { UserId = _UserId, RoleId = _RoleId, UserRoleId = 0 }, commandType: CommandType.StoredProcedure ).FirstOrDefault( );
 
-               var userRole = new UserRoleModel
-               {
-                  UserId = _UserId,
-                  RoleId = _RoleId
-               };
-
-               return SqlDataAccess.LoadSingleRecord<UserRoleModel>( "SELECT * FROM [dbo].[UserRole] WHERE UserId = @UserId AND RoleId = @RoleId;", userRole );
+               //var userRole = new UserRoleModel
+               //{
+               //   UserId = _UserId,
+               //   RoleId = _RoleId
+               //};
+               return userRole;
+               //return SqlDataAccess.LoadSingleRecord<UserRoleModel>( "SELECT * FROM [dbo].[UserRole] WHERE UserId = @UserId AND RoleId = @RoleId;", userRole );
             }
          }
          catch( Exception _Ex )

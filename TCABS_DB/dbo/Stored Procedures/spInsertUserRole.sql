@@ -14,10 +14,11 @@ BEGIN
    SELECT @UserId, @RoleId
    WHERE NOT EXISTS ( SELECT 1 FROM [dbo].[UserRole] WHERE [UserId] = @UserId AND [RoleId] = @RoleId );
 
-   IF @@rowcount = 0 RETURN 99;
+   --IF @@rowcount = 0 RETURN 99;
 
    SET @UserRoleId = scope_identity();
+   SELECT * FROM [dbo].[UserRole] WHERE [UserRoleId] = @UserRoleId;
 
-     RETURN 0
+   --  RETURN 0
 END
 

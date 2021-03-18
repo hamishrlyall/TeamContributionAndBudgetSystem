@@ -108,6 +108,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          {
             // Send Create procedure to DataAccess
             var data = UserRoleProcessor.InsertUserRole( _User.UserId, _Role.RoleId );
+            if( data == null )
+               throw new DataException("Role added was invalid.");
             var roleData = RoleProcessor.SelectRole( data.RoleId );
             var userRole = new UserRole( );
             userRole.UserRoleId = data.UserRoleId;
@@ -116,18 +118,70 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             userRole.Role = new Role { RoleId = roleData.RoleId, Name = roleData.Name };
 
             _User.UserRoles.Add( userRole );
-
-            //Reload User details here.
-
          }
          catch( DataException _Ex )
          {
-            ModelState.AddModelError( "", $"Unable to save changes due to Error: { _Ex.Message } If the problem persists see your system administrator." );
+            ModelState.AddModelError( "", $"Unable to save changes due to Error: { _Ex.Message }" );
          }
 
+         //Reload User details here.
+         var userData = UserProcessor.SelectUserWithRoles( _User.UserId );
+
+         if( userData == null )
+         {
+            return HttpNotFound( );
+         }
+         User User = new User( );
+         User.UserId = userData.UserId;
+         User.Username = userData.Username;
+         User.FirstName = userData.FirstName;
+         User.LastName = userData.LastName;
+         User.EmailAddress = userData.Email;
+         User.PhoneNumber = userData.PhoneNo;
+         foreach( var ur in userData.UserRoles )
+         {
+            var roleData = RoleProcessor.SelectRole( ur.RoleId );
+            var userRole = new UserRole( );
+            userRole.UserRoleId = ur.UserRoleId;
+            userRole.UserId = ur.UserId;
+            userRole.RoleId = ur.RoleId;
+            userRole.Role = new Role { RoleId = roleData.RoleId, Name = roleData.Name };
+
+            User.UserRoles.Add( userRole );
+         }
          PopulateRoleDropDownList( );
 
-         return View( _User );
+         return View( User );
+      }
+
+      public ActionResult DeleteUserRole( int id )
+      {
+         if( id < 1 )
+         {
+            return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+         }
+         var userRole = UserRoleProcessor.SelectUserRole( id );
+
+         if( userRole == null )
+         {
+            return HttpNotFound( );
+         }
+
+         var user = UserProcessor.SelectUserWithRoles( userRole.UserId );
+         return View( User );
+      }
+
+      [HttpDelete]
+      [ValidateAntiForgeryToken]
+      public ActionResult DeleteUserRole( UserRole _UserRole )
+      {
+         if( _UserRole == null )
+         {
+            return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+         }
+         var row = UserRoleProcessor.DeleteUserRole( _UserRole.UserId );
+
+         return View( User );
       }
    }
 }

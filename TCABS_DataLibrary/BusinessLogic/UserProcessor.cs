@@ -19,7 +19,6 @@ namespace TCABS_DataLibrary.BusinessLogic
       {
          return ConfigurationManager.ConnectionStrings[ _ConnectionName ].ConnectionString;
       }
-
       public static int CreateUser( string _Username, string _FirstName, string _LastName, string _Email, int _PhoneNo )
       {
          UserModel data = new UserModel
