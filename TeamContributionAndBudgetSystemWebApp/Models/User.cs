@@ -6,11 +6,16 @@ using System.Web;
 
 namespace TeamContributionAndBudgetSystemWebApp.Models
 {
-   public class UserModel
+   public class User
    {
       //[Display( Name = "User ID" )]
       //[Range( 100000, 999999, ErrorMessage = "You need to enter a valid UserId" )]
       //public int UserId { get; set; }
+
+      public User( )
+      {
+         this.UserRoles = new HashSet<UserRole>( );
+      }
 
       public int UserId { get; set; }
 
@@ -49,6 +54,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
       [Compare("Password", ErrorMessage =  "Your password and confirm password do not match.")]
       public string ConfirmPassword { get; set; }
 
-      public virtual ICollection<UserRoleModel> UserRoles { get; set; }
+      public virtual ICollection<UserRole> UserRoles { get; set; }
    }
 }

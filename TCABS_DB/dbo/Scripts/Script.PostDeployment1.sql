@@ -9,8 +9,6 @@ Post-Deployment Script Template
                SELECT * FROM [$(TableName)]               
 --------------------------------------------------------------------------------------
 */
---IF '$(LoadTestData)' = 'true'
-
 BEGIN
 
 MERGE INTO [User] AS Target USING ( 

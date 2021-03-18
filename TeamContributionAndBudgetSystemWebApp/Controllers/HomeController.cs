@@ -40,7 +40,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
       [HttpPost]
       [ValidateAntiForgeryToken]
-      public ActionResult SignUp( UserModel _Model )
+      public ActionResult SignUp( User _Model )
       {
          if( ModelState.IsValid )
          {

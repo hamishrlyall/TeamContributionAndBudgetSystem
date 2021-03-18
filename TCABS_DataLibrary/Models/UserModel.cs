@@ -20,25 +20,6 @@ namespace TCABS_DataLibrary.Models
       public int PhoneNo { get; set; }
       public string Password { get; set; }
 
-      public virtual ICollection<UserRoleModel> UserRoles { get; set; }
-
-      //public bool Add(UserModel _User )
-      //{
-      //}
-
-      public UserModel SelectUser( int id )
-      {
-         using( IDbConnection _Cnn = new SqlConnection( SqlDataAccess.GetConnectionString( ) ) )
-         {
-            return _Cnn.Query<UserModel>( "SELECT * FROM [dbo].[User] WHERE UserId = @UserId", new UserModel { UserId = id } ).SingleOrDefault( );
-         }
-      }
-   }
-
-   public interface IUserRepository
-   {
-      List<UserModel> GetAll( );
-      bool AddUser( UserModel _User );
-      UserModel GetById( int _UserId );
+      public virtual List<UserRoleModel> UserRoles { get; set; }
    }
 }

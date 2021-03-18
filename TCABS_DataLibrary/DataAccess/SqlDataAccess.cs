@@ -43,5 +43,14 @@ namespace TCABS_DataLibrary.DataAccess
             return _Cnn.Execute( _Sql, _Data );
          }
       }
+
+      public static int ExecuteStoredProcedure<T>( string _Sql, T _Data )
+      {
+         using( IDbConnection _Cnn = new SqlConnection( GetConnectionString( ) ) )
+         {
+
+            return _Cnn.Execute( _Sql, new { } );
+         }
+      }
    }
 }

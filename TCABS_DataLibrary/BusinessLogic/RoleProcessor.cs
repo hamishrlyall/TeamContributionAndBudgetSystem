@@ -12,9 +12,18 @@ namespace TCABS_DataLibrary.BusinessLogic
    {
       public static List<RoleModel>LoadRoles( )
       {
-         string sql = @"select RoleId, Name [dbo].[Role]";
+         string sql = @"select RoleId, Name from [dbo].[Role]";
 
          return SqlDataAccess.LoadData<RoleModel>( sql );
+      }
+
+      public static RoleModel SelectRole( int _Id )
+      {
+         RoleModel data = new RoleModel { RoleId = _Id };
+         string sql = @"SELECT * FROM [dbo].[Role]
+                         WHERE RoleId = @RoleId";
+
+         return SqlDataAccess.LoadSingleRecord( sql, data );
       }
    }
 }
