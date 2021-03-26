@@ -56,6 +56,14 @@ namespace TCABS_DataLibrary.BusinessLogic
          return SqlDataAccess.LoadData<UserRoleModel>( sql );
       }
 
+      public static List<UserRoleModel> LoadRolesForUser( int _Id )
+      {
+         UserRoleModel data = new UserRoleModel { UserId = _Id };
+         string sql = @"select * FROM [dbo].[UserRole] WHERE UserId = @UserId";
+
+         return SqlDataAccess.LoadData<UserRoleModel>( sql, data );
+      }
+
       public static UserRoleModel InsertUserRole( int _UserId, int _RoleId )
       {
          string sql = @"spInsertUserRole";

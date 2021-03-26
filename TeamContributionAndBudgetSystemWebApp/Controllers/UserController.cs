@@ -16,46 +16,48 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 {
    public class UserController : Controller
    {
+      private TCABS_Db_Context db = new TCABS_Db_Context( );
+
       private void PopulateRoleDropDownList( )
       {
-         var data = RoleProcessor.LoadRoles( );
-         List<Role> roles = new List<Role>( );
+         //var data = RoleProcessor.LoadRoles( );
+         //List<Role> roles = new List<Role>( );
 
-         foreach( var row in data )
-         {
-            roles.Add( new Role
-            {
-               RoleId = row.RoleId,
-               Name = row.Name,
-            } );
-         }
-         ViewBag.RoleId = new SelectList( roles, "RoleId", "Name", null );
+         //foreach( var row in data )
+         //{
+         //   roles.Add( new Role
+         //   {
+         //      RoleId = row.RoleId,
+         //      Name = row.Name,
+         //   } );
+         //}
+         ViewBag.RoleId = new SelectList( db.Roles, "RoleId", "Name", null );
       }
       // GET: User
       public ActionResult Index( )
       {
          ViewBag.Message = "Users List";
+         db.GetUsers( );
+         //var data = LoadUsers( );
+         //List<User> users = new List<User>( );
 
-         var data = LoadUsers( );
-         List<User> users = new List<User>( );
+         //foreach( var row in data )
+         //{
+         //   users.Add( new User
+         //   {
+         //      UserId = row.UserId,
+         //      Username = row.Username,
+         //      FirstName = row.FirstName,
+         //      LastName = row.LastName,
+         //      EmailAddress = row.Email,
+         //      ConfirmEmailAddress = row.Email,
+         //      PhoneNumber = row.PhoneNo,
+         //   } );
+         //}
 
-         foreach( var row in data )
-         {
-            users.Add( new User
-            {
-               UserId = row.UserId,
-               Username = row.Username,
-               FirstName = row.FirstName,
-               LastName = row.LastName,
-               EmailAddress = row.Email,
-               ConfirmEmailAddress = row.Email,
-               PhoneNumber = row.PhoneNo,
-            } );
-         }
+         //PopulateRoleDropDownList( );
 
-         PopulateRoleDropDownList( );
-
-         return View( users );
+         return View( db.Users );
       }
 
 
