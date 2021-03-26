@@ -27,6 +27,22 @@ namespace TCABS_DataLibrary.DataAccess
          }
       }
 
+      public static List<T> LoadData<T>( string _Sql, T _Data )
+      {
+         using( IDbConnection _Cnn = new SqlConnection( GetConnectionString( ) ) )
+         {
+            return _Cnn.Query<T>( _Sql, _Data ).ToList( );
+         }
+      }
+
+      public static int DeleteRecord<T>( string _Sql, T _Data )
+      {
+         using( IDbConnection _Cnn = new SqlConnection( GetConnectionString( ) ) )
+         {
+            return _Cnn.Execute( _Sql, _Data );
+         }
+      }
+
       public static T LoadSingleRecord<T>( string _Sql, T _Data )
       {
          using( IDbConnection _Cnn = new SqlConnection( GetConnectionString( ) ) )
