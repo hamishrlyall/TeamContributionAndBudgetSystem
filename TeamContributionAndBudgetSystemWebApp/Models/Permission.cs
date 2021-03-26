@@ -5,19 +5,16 @@ using System.Web;
 
 namespace TeamContributionAndBudgetSystemWebApp.Models
 {
-   public class Role
+   public class Permission
    {
-      public Role( )
+      public Permission( )
       {
-         this.UserRoles = new HashSet<UserRole>( );
          this.RolePermissions = new HashSet<RolePermission>( );
       }
 
-      public int RoleId { get; set; }
+      public int PermissionId { get; set; }
       public string Name { get; set; }
 
-      public virtual ICollection<UserRole> UserRoles { get; set; }
       public virtual ICollection<RolePermission> RolePermissions { get; set; }
-
    }
 }

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using TCABS_DataLibrary;
 using static TCABS_DataLibrary.BusinessLogic.UserProcessor;
 using TeamContributionAndBudgetSystemWebApp.Models;
+using System.Security;
 
 namespace TeamContributionAndBudgetSystemWebApp.Controllers
 {
@@ -40,6 +41,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
       [HttpPost]
       [ValidateAntiForgeryToken]
+      [Authorize(PermissionSet="]
       public ActionResult SignUp( User _Model )
       {
          if( ModelState.IsValid )

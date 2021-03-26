@@ -19,14 +19,10 @@ DROP TABLE IF EXISTS [dbo].[Role];
 
 DROP TABLE IF EXISTS [dbo].[User];
 
---DROP PROCEDURE IF EXISTS [dbo].[sp_InsertUserRole];
+DROP PROCEDURE IF EXISTS [dbo].[sp_InsertUserRole];
 
---DROP PROCEDURE IF EXISTS [dbo].[spSelectUserForUserId];
+DROP PROCEDURE IF EXISTS [dbo].[spSelectUserForUserId];
 
---DROP PROCEDURE IF EXISTS [dbo].[spGetUserRolesByUserId];
+DROP PROCEDURE IF EXISTS [dbo].[spGetUserRolesByUserId];
 
---DROP PROCEDURE IF EXISTS [dbo].[spInsertUserRole];
-
---DROP PROCEDURE IF EXISTS [dbo].[sp_SelectUserForUserId];
-
---DROP PROCEDURE IF EXISTS [dbo].[sp_GetUserRolesByUserId];
+DROP PROCEDURE IF EXISTS [dbo].[spInsertUserRole];
