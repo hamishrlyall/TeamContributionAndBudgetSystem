@@ -20,18 +20,18 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
       private void PopulateRoleDropDownList( )
       {
-         //var data = RoleProcessor.LoadRoles( );
-         //List<Role> roles = new List<Role>( );
+         var data = RoleProcessor.LoadRoles( );
+         List<Role> roles = new List<Role>( );
 
-         //foreach( var row in data )
-         //{
-         //   roles.Add( new Role
-         //   {
-         //      RoleId = row.RoleId,
-         //      Name = row.Name,
-         //   } );
-         //}
-         ViewBag.RoleId = new SelectList( db.Roles, "RoleId", "Name", null );
+         foreach( var row in data )
+         {
+            roles.Add( new Role
+            {
+               RoleId = row.RoleId,
+               Name = row.Name,
+            } );
+         }
+         ViewBag.RoleId = new SelectList( roles, "RoleId", "Name", null );
       }
       // GET: User
       public ActionResult Index( )

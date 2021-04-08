@@ -20,10 +20,24 @@
             </div>
             <div class="navbar-collapse collapse">
                <ul class="nav navbar-nav">
-                  <li>@Html.ActionLink( "Home", "Index", "Home" )</li>
-                  <li>@Html.ActionLink( "Sign Up", "SignUp", "Home")</li>
-                  <li>@Html.ActionLink( "About", "About", "Home" )</li>
-                  <li>@Html.ActionLink( "Contact", "Contact", "Home" )</li>
+                  @if( Request.IsAuthenticated )
+                  {
+                     <li class="nav-item">
+                        @Html.ActionLink( "Welcome " + @User.Identity.Name, "", "", new { @class = "nav-link" } )
+                     </li>
+
+                     <li class="nav-item">
+                        @Html.ActionLink( "Logout", "Logout", "Account", new { @class = "nav-link" } )
+                     </li>
+
+                  }
+                  else
+                  {
+                     <li class="nav-item">
+                        @Html.ActionLink( "Login", "Login", "Account", new { @class = "nav-link" } )
+                     </li>
+
+                  }
                </ul>
             </div>
         </div>

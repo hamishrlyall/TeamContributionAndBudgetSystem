@@ -44,7 +44,7 @@ namespace TCABS_DataLibrary.BusinessLogic
 
       public static List<UserModel> LoadUsers( )
       {
-         string sql = @"select UserId, Username, FirstName, LastName, Email, PhoneNo from [dbo].[User]";
+         string sql = @"select UserId, Username, FirstName, LastName, Email, PhoneNo, Password from [dbo].[User]";
 
          return SqlDataAccess.LoadData<UserModel>( sql );
       }

@@ -11,7 +11,7 @@ namespace TCABS_DataLibrary.Models
       public int RoleId { get; set; }
       public string Name { get; set; }
 
-      public virtual IQueryable<UserRoleModel> UserRoles { get; set; }
-      public virtual IQueryable<RolePermissionModel> RolePermissions { get; set; }
+      public virtual List<UserRoleModel> UserRoles { get; set; }
+      public virtual List<RolePermissionModel> RolePermissions { get; set; }
    }
 }

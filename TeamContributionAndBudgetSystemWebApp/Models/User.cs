@@ -35,9 +35,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
       [Required( ErrorMessage = "You must enter your email address." )]
       public string EmailAddress { get; set; }
 
-      [Display(Name = "Confirm Email")]
-      [Compare( "EmailAddress", ErrorMessage = "The email and confirm email do not match." )]
-      public string ConfirmEmailAddress { get; set; }
+      //[Display(Name = "Confirm Email")]
+      //[Compare( "EmailAddress", ErrorMessage = "The email and confirm email do not match." )]
+      //public string ConfirmEmailAddress { get; set; }
       
       [Display( Name = "Phone Number")]
       [DataType(DataType.PhoneNumber)]
@@ -55,5 +55,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
       public string ConfirmPassword { get; set; }
 
       public virtual ICollection<UserRole> UserRoles { get; set; }
+
+
    }
 }
