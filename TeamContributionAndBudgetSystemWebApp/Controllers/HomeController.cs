@@ -8,16 +8,24 @@ using static TCABS_DataLibrary.BusinessLogic.UserProcessor;
 using TeamContributionAndBudgetSystemWebApp.Models;
 using System.Security;
 using System.Web.Security;
+using System.Web.UI.WebControls;
 
 namespace TeamContributionAndBudgetSystemWebApp.Controllers
 {
    public class HomeController : Controller
    {
-      private TCABS_Db_Context db = new TCABS_Db_Context( );
+      private TCABS_Db_Context db { get; set; } 
 
       public ActionResult Index( )
       {
-         return View( );
+         string username = HttpContext.User.Identity.Name;
+
+         if( !string.IsNullOrEmpty( username ) )
+         {
+            db = new TCABS_Db_Context( username );
+         }
+
+         return View( db );
       }
 
       public ActionResult About( )
@@ -47,9 +55,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [ValidateAntiForgeryToken]
       public ActionResult Login( User _User )
       {
-         //var errors = ModelState.Values.SelectMany( v => v.Errors );
-         //if( ModelState.IsValid )
-         //{
          bool IsValidUser = db.Users
          .Any( u => u.Username.ToLower( ) == _User
          .Username.ToLower( ) && u
@@ -64,8 +69,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          {
             ModelState.AddModelError( "", "invalid Username or Password" );
          }
-         //}
-         //
+
          return View( );
       }
 
@@ -74,26 +78,5 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          FormsAuthentication.SignOut( );
          return RedirectToAction( "Login" );
       }
-      //// GET
-      //public ActionResult SignUp( )
-      //{
-      //   ViewBag.Message = "User Sign Up";
-
-      //   return View( );
-      //}
-
-      //[HttpPost]
-      //[ValidateAntiForgeryToken]
-      //public ActionResult SignUp( User _Model )
-      //{
-      //   if( ModelState.IsValid )
-      //   {
-      //      int recordsCreate = CreateUser( _Model.Username, _Model.FirstName, _Model.LastName, _Model.EmailAddress, _Model.PhoneNumber );
-
-      //      return RedirectToAction( "Index" );
-      //   }
-
-      //   return View( );
-      //}
    }
 }

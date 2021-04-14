@@ -22,30 +22,41 @@ namespace TCABS_DataLibrary.BusinessLogic
 
       public static List<RoleModel>LoadRoles( )
       {
-         string sql = @"select RoleId, Name from [dbo].[Role]";
-
+         //string sql = @"select RoleId, Name from [dbo].[Role]";
+         string sql = "spSelectRoles";
          return SqlDataAccess.LoadData<RoleModel>( sql );
       }
 
       public static RoleModel SelectRole( int _Id )
       {
          RoleModel data = new RoleModel { RoleId = _Id };
-         string sql = @"SELECT * FROM [dbo].[Role]
-                         WHERE RoleId = @RoleId";
+         //string sql = @"SELECT * FROM [dbo].[Role]
+         //                WHERE RoleId = @RoleId";
+         string sql = "spSelectRoleForRoleId";
 
-         return SqlDataAccess.LoadSingleRecord( sql, data );
+         var dynamicData = new DynamicParameters( );
+         dynamicData.Add( "roleid", _Id );
+
+         return SqlDataAccess.ExecuteStoredProcedure<RoleModel>( sql, dynamicData );
       }
 
-      public static RoleModel SelectRoleWithPermissions( int _Id )
+      public static RoleModel SelectRoleWithPermissions( int _RoleId )
       {
-         UserModel data = new UserModel { UserId = _Id };
+         //UserModel data = new UserModel { UserId = _Id };
+
+         string sql = "spSelectRoleWithPermissions";
 
          using( IDbConnection _Cnn = new SqlConnection( GetConnectionString( ) ) )
          {
-            var results = _Cnn.QueryMultiple( @"
-                  SELECT * FROM [dbo].[Role] WHERE RoleId = @RoleId;
-                  SELECT * FROM [dbo].[RolePermission] WHERE RolePermissionId = @RolePermissionId;
-                  ", data );
+            //var results = _Cnn.QueryMultiple( @"
+            //      SELECT * FROM [dbo].[Role] WHERE RoleId = @RoleId;
+            //      SELECT * FROM [dbo].[RolePermission] WHERE RolePermissionId = @RolePermissionId;
+            //      ", data );
+
+            var dynamicData = new DynamicParameters( );
+            dynamicData.Add( "roleid", _RoleId );
+
+            var results = _Cnn.QueryMultiple( sql, dynamicData, commandType: CommandType.StoredProcedure );
 
             var role = results.ReadSingle<RoleModel>( );
             var rolePermissions = results.Read<RolePermissionModel>( );
@@ -58,13 +69,20 @@ namespace TCABS_DataLibrary.BusinessLogic
 
       public static List<RolePermissionModel> LoadRolePermissionsForRoleId( int _Id )
       {
-         string sql = @"SELECT r.[PermissionId],
-                        FROM[ Role ] r
-                        LEFT OUTER JOIN[ RolePermission ] rp ON rp.RoleId = r.RoleId
-                        LEFT OUTER JOIN[ Permission ] p ON p.PermissionId = rp.PermissionId
-                        WHERE r.RoleId = @roleid";
+         var rolePermissionModel = new RolePermissionModel( ) { RoleId = _Id };
 
-         return SqlDataAccess.LoadData<RolePermissionModel>( sql );
+         //string sql1 = @"SELECT r.[PermissionId],
+         //               FROM[ Role ] r
+         //               LEFT OUTER JOIN[ RolePermission ] rp ON rp.RoleId = r.RoleId
+         //               LEFT OUTER JOIN[ Permission ] p ON p.PermissionId = rp.PermissionId
+         //               WHERE r.RoleId = @roleid";
+
+         string sql = "spSelectRolePermissionsForRoleId";
+
+         var dynamicData = new DynamicParameters( );
+         dynamicData.Add( "roleid", _Id );
+
+         return SqlDataAccess.LoadData<RolePermissionModel>( sql, dynamicData );
       }
    }
 }

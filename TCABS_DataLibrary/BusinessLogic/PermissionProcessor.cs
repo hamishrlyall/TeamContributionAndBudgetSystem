@@ -22,10 +22,12 @@ namespace TCABS_DataLibrary.BusinessLogic
       public static PermissionModel SelectPermission( int _Id )
       {
          PermissionModel data = new PermissionModel { PermissionId = _Id };
-         string sql = @"SELECT * FROM [dbo].[Permission]
-                         WHERE PermissionId = @PermissionId";
+         string sql = "spSelectPermission";
 
-         return SqlDataAccess.LoadSingleRecord( sql, data );
+         var dynamicData = new DynamicParameters( );
+         dynamicData.Add( "permissionid", _Id );
+
+         return SqlDataAccess.ExecuteStoredProcedure<PermissionModel>( sql, dynamicData );
       }
    }
 }

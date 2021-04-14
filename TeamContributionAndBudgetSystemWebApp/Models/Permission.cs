@@ -13,7 +13,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
       }
 
       public int PermissionId { get; set; }
-      public string Name { get; set; }
+      public string TableName { get; set; }
+      public string Action { get; set; }
 
       public virtual ICollection<RolePermission> RolePermissions { get; set; }
    }

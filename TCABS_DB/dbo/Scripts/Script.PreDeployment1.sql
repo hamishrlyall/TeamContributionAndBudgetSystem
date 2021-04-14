@@ -9,20 +9,18 @@
                SELECT * FROM [$(TableName)]               
 --------------------------------------------------------------------------------------
 */
-DROP TABLE IF EXISTS [dbo].[UserRole];
+--DROP TABLE IF EXISTS [dbo].[RolePermission];
 
-DROP TABLE IF EXISTS [dbo].[RolePermission];
+--DROP TABLE IF EXISTS [dbo].[Permission];
 
-DROP TABLE IF EXISTS [dbo].[Permission];
+--DROP PROCEDURE IF EXISTS [dbo].[spCreateUser];
 
-DROP TABLE IF EXISTS [dbo].[Role];
+--DROP PROCEDURE IF EXISTS [dbo].[spGetUserRoleByUserId];
 
-DROP TABLE IF EXISTS [dbo].[User];
+--DROP PROCEDURE IF EXISTS [dbo].[spInsertUserRole];
 
---DROP PROCEDURE IF EXISTS [dbo].[sp_InsertUserRole];
+--DROP PROCEDURE IF EXISTS [dbo].[spLoadUsers];
 
 --DROP PROCEDURE IF EXISTS [dbo].[spSelectUserForUserId];
 
-DROP PROCEDURE IF EXISTS [dbo].[spGetUserRolesByUserId];
-
---DROP PROCEDURE IF EXISTS [dbo].[spInsertUserRole];
+--DROP PROCEDURE IF EXISTS [dbo].[spSelectUserWithRoles];

@@ -3,9 +3,9 @@
 -- If doesn't exist this stored procedure will insert the new UserRole with the provided UserId and RoleId.
 
 CREATE PROCEDURE [dbo].[spInsertUserRole]
-   @UserId int,
-   @RoleId int,
-   @UserRoleId int out
+   @userid int,
+   @roleid int,
+   @userroleid int out
 AS
 BEGIN
    SET NOCOUNT ON;
@@ -16,9 +16,9 @@ BEGIN
 
    --IF @@rowcount = 0 RETURN 99;
 
-   SET @UserRoleId = scope_identity();
-   SELECT * FROM [dbo].[UserRole] WHERE [UserRoleId] = @UserRoleId;
+   SET @userroleid = scope_identity();
+   SELECT * FROM [dbo].[UserRole] WHERE [UserRoleId] = @userroleid;
 
    --  RETURN 0
-END
+END;
 

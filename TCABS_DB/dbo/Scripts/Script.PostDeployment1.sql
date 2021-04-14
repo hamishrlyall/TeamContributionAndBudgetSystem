@@ -41,18 +41,24 @@ VALUES ([Name]);
 
 MERGE INTO [Permission] AS Target USING (
    VALUES
-   (1, 'Create Employee'),
-   (2, 'Create Unit of Study'),
-   (3, 'Register Student'),
-   (4, 'Enrol Student in Unit'),
-   (5, 'Register Teams'),
-   (6, 'Register Projects')
+   (1, 'User', 'Read'),
+   (2, 'User', 'Create'),
+   (3, 'User', 'Update'),
+   (4, 'User', 'Delete'),
+   (5, 'UserRole', 'Read'),
+   (6, 'UserRole', 'Create'),
+   (7, 'UserRole', 'Update'),
+   (8, 'UserRole', 'Delete'),
+   (9, 'RolePermission', 'Read'),
+   (10, 'RolePermission', 'Create'),
+   (11, 'RolePermission', 'Update'),
+   (12, 'RolePermission', 'Delete')
 )
-AS Source ([PermissionId], [Name])
+AS Source ([PermissionId], [TableName], [Action])
 ON Target.PermissionId = Source.PermissionId
 WHEN NOT MATCHED BY TARGET THEN
-INSERT ([Name])
-VALUES ([Name]);
+INSERT ([TableName], [Action])
+VALUES ([TableName], [Action]);
 
 MERGE INTO [UserRole] AS Target USING (
  VALUES
@@ -76,12 +82,24 @@ MERGE INTO [RolePermission] AS Target USING (
    (4, 1, 4),
    (5, 1, 5),
    (6, 1, 6),
-   (7, 2, 1),
-   (8, 2, 2),
-   (9, 2, 3),
-   (10, 2, 4),
-   (11, 3, 5),
-   (12, 3, 6)
+   (7, 1, 7),
+   (8, 1, 8),
+   (9, 1, 9),
+   (10, 1, 10),
+   (11, 1, 11),
+   (12, 1, 12),
+   (13, 2, 1),
+   (14, 2, 2),
+   (15, 2, 3),
+   (16, 2, 4),
+   (17, 2, 5),
+   (18, 2, 6),
+   (19, 2, 7),
+   (20, 2, 8),
+   (21, 2, 9),
+   (22, 2, 10),
+   (23, 2, 11),
+   (24, 2, 12)
 )
 AS Source ([RolePermissionId], [RoleId], [PermissionId])
 ON Target.RolePermissionId = Source.RolePermissionId

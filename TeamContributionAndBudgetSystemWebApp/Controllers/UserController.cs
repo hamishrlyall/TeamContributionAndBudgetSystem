@@ -16,7 +16,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 {
    public class UserController : Controller
    {
-      private TCABS_Db_Context db = new TCABS_Db_Context( );
+      
+      private TCABS_Db_Context db { get; set; }
 
       private void PopulateRoleDropDownList( )
       {
@@ -36,31 +37,11 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       // GET: User
       public ActionResult Index( )
       {
+         db = new TCABS_Db_Context( HttpContext.User.Identity.Name );
          ViewBag.Message = "Users List";
-         db.GetUsers( );
-         //var data = LoadUsers( );
-         //List<User> users = new List<User>( );
-
-         //foreach( var row in data )
-         //{
-         //   users.Add( new User
-         //   {
-         //      UserId = row.UserId,
-         //      Username = row.Username,
-         //      FirstName = row.FirstName,
-         //      LastName = row.LastName,
-         //      EmailAddress = row.Email,
-         //      ConfirmEmailAddress = row.Email,
-         //      PhoneNumber = row.PhoneNo,
-         //   } );
-         //}
-
-         //PopulateRoleDropDownList( );
-
-         return View( db.Users );
+         
+         return View( db );
       }
-
-
       public ActionResult Details(int? id )
       {
          if( id == null )
@@ -184,6 +165,33 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          var row = UserRoleProcessor.DeleteUserRole( _UserRole.UserId );
 
          return View( User );
+      }
+
+      // GET
+      public ActionResult Create( )
+      {
+         ViewBag.Message = "Create New User";
+
+         return View( );
+      }
+
+      [HttpPost]
+      [ValidateAntiForgeryToken]
+      public ActionResult Create( User _Model )
+      {
+         if( ModelState.IsValid )
+         {
+            int recordsCreate = CreateUser( _Model.Username, _Model.FirstName, _Model.LastName, _Model.EmailAddress, _Model.PhoneNumber, _Model.Password );
+
+            return RedirectToAction( "Index" );
+         }
+         else
+         {
+            //show error
+            var errors = ModelState.Values.SelectMany( v => v.Errors );
+         }
+
+         return View( );
       }
    }
 }

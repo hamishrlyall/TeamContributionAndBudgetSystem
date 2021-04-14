@@ -8,10 +8,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
 {
    public class User
    {
-      //[Display( Name = "User ID" )]
-      //[Range( 100000, 999999, ErrorMessage = "You need to enter a valid UserId" )]
-      //public int UserId { get; set; }
-
       public User( )
       {
          this.UserRoles = new HashSet<UserRole>( );
@@ -34,10 +30,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
       [Display( Name = "Email Address" )]
       [Required( ErrorMessage = "You must enter your email address." )]
       public string EmailAddress { get; set; }
-
-      //[Display(Name = "Confirm Email")]
-      //[Compare( "EmailAddress", ErrorMessage = "The email and confirm email do not match." )]
-      //public string ConfirmEmailAddress { get; set; }
       
       [Display( Name = "Phone Number")]
       [DataType(DataType.PhoneNumber)]

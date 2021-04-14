@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,22 +20,29 @@ namespace TCABS_DataLibrary.BusinessLogic
       {
          return ConfigurationManager.ConnectionStrings[ _ConnectionName ].ConnectionString;
       }
-      public static int CreateUser( string _Username, string _FirstName, string _LastName, string _Email, int _PhoneNo )
+      public static int CreateUser( string _Username, string _FirstName, string _LastName, string _Email, int _PhoneNo, string _Password )
       {
-         UserModel data = new UserModel
-         {
-            Username = _Username,
-            FirstName = _FirstName,
-            LastName = _LastName,
-            Email = _Email,
-            PhoneNo = _PhoneNo
-         };
          try
          {
-            string sql = @"insert into [dbo].[User] (Username, FirstName, LastName, Email, PhoneNo, Password )
-                        values ( @Username, @FirstName, @LastName, @Email, @PhoneNo, @Password );";
+            string sql = "spCreateUser";
 
-            return SqlDataAccess.SaveData( sql, data );
+            using( IDbConnection _Cnn = new SqlConnection( GetConnectionString( ) ) )
+            {
+               var user = _Cnn.Query<UserModel>
+                           (
+                              sql,
+                              new {
+                                 Username = _Username,
+                                 FirstName = _FirstName,
+                                 LastName = _LastName,
+                                 Email = _Email,
+                                 PhoneNo = _PhoneNo,
+                                 Password = _Password },
+                              commandType: CommandType.StoredProcedure
+                           );
+
+               return user.Count( );
+            }
          }
          catch( Exception _Ex )
          {
@@ -44,21 +52,20 @@ namespace TCABS_DataLibrary.BusinessLogic
 
       public static List<UserModel> LoadUsers( )
       {
-         string sql = @"select UserId, Username, FirstName, LastName, Email, PhoneNo, Password from [dbo].[User]";
+         //string sql = @"select UserId, Username, FirstName, LastName, Email, PhoneNo, Password from [dbo].[User]";
+
+         string sql = "spLoadUsers";
 
          return SqlDataAccess.LoadData<UserModel>( sql );
       }
 
       public static UserModel SelectUserWithRoles( int _Id )
       {
-         UserModel data = new UserModel { UserId = _Id };
+         string sql = "spSelectUserWithRoles";
 
          using( IDbConnection _Cnn = new SqlConnection( GetConnectionString( ) ) )
          {
-            var results = _Cnn.QueryMultiple( @"
-                  SELECT * FROM [dbo].[User] WHERE UserId = @UserId;
-                  SELECT * FROM [dbo].[UserRole] WHERE UserId = @UserId;
-                  ", data );
+            var results = _Cnn.QueryMultiple( sql, new { UserId = _Id }, commandType: CommandType.StoredProcedure );
             var user = results.ReadSingle<UserModel>( );
             var userRoles = results.Read<UserRoleModel>( );
             user.UserRoles = new List<UserRoleModel>( );
@@ -68,14 +75,30 @@ namespace TCABS_DataLibrary.BusinessLogic
          }
       }
 
+      public static UserModel SelectUserForUsername( string _Username )
+      {
+         string sql = "spSelectUserForUsername";
+
+         var dynamicData = new DynamicParameters( );
+         dynamicData.Add( "Username", _Username );
+
+         return SqlDataAccess.ExecuteStoredProcedure<UserModel>( sql, dynamicData );
+
+         //using( IDbConnection _Cnn = new SqlConnection( GetConnectionString( ) ) )
+         //{
+         //   var results = _Cnn.QueryMultiple( sql, new { Username = _Username }, commandType: CommandType.StoredProcedure );
+         //   var user = results.ReadSingle<UserModel>( );
+         //   var userRoles = results.Read<UserRoleModel>( );
+         //   user.UserRoles = new List<UserRoleModel>( );
+         //   user.UserRoles.AddRange( userRoles );
+
+         //   return user;
+         //}
+      }
+
       public static List<UserRoleModel> LoadUserRolesForUserId( int _Id )
       {
-
-         string sql = @"SELECT r.[RoleId], r.[Name]
-                        FROM[ User ] u
-                        LEFT OUTER JOIN[ UserRole ] ur ON ur.UserId = u.UserId
-                        LEFT OUTER JOIN[ Role ] r ON r.RoleId = ur.RoleId
-                        WHERE u.UserId = @userid";
+         string sql = "spGetUserRolesByUserId";
 
          return SqlDataAccess.LoadData<UserRoleModel>( sql );
       }
