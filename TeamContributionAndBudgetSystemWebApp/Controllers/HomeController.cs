@@ -14,16 +14,15 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 {
    public class HomeController : Controller
    {
-      private TCABS_Db_Context db { get; set; } 
+      private TCABS_Db_Context db = new TCABS_Db_Context( );
 
       public ActionResult Index( )
-      {
-         string username = HttpContext.User.Identity.Name;
-
-         if( !string.IsNullOrEmpty( username ) )
-         {
-            db = new TCABS_Db_Context( username );
-         }
+      { 
+         string username = System.Web.HttpContext.Current.User.Identity.Name;
+         //if( !string.IsNullOrEmpty( username ) )
+         //{
+         //   db = new TCABS_Db_Context( );
+         //}
 
          return View( db );
       }
@@ -63,6 +62,12 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          if( IsValidUser )
          {
             FormsAuthentication.SetAuthCookie( _User.Username, false );
+            
+            if( FormsAuthentication.Authenticate( _User.Username, _User.Password ) )
+            {
+               Session[ "userID" ] = _User.Username;
+            }
+
             return RedirectToAction( "Index", "Home" );
          }
          else

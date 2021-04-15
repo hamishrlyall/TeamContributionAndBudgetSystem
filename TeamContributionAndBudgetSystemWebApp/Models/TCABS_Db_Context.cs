@@ -8,12 +8,12 @@ using static TCABS_DataLibrary.BusinessLogic.UserProcessor;
 using TeamContributionAndBudgetSystemWebApp.Models;
 using TCABS_DataLibrary.BusinessLogic;
 using System.Web.Security;
+using System.Web.WebPages;
 
 namespace TeamContributionAndBudgetSystemWebApp.Models
 {
    public class TCABS_Db_Context
    {
-
       public virtual User User { get; set; }
       public virtual UserRole UserRole { get; set; }
       public virtual Role Role { get; set; }
@@ -24,14 +24,14 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
       public virtual List<UserRole> UserRoles { get; set; }
       public virtual List<MenuItem> MenuItems { get; set; }
 
-      public TCABS_Db_Context( string _Username )
+      public TCABS_Db_Context( )
       {
-         // Only load this when viewing users.
-         GetUsers( );
+         string username = System.Web.HttpContext.Current.User.Identity.Name;
 
-         if( !string.IsNullOrEmpty( _Username ) )
+         GetUsers( );
+         if( !string.IsNullOrEmpty( username ) )
          {
-            GetMenu( _Username );
+            GetMenu( username );
          }
       }
 
@@ -115,6 +115,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
             userRole.Role = role;
             user.UserRoles.Add( userRole );
          }
+         User = user;
       }
 
       public User GetUserForUsername( string _Username )

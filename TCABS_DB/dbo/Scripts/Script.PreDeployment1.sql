@@ -24,3 +24,5 @@
 --DROP PROCEDURE IF EXISTS [dbo].[spSelectUserForUserId];
 
 --DROP PROCEDURE IF EXISTS [dbo].[spSelectUserWithRoles];
+
+DROP PROCEDURE IF EXISTS [dbo].[spSelectUserWithRolesForUsername];

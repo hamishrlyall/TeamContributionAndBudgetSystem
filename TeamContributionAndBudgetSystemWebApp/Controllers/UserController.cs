@@ -18,27 +18,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
    public class UserController : Controller
    {
       
-      private TCABS_Db_Context db { get; set; }
-
-      private void PopulateRoleDropDownList( )
-      {
-         var data = RoleProcessor.LoadRoles( );
-         List<Role> roles = new List<Role>( );
-
-         foreach( var row in data )
-         {
-            roles.Add( new Role
-            {
-               RoleId = row.RoleId,
-               Name = row.Name,
-            } );
-         }
-         ViewBag.RoleId = new SelectList( roles, "RoleId", "Name", null );
-      }
+      private TCABS_Db_Context db = new TCABS_Db_Context( );
       // GET: User
       public ActionResult Index( )
       {
-         db = new TCABS_Db_Context( HttpContext.User.Identity.Name );
          ViewBag.Message = "Users List";
          
          return View( db );
@@ -50,34 +33,11 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
          }
          int userId = ( int ) id;
-         var data = UserProcessor.SelectUserWithRoles( userId );
 
-         if( data == null )
-         {
-            return HttpNotFound( );
-         }
-         User User = new User( );
-         User.UserId = data.UserId;
-         User.Username = data.Username;
-         User.FirstName = data.FirstName;
-         User.LastName = data.LastName;
-         User.EmailAddress = data.Email;
-         User.PhoneNumber = data.PhoneNo;
-         foreach( var ur in data.UserRoles )
-         {
-            var roleData = RoleProcessor.SelectRole( ur.RoleId );
-            var userRole = new UserRole( );
-            userRole.UserRoleId = ur.UserRoleId;
-            userRole.UserId = ur.UserId;
-            userRole.RoleId = ur.RoleId;
-            userRole.Role = new Role { RoleId = roleData.RoleId, Name = roleData.Name };
-
-            User.UserRoles.Add( userRole );
-         }
-
+         db.GetUser( userId );
          PopulateRoleDropDownList( );
 
-         return View( User );
+         return View( db );
       }
 
       [HttpPost]
@@ -135,7 +95,22 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          }
          PopulateRoleDropDownList( );
 
-         return View( User );
+         return View( db );
+      }
+      private void PopulateRoleDropDownList( )
+      {
+         var data = RoleProcessor.LoadRoles( );
+         List<Role> roles = new List<Role>( );
+
+         foreach( var row in data )
+         {
+            roles.Add( new Role
+            {
+               RoleId = row.RoleId,
+               Name = row.Name,
+            } );
+         }
+         ViewBag.RoleId = new SelectList( roles, "RoleId", "Name", null );
       }
 
       public ActionResult DeleteUserRole( int id )
