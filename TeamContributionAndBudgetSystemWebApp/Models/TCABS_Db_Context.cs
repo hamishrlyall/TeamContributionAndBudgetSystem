@@ -118,6 +118,23 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
          User = user;
       }
 
+      public List<Role> GetRoles( )
+      {
+         var data = RoleProcessor.SelectRoles( );
+         Roles = new List<Role>( );
+
+         foreach( var row in data )
+         {
+            Roles.Add( new Role
+            {
+               RoleId = row.RoleId,
+               Name = row.Name,
+            } );
+         }
+
+         return Roles;
+      }
+
       public User GetUserForUsername( string _Username )
       {
          var data = UserProcessor.SelectUserForUsername( _Username );
@@ -171,7 +188,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
 
       public void GetUsers( )
       {
-         var userData = LoadUsers( );
+         var userData = SelectUsers( );
          Users = new List<User>( );
          foreach( var row in userData )
          {

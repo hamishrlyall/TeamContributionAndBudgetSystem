@@ -69,48 +69,15 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          }
 
          //Reload User details here.
-         var userData = UserProcessor.SelectUserWithRoles( _User.UserId );
+         db.GetUser( _User.UserId );
 
-         if( userData == null )
-         {
-            return HttpNotFound( );
-         }
-         User User = new User( );
-         User.UserId = userData.UserId;
-         User.Username = userData.Username;
-         User.FirstName = userData.FirstName;
-         User.LastName = userData.LastName;
-         User.EmailAddress = userData.Email;
-         User.PhoneNumber = userData.PhoneNo;
-         foreach( var ur in userData.UserRoles )
-         {
-            var roleData = RoleProcessor.SelectRole( ur.RoleId );
-            var userRole = new UserRole( );
-            userRole.UserRoleId = ur.UserRoleId;
-            userRole.UserId = ur.UserId;
-            userRole.RoleId = ur.RoleId;
-            userRole.Role = new Role { RoleId = roleData.RoleId, Name = roleData.Name };
-
-            User.UserRoles.Add( userRole );
-         }
          PopulateRoleDropDownList( );
 
          return View( db );
       }
       private void PopulateRoleDropDownList( )
       {
-         var data = RoleProcessor.LoadRoles( );
-         List<Role> roles = new List<Role>( );
-
-         foreach( var row in data )
-         {
-            roles.Add( new Role
-            {
-               RoleId = row.RoleId,
-               Name = row.Name,
-            } );
-         }
-         ViewBag.RoleId = new SelectList( roles, "RoleId", "Name", null );
+         ViewBag.RoleId = new SelectList( db.GetRoles( ), "RoleId", "Name", null );
       }
 
       public ActionResult DeleteUserRole( int id )

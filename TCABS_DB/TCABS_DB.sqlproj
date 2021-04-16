@@ -69,12 +69,11 @@
     <Build Include="dbo\Tables\UserRole.sql" />
     <Build Include="dbo\Tables\RolePermission.sql" />
     <Build Include="dbo\Stored Procedures\spSelectUserForUserId.sql" />
-    <Build Include="dbo\Stored Procedures\spGetUserRoleForUserId.sql" />
     <PostDeploy Include="dbo\Scripts\Script.PostDeployment1.sql" />
     <PreDeploy Include="dbo\Scripts\Script.PreDeployment1.sql" />
     <Build Include="dbo\Stored Procedures\spInsertUserRole.sql" />
     <Build Include="dbo\Stored Procedures\spCreateUser.sql" />
-    <Build Include="dbo\Stored Procedures\spLoadUsers.sql" />
+    <Build Include="dbo\Stored Procedures\spSelectUsers.sql" />
     <Build Include="dbo\Stored Procedures\spSelectUserWithRoles.sql" />
     <Build Include="dbo\Stored Procedures\spSelectRoles.sql" />
     <Build Include="dbo\Stored Procedures\spSelectRoleForRoleId.sql" />
@@ -85,7 +84,6 @@
     <Build Include="dbo\Stored Procedures\spSelectUserRoles.sql" />
     <Build Include="dbo\Stored Procedures\spSelectUserRolesForUserId.sql" />
     <Build Include="dbo\Stored Procedures\spSelectPermission.sql" />
-    <Build Include="dbo\Stored Procedures\spSelectUserWithRolesForUsername.sql" />
     <Build Include="dbo\Stored Procedures\spSelectUserForUsername.sql" />
   </ItemGroup>
   <ItemGroup>

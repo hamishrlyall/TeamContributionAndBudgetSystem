@@ -20,7 +20,7 @@ namespace TCABS_DataLibrary.BusinessLogic
          return ConfigurationManager.ConnectionStrings[ _ConnectionName ].ConnectionString;
       }
 
-      public static List<RoleModel>LoadRoles( )
+      public static List<RoleModel>SelectRoles( )
       {
          //string sql = @"select RoleId, Name from [dbo].[Role]";
          string sql = "spSelectRoles";

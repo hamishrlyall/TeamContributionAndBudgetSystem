@@ -25,4 +25,4 @@
 
 --DROP PROCEDURE IF EXISTS [dbo].[spSelectUserWithRoles];
 
-DROP PROCEDURE IF EXISTS [dbo].[spSelectUserWithRolesForUsername];
+--DROP PROCEDURE IF EXISTS [dbo].[spLoadUsers];

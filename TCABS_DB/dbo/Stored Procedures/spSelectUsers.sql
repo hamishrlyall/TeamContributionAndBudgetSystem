@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spLoadUsers]
+﻿CREATE PROCEDURE [dbo].[spSelectUsers]
 AS
 BEGIN
    SET NOCOUNT ON;

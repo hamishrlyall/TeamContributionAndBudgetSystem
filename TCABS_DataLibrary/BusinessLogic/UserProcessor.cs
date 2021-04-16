@@ -50,11 +50,11 @@ namespace TCABS_DataLibrary.BusinessLogic
          }
       }
 
-      public static List<UserModel> LoadUsers( )
+      public static List<UserModel> SelectUsers( )
       {
          //string sql = @"select UserId, Username, FirstName, LastName, Email, PhoneNo, Password from [dbo].[User]";
 
-         string sql = "spLoadUsers";
+         string sql = "spSelectUsers";
 
          return SqlDataAccess.LoadData<UserModel>( sql );
       }
@@ -96,9 +96,9 @@ namespace TCABS_DataLibrary.BusinessLogic
          //}
       }
 
-      public static List<UserRoleModel> LoadUserRolesForUserId( int _Id )
+      public static List<UserRoleModel> SelectUserRolesForUserId( int _Id )
       {
-         string sql = "spGetUserRolesByUserId";
+         string sql = "spSelectUserRolesForUserId";
 
          return SqlDataAccess.LoadData<UserRoleModel>( sql );
       }
