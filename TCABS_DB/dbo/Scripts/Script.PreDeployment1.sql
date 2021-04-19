@@ -13,6 +13,12 @@
 
 --DROP TABLE IF EXISTS [dbo].[Permission];
 
+--DROP TABLE IF EXISTS [dbo].[UserRole];
+
+--DROP TABLE IF EXISTS [dbo].[Role];
+
+--DROP TABLE IF EXISTS [dbo].[User];
+
 --DROP PROCEDURE IF EXISTS [dbo].[spCreateUser];
 
 --DROP PROCEDURE IF EXISTS [dbo].[spGetUserRoleByUserId];
