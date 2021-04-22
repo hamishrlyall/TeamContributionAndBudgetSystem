@@ -41,47 +41,99 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          return View( );
       }
 
-      // GET
-      [HttpGet]
-      public ActionResult Login( )
-      {
-         ViewBag.Message = "User Sign Up";
-
-         return View( );
-      }
-
-      [HttpPost]
-      [ValidateAntiForgeryToken]
-      public ActionResult Login( User _User )
-      {
-         bool IsValidUser = db.Users
-         .Any( u => u.Username.ToLower( ) == _User
-         .Username.ToLower( ) && u
-         .Password == _User.Password );
-
-         if( IsValidUser )
-         {
-            FormsAuthentication.SetAuthCookie( _User.Username, false );
-            
-            if( FormsAuthentication.Authenticate( _User.Username, _User.Password ) )
+        /// <summary>
+        /// Called when a GET request is made for the Login page.
+        /// </summary>
+        [HttpGet]
+        public ActionResult Login()
+        {
+            // Check if a user is already logged in
+            // If so then redirect to the index page instead of showing the login page
+            if (db.IsUserLoggedIn())
             {
-               Session[ "userID" ] = _User.Username;
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ViewBag.Message = "User Sign Up";
+
+                return View();
+            }
+        }
+
+        /// <summary>
+        /// Called when a POST request is made by the Login page.
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(UserLogin login)
+        {
+
+            // Check if a user is already logged in
+            if (db.IsUserLoggedIn())
+                return RedirectToAction("Index", "Home");
+
+            // Try to login the user
+            User user = login.ValidateUser();
+            if (user != null)
+            {
+                // Set authentification cookie
+                FormsAuthentication.SetAuthCookie(user.Username, false);
+
+                // Update session info
+                Session["userID"] = user.Username;
+                db.User = user;
+
+                // Go to home page
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "invalid Username or Password");
             }
 
-            return RedirectToAction( "Index", "Home" );
-         }
-         else
-         {
-            ModelState.AddModelError( "", "invalid Username or Password" );
-         }
+            /*
+            bool IsValidUser = db.Users.Any(
+               u => u.Username.ToLower() == _User.Username.ToLower() &&
+               u.Password == _User.Password
+            );
 
-         return View( );
-      }
+            if (IsValidUser)
+            {
+                FormsAuthentication.SetAuthCookie(_User.Username, false);
 
-      public ActionResult Logout( )
-      {
-         FormsAuthentication.SignOut( );
-         return RedirectToAction( "Login" );
-      }
-   }
+                if (FormsAuthentication.Authenticate(_User.Username, _User.Password))
+                {
+                    Session["userID"] = _User.Username;
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "invalid Username or Password");
+            }
+            */
+
+            return View();
+        }
+
+        /// <summary>
+        /// Called when a GET request is made for the Login page.
+        /// </summary>
+        public ActionResult Logout()
+        {
+            // Clear authentification cookie
+            FormsAuthentication.SignOut();
+
+            // Update session info
+            Session["userID"] = null;
+
+            // Reset the TCABS context
+            db = new TCABS_Db_Context();
+
+            // Go to home page
+            return RedirectToAction("Index");
+        }
+    }
 }

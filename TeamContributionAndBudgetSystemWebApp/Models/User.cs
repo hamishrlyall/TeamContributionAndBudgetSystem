@@ -6,9 +6,15 @@ using System.Web;
 
 namespace TeamContributionAndBudgetSystemWebApp.Models
 {
-   public class User
+    /// <summary>
+    /// Contains information about a specific user, with respect to the web application.
+    /// </summary>
+    public class User
    {
-      public User( )
+        /// <summary>
+        /// Default constructor for the User class.
+        /// </summary>
+        public User( )
       {
          this.UserRoles = new HashSet<UserRole>( );
       }

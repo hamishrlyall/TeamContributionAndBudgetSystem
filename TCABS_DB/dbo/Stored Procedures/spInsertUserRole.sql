@@ -11,8 +11,8 @@ BEGIN
    SET NOCOUNT ON;
 
    INSERT INTO [dbo].[UserRole]([UserId], [RoleId])
-   SELECT @UserId, @RoleId
-   WHERE NOT EXISTS ( SELECT 1 FROM [dbo].[UserRole] WHERE [UserId] = @UserId AND [RoleId] = @RoleId );
+   SELECT @userid, @roleid
+   WHERE NOT EXISTS ( SELECT 1 FROM [dbo].[UserRole] WHERE [UserId] = @userid AND [RoleId] = @roleid );
 
    --IF @@rowcount = 0 RETURN 99;
 
