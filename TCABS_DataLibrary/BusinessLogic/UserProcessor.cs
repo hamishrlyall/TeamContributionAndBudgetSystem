@@ -20,7 +20,28 @@ namespace TCABS_DataLibrary.BusinessLogic
       {
          return ConfigurationManager.ConnectionStrings[ _ConnectionName ].ConnectionString;
       }
-      public static int CreateUser( string _Username, string _FirstName, string _LastName, string _Email, int _PhoneNo, string _Password )
+
+        /// <summary>
+        /// Update the password of a specific user
+        /// </summary>
+        public static void UpdatePassword(int userId, string passwordHash, string passwordSalt)
+        {
+            using (IDbConnection con = new SqlConnection(GetConnectionString()))
+            {
+                string sql = "spUpdatePassword";
+                con.Query<UserModel>(
+                    sql,
+                    new
+                    {
+                        UserId = userId,
+                        Password = passwordHash,
+                        PasswordSalt = passwordSalt
+                    },
+                    commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public static int CreateUser( string _Username, string _FirstName, string _LastName, string _Email, int _PhoneNo, string _Password )
       {
          try
          {

@@ -9,26 +9,28 @@
                SELECT * FROM [$(TableName)]               
 --------------------------------------------------------------------------------------
 */
---DROP TABLE IF EXISTS [dbo].[RolePermission];
+DROP TABLE IF EXISTS [dbo].[RolePermission];
 
---DROP TABLE IF EXISTS [dbo].[Permission];
+DROP TABLE IF EXISTS [dbo].[Permission];
 
---DROP TABLE IF EXISTS [dbo].[UserRole];
+DROP TABLE IF EXISTS [dbo].[UserRole];
 
---DROP TABLE IF EXISTS [dbo].[Role];
+DROP TABLE IF EXISTS [dbo].[Role];
 
---DROP TABLE IF EXISTS [dbo].[User];
+DROP TABLE IF EXISTS [dbo].[User];
 
---DROP PROCEDURE IF EXISTS [dbo].[spCreateUser];
+DROP PROCEDURE IF EXISTS [dbo].[spCreateUser];
 
---DROP PROCEDURE IF EXISTS [dbo].[spGetUserRoleByUserId];
+DROP PROCEDURE IF EXISTS [dbo].[spGetUserRoleByUserId];
 
---DROP PROCEDURE IF EXISTS [dbo].[spInsertUserRole];
+DROP PROCEDURE IF EXISTS [dbo].[spInsertUserRole];
 
---DROP PROCEDURE IF EXISTS [dbo].[spLoadUsers];
+DROP PROCEDURE IF EXISTS [dbo].[spLoadUsers];
 
---DROP PROCEDURE IF EXISTS [dbo].[spSelectUserForUserId];
+DROP PROCEDURE IF EXISTS [dbo].[spSelectUserForUserId];
 
---DROP PROCEDURE IF EXISTS [dbo].[spSelectUserWithRoles];
+DROP PROCEDURE IF EXISTS [dbo].[spSelectUserWithRoles];
 
---DROP PROCEDURE IF EXISTS [dbo].[spLoadUsers];
+DROP PROCEDURE IF EXISTS [dbo].[spLoadUsers];
+
+DROP PROCEDURE IF EXISTS [dbo].[spUpdatePassword]

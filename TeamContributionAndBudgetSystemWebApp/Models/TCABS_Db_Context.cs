@@ -12,7 +12,10 @@ using System.Web.WebPages;
 
 namespace TeamContributionAndBudgetSystemWebApp.Models
 {
-   public class TCABS_Db_Context
+    /// <summary>
+    /// Contains information relating to the currently logged in user and their session, if any.
+    /// </summary>
+    public class TCABS_Db_Context
    {
       public virtual User User { get; set; }
       public virtual UserRole UserRole { get; set; }
@@ -24,7 +27,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
       public virtual List<UserRole> UserRoles { get; set; }
       public virtual List<MenuItem> MenuItems { get; set; }
 
-      public TCABS_Db_Context( )
+        /// <summary>
+        /// Default constructor for TCABS_Db_Context
+        /// </summary>
+        public TCABS_Db_Context( )
       {
          string username = System.Web.HttpContext.Current.User.Identity.Name;
 
@@ -35,7 +41,16 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
          }
       }
 
-      private void GetMenu( string _Username )
+        /// <summary>
+        /// Check if a user (any user) is logged in.
+        /// </summary>
+        /// <returns>True if a user is already logged in, or false if not.</returns>
+        public bool IsUserLoggedIn()
+        {
+            return (User != null) && (User.Username != null);
+        }
+
+        private void GetMenu( string _Username )
       {
          MenuItems = new List<Models.MenuItem>( );
          var permissions = GetPermissions( _Username );
@@ -48,7 +63,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
                MenuItems.Add( new Models.MenuItem( ) { LinkText = permission.TableName, ActionName = "Index", ControllerName = permission.TableName + "/Index" } );
          }
 
-         MenuItems.Add( new Models.MenuItem( ) { LinkText = "Logout", ActionName = "Logout", ControllerName = "Account" } );
+         MenuItems.Add( new Models.MenuItem( ) { LinkText = "Logout", ActionName = "Logout", ControllerName = "Home" } );
       }
 
       [Authorize]
