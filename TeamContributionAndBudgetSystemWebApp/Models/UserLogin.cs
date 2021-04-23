@@ -50,7 +50,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
                 else
                 {
                     // No password exists
-                    // Create a new password
+                    // This should only be the case for debugging, where data might have been directly added to the database
+                    // If user data is entered via the normal means then password salt should always exist
+                    // Create a new password salt
                     user.PasswordSalt = CreatePasswordSalt();
 
                     // Check if the login password matches the stored password

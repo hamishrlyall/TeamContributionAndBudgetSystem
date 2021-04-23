@@ -26,8 +26,10 @@ namespace TCABS_DataLibrary.BusinessLogic
         /// </summary>
         public static void UpdatePassword(int userId, string passwordHash, string passwordSalt)
         {
+            // Open a connection to the database
             using (IDbConnection con = new SqlConnection(GetConnectionString()))
             {
+                // Run the database command
                 string sql = "spUpdatePassword";
                 con.Query<UserModel>(
                     sql,
@@ -41,37 +43,46 @@ namespace TCABS_DataLibrary.BusinessLogic
             }
         }
 
-        public static int CreateUser( string _Username, string _FirstName, string _LastName, string _Email, int _PhoneNo, string _Password )
-      {
-         try
-         {
-            string sql = "spCreateUser";
-
-            using( IDbConnection _Cnn = new SqlConnection( GetConnectionString( ) ) )
+        /// <summary>
+        /// Create a new user record within the database.
+        /// </summary>
+        /// <returns>The number of record created, which should be 1 on success or 0 on failure.</returns>
+        public static int CreateUser(string username, string firstName, string lastName, string email, int phoneNo, string password, string passwordSalt)
+        {
+            try
             {
-               var user = _Cnn.Query<UserModel>
+                // Open a connection to the database
+                using (IDbConnection _Cnn = new SqlConnection(GetConnectionString()))
+                {
+                    // Run the database command
+                    string sql = "spCreateUser";
+                    IEnumerable<UserModel> user = _Cnn.Query<UserModel>
                            (
                               sql,
-                              new {
-                                 Username = _Username,
-                                 FirstName = _FirstName,
-                                 LastName = _LastName,
-                                 Email = _Email,
-                                 PhoneNo = _PhoneNo,
-                                 Password = _Password },
+                              new
+                              {
+                                  Username = username,
+                                  FirstName = firstName,
+                                  LastName = lastName,
+                                  Email = email,
+                                  PhoneNo = phoneNo,
+                                  Password = password,
+                                  PasswordSalt = passwordSalt
+                              },
                               commandType: CommandType.StoredProcedure
                            );
-
-               return user.Count( );
+                    // Return the number of records created, which should be 1 on success
+                    return user.Count();
+                }
             }
-         }
-         catch( Exception _Ex )
-         {
-            return 0;
-         }
-      }
+            catch (Exception)
+            {
+                // On error return zero, to indicate that no records were added
+                return 0;
+            }
+        }
 
-      public static List<UserModel> SelectUsers( )
+        public static List<UserModel> SelectUsers( )
       {
          //string sql = @"select UserId, Username, FirstName, LastName, Email, PhoneNo, Password from [dbo].[User]";
 
