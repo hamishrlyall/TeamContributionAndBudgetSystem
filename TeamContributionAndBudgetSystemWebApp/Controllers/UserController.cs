@@ -110,31 +110,57 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          return View( User );
       }
 
-      // GET
-      public ActionResult Create( )
-      {
-         ViewBag.Message = "Create New User";
+        /// <summary>
+        /// Called when a GET request is made for the create user page.
+        /// </summary>
+        public ActionResult Create()
+        {
+            ViewBag.Message = "Create New User";
 
-         return View( );
-      }
+            return View();
+        }
 
-      [HttpPost]
-      [ValidateAntiForgeryToken]
-      public ActionResult Create( User _Model )
-      {
-         if( ModelState.IsValid )
-         {
-            int recordsCreate = CreateUser( _Model.Username, _Model.FirstName, _Model.LastName, _Model.EmailAddress, _Model.PhoneNumber, _Model.Password );
+        /// <summary>
+        /// Called when a POST request is made by the create user page.
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(User model)
+        {
+            // Make sure the entered data is valid
+            if (ModelState.IsValid)
+            {
+                // Generate a password salt
+                // Hash the password
+                string passwordSalt = UserLogin.CreatePasswordSalt();
+                string password = UserLogin.HashPassword(model.Password, passwordSalt);
 
-            return RedirectToAction( "Index" );
-         }
-         else
-         {
-            //show error
-            var errors = ModelState.Values.SelectMany( v => v.Errors );
-         }
+                // Clear password info from model, just in case for security
+                model.Password = null;
+                model.ConfirmPassword = null;
 
-         return View( );
-      }
-   }
+                // Create the user within the database
+                int recordsCreated = CreateUser(
+                    model.Username,
+                    model.FirstName,
+                    model.LastName,
+                    model.EmailAddress,
+                    model.PhoneNumber,
+                    password,
+                    passwordSalt);
+
+                // Check for errors
+                if (recordsCreated == 1)
+                    return RedirectToAction("Index");
+                else
+                    ModelState.AddModelError("", "Failed to create user"); // TODO: Need to add proper error checking here, to provide useful/detailed responses
+            }
+            else
+            {
+                //show error
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+            }
+            return View();
+        }
+    }
 }

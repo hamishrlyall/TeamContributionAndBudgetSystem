@@ -21,14 +21,16 @@
          </div>
          <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-               @if( Request.IsAuthenticated )
+               @if (Request.IsAuthenticated)
                {
-                  foreach( var item in Model.MenuItems )
-                  {
+                   if (Model != null) {
+                       foreach (var item in Model.MenuItems)
+                       {
                      <li class="nav-item">
-                        @Html.ActionLink( item.LinkText, item.ActionName, item.ControllerName )
+                        @Html.ActionLink(item.LinkText, item.ActionName, item.ControllerName)
                      </li>
-                  }
+                           }
+                   }
                }
                else
                {
