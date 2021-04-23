@@ -23,7 +23,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       public ActionResult Index( )
       {
          ViewBag.Message = "Users List";
-         
+
+         db.GetUsers( );
+
          return View( db );
       }
       public ActionResult Details(int? id )

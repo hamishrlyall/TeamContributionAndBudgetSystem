@@ -31,15 +31,13 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
         /// Default constructor for TCABS_Db_Context
         /// </summary>
         public TCABS_Db_Context( )
-      {
-         string username = System.Web.HttpContext.Current.User.Identity.Name;
-
-         GetUsers( );
-         if( !string.IsNullOrEmpty( username ) )
-         {
-            GetMenu( username );
-         }
-      }
+        {
+            string username = System.Web.HttpContext.Current.User.Identity.Name;
+            if( !string.IsNullOrEmpty( username ) )
+            {
+               GetMenu( username );
+            }
+        }
 
         /// <summary>
         /// Check if a user (any user) is logged in.
