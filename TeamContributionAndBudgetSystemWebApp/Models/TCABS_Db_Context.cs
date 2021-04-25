@@ -50,6 +50,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
 
         private void GetMenu( string _Username )
       {
+            /*
          MenuItems = new List<Models.MenuItem>( );
          var permissions = GetPermissions( _Username );
 
@@ -62,6 +63,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
          }
 
          MenuItems.Add( new Models.MenuItem( ) { LinkText = "Logout", ActionName = "Logout", ControllerName = "Home" } );
+            */
       }
 
       [Authorize]
@@ -116,10 +118,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
                rolePermission.Role = role;
 
                var permissionData = PermissionProcessor.SelectPermission( rolePermissionData.PermissionId );
-               var permission = new Permission( );
-               permission.PermissionId = permissionData.PermissionId;
-               permission.TableName = permissionData.TableName;
-               permission.Action = permissionData.Action;
+               var permission = new Permission(permissionData);
 
                rolePermission.Permission = permission;
 
@@ -183,10 +182,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
                rolePermission.Role = role;
 
                var permissionData = PermissionProcessor.SelectPermission( rolePermissionData.PermissionId );
-               var permission = new Permission( );
-               permission.PermissionId = permissionData.PermissionId;
-               permission.TableName = permissionData.TableName;
-               permission.Action = permissionData.Action;
+               var permission = new Permission(permissionData);
 
                rolePermission.Permission = permission;
 
