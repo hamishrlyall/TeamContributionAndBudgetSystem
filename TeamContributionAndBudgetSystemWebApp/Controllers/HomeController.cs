@@ -12,7 +12,7 @@ using System.Web.UI.WebControls;
 
 namespace TeamContributionAndBudgetSystemWebApp.Controllers
 {
-   public class HomeController : Controller
+   public class HomeController : BaseController
    {
       private TCABS_Db_Context db = new TCABS_Db_Context( );
 

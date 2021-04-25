@@ -11,6 +11,7 @@ Post-Deployment Script Template
 */
 BEGIN
 
+-- Create test users
 MERGE INTO [User] AS Target USING ( 
    VALUES
    (1, 'superadmin', 'super', 'user', 'superadmin@email.com', 0400000000, 'password'),
@@ -25,6 +26,7 @@ WHEN NOT MATCHED BY TARGET THEN
 INSERT ([UserName], [FirstName], [LastName], [Email], [PhoneNo], [Password])
 VALUES ([UserName], [FirstName], [LastName], [Email], [PhoneNo], [Password]);
 
+-- Create roles
 MERGE INTO [Role] AS Target USING (
    VALUES
    (1, 'Super Admin'),
@@ -39,27 +41,26 @@ WHEN NOT MATCHED BY TARGET THEN
 INSERT ([Name])
 VALUES ([Name]);
 
+-- Create permissions
+-- Update this when new stored procedures are added
+-- [PermissionId], [PermissionName], [LinkTitle], [LinkPage], [LinkController]
 MERGE INTO [Permission] AS Target USING (
    VALUES
-   (1, 'User', 'Read'),
-   (2, 'User', 'Create'),
-   (3, 'User', 'Update'),
-   (4, 'User', 'Delete'),
-   (5, 'UserRole', 'Read'),
-   (6, 'UserRole', 'Create'),
-   (7, 'UserRole', 'Update'),
-   (8, 'UserRole', 'Delete'),
-   (9, 'RolePermission', 'Read'),
-   (10, 'RolePermission', 'Create'),
-   (11, 'RolePermission', 'Update'),
-   (12, 'RolePermission', 'Delete')
+   (1, 'UserCreate', NULL, NULL, NULL),
+   (2, 'UserRoleDelete', NULL, NULL, NULL),
+   (3, 'UserListAll', 'List Users', 'Index', 'User'),
+   (4, 'UserEdit', NULL, NULL, NULL),
+   (5, 'DummyPermission1', 'Dummy Menu Item', 'Index', 'Home'),
+   (6, 'DummyPermission2', 'Dummy Menu Item', 'Index', 'Home')
 )
-AS Source ([PermissionId], [TableName], [Action])
+AS Source ([PermissionId], [PermissionName], [LinkTitle], [LinkPage], [LinkController])
 ON Target.PermissionId = Source.PermissionId
 WHEN NOT MATCHED BY TARGET THEN
-INSERT ([TableName], [Action])
-VALUES ([TableName], [Action]);
+INSERT ([PermissionName], [LinkTitle], [LinkPage], [LinkController])
+VALUES ([PermissionName], [LinkTitle], [LinkPage], [LinkController]);
 
+
+-- Link Users to roles
 MERGE INTO [UserRole] AS Target USING (
  VALUES
  (1, 1, 1),
@@ -74,6 +75,7 @@ MERGE INTO [UserRole] AS Target USING (
  INSERT ([UserId], [RoleId])
  VALUES ([UserId], [RoleId]);
 
+-- Link permissions to roles
 MERGE INTO [RolePermission] AS Target USING (
    VALUES
    (1, 1, 1),
@@ -82,24 +84,12 @@ MERGE INTO [RolePermission] AS Target USING (
    (4, 1, 4),
    (5, 1, 5),
    (6, 1, 6),
-   (7, 1, 7),
-   (8, 1, 8),
-   (9, 1, 9),
-   (10, 1, 10),
-   (11, 1, 11),
-   (12, 1, 12),
-   (13, 2, 1),
-   (14, 2, 2),
-   (15, 2, 3),
-   (16, 2, 4),
-   (17, 2, 5),
-   (18, 2, 6),
-   (19, 2, 7),
-   (20, 2, 8),
-   (21, 2, 9),
-   (22, 2, 10),
-   (23, 2, 11),
-   (24, 2, 12)
+   (7, 2, 1),
+   (8, 2, 2),
+   (9, 2, 3),
+   (10, 2, 4),
+   (11, 2, 5),
+   (12, 2, 6)
 )
 AS Source ([RolePermissionId], [RoleId], [PermissionId])
 ON Target.RolePermissionId = Source.RolePermissionId

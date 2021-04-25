@@ -15,7 +15,7 @@ using System.Web.Security;
 namespace TeamContributionAndBudgetSystemWebApp.Controllers
 {
    // Comment
-   public class UserController : Controller
+   public class UserController : BaseController
    {
       
       private TCABS_Db_Context db = new TCABS_Db_Context( );
