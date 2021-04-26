@@ -29,5 +29,16 @@ namespace TCABS_DataLibrary.BusinessLogic
 
          return SqlDataAccess.ExecuteStoredProcedure<PermissionModel>( sql, dynamicData );
       }
+
+        /// <summary>
+        /// Retrieve a list of all permissions for particular user, using their username
+        /// </summary>
+        public static List<PermissionModel> GetPermissionsFromUsername(string username)
+        {
+            string procedureName = "spGetPermissionsFromUsername";
+            var data = new DynamicParameters();
+            data.Add("Username", username);
+            return SqlDataAccess.LoadData<PermissionModel>(procedureName, data);
+        }
    }
 }
