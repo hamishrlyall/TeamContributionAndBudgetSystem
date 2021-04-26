@@ -16,6 +16,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
     /// </summary>
     public abstract class BaseController : Controller
     {
+        public List<Permission> UserPermission { get; set; }
+
         /// <summary>
         /// Check if a user (any user) is logged in.
         /// </summary>
@@ -23,6 +25,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         public static bool IsUserLoggedIn()
         {
             return System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
+            }
         }
 
         /// <summary>
@@ -48,6 +51,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         /// Generate a list of menu items suitable for the top menu bar.
         /// The method will check if any user is currently logged in and generate the menu bar accordingly.
         /// </summary>
+        /// <param name="permissions">The permission list which specifies which menu items should be available, or null if there is no user logged in.</param>
         /// <returns>List of menu items.</returns>
         private List<MenuItem> GenerateMenuItems()
         {
@@ -64,7 +68,15 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
             // Check if a user is logged in
             if (IsUserLoggedIn())
+                {
+                    Title = "Login",
+                    Page = "Login",
+                    Controller = "Home"
+                });
+            }
+            else
             {
+                // Permissions were provided
                 // Loop through the list of permissions and add the related menu items
                 foreach (Permission p in UserPermissions)
                 {
