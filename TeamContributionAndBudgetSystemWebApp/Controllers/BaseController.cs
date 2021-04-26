@@ -16,33 +16,13 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
     /// </summary>
     public abstract class BaseController : Controller
     {
-        public List<Permission> UserPermission { get; set; }
-
         /// <summary>
-        /// Constructor for the base controller.
+        /// Check if a user (any user) is logged in.
         /// </summary>
-        public BaseController()
+        /// <returns>True if a user is already logged in, or false if not.</returns>
+        public static bool IsUserLoggedIn()
         {
-            //System.Diagnostics.Debug.WriteLine("BaseController()");
-            // Check if user is currently logged in
-            if (IsUserLoggedIn())
-            {
-                System.Diagnostics.Debug.WriteLine("BaseController(), logged in");
-                // Get permissions for the currently logged in user
-                UserPermission = GetLoggedInUserPermissions();
-
-                // Add the menu items to the view bag
-                ViewBag.MenuItems = GenerateMenuItems(UserPermission);
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine("BaseController(), logged out");
-                // Set blank permissions, to prevent null access errors
-                UserPermission = new List<Permission>();
-
-                // Add the menu items to the view bag
-                ViewBag.MenuItems = GenerateMenuItems(null);
-            }
+            return System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
         }
 
         /// <summary>
@@ -55,20 +35,21 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         }
 
         /// <summary>
-        /// Check if a user (any user) is logged in.
+        /// Check if the currently logged in user has permission to use a specific function.
         /// </summary>
-        /// <returns>True if a user is already logged in, or false if not.</returns>
-        public static bool IsUserLoggedIn()
+        /// <param name="permissionName">The name used to identify the specific permission.</param>
+        /// <returns>True if the user has permission, or false if they do not.</returns>
+        public bool UserHasPermission(string permissionName)
         {
-            return System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
+            return UserPermissions.Exists(x => x.PermissionName == permissionName);
         }
 
         /// <summary>
         /// Generate a list of menu items suitable for the top menu bar.
+        /// The method will check if any user is currently logged in and generate the menu bar accordingly.
         /// </summary>
-        /// <param name="permissions">The permission list which specifies which menu items should be available, or null if there is no user logged in.</param>
         /// <returns>List of menu items.</returns>
-        public static List<MenuItem> GenerateMenuItems(List<Permission> permissions = null)
+        private List<MenuItem> GenerateMenuItems()
         {
             // Create list of menu items
             // Add a link to the home page
@@ -81,24 +62,11 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 }
             };
 
-            // Check if permissions were provided
-            if (permissions == null)
+            // Check if a user is logged in
+            if (IsUserLoggedIn())
             {
-                // No permissions provided
-                // Generate the "logged out" verions of the menu bar
-                // Add a menu item for the login page
-                menuItems.Add(new MenuItem()
-                {
-                    Title = "Login",
-                    Page = "Login",
-                    Controller = "Home"
-                });
-            }
-            else
-            {
-                // Permissions were provided
                 // Loop through the list of permissions and add the related menu items
-                foreach (Permission p in permissions)
+                foreach (Permission p in UserPermissions)
                 {
                     if (p.IsValidLink()) menuItems.Add(new MenuItem(p));
                 }
@@ -108,6 +76,18 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 {
                     Title = "Logout",
                     Page = "Logout",
+                    Controller = "Home"
+                });
+            }
+            else
+            {
+                // No permissions provided
+                // Generate the "logged out" verions of the menu bar
+                // Add a menu item for the login page
+                menuItems.Add(new MenuItem()
+                {
+                    Title = "Login",
+                    Page = "Login",
                     Controller = "Home"
                 });
             }
@@ -128,7 +108,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             return menuItems;
         }
 
-        public List<Permission> GetLoggedInUserPermissions()
+        /// <summary>
+        /// Returns the list of permissions for the currently logged in user.
+        /// </summary>
+        private List<Permission> GetLoggedInUserPermissions()
         {
             // Get the list of permissions for the currently logged-in user
             List<PermissionModel> permissionModels = PermissionProcessor.GetPermissionsFromUsername(GetLoggedInUsername());
@@ -139,5 +122,24 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 result.Add(new Permission(p));
             return result;
         }
+
+        /// <summary>
+        /// Constructor for the base controller.
+        /// This will get called one every time a page loads.
+        /// </summary>
+        public BaseController()
+        {
+            // Set the list of user permissions for the currently logged in user
+            UserPermissions = IsUserLoggedIn() ? GetLoggedInUserPermissions() : new List<Permission>();
+
+            // Add the menu items to the view bag
+            ViewBag.MenuItems = GenerateMenuItems();
+        }
+
+        /// <summary>
+        /// List of permissions for the currently logged-in user.
+        /// If no user is logged-in then this list will be empty.
+        /// </summary>
+        public List<Permission> UserPermissions { get; }
     }
 }
