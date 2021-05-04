@@ -130,6 +130,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\FileCSV.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\Permission.cs" />
     <Compile Include="Models\Role.cs" />
@@ -182,6 +183,7 @@
     <Content Include="Views\User\DeleteUserRole.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\User\CreateBulk.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

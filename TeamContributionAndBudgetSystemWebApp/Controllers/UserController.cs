@@ -164,5 +164,46 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             }
             return View();
         }
+
+        /// <summary>
+        /// Called when a GET request is made for the create user in bulk page.
+        /// </summary>
+        [HttpGet]
+        public ActionResult CreateBulk()
+        {
+            ViewBag.Message = "Create New Users using CSV File";
+
+            return View();
+        }
+
+        /// <summary>
+        /// Called when a POST request is made by the create user in bulk page.
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateBulk(FileCSV data)
+        {
+            try
+            {
+                data.GenerateDataFromFile();
+
+                /*
+                foreach (var d in data.Data)
+                {
+                    string line = "";
+                    foreach (string s in d) line += "[" + s + "]";
+                    System.Diagnostics.Debug.WriteLine(line);
+                }
+                //*/
+
+                ViewBag.Message = "File uploaded successfully (name: " + data.File.FileName + ", length: " + data.File.ContentLength + ")";
+                return View();
+            }
+            catch
+            {
+                ViewBag.Message = "File upload failed.";
+                return View();
+            }
+        }
     }
 }
