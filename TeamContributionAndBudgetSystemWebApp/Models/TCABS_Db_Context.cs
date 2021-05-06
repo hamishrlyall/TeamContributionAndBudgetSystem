@@ -49,22 +49,22 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
         }
 
         private void GetMenu( string _Username )
-      {
-            /*
-         MenuItems = new List<Models.MenuItem>( );
-         var permissions = GetPermissions( _Username );
+        {
+               /*
+            MenuItems = new List<Models.MenuItem>( );
+            var permissions = GetPermissions( _Username );
 
-         MenuItems.Add( new Models.MenuItem( ) { LinkText = "Home", ActionName = "Index", ControllerName = "Home" } );
+            MenuItems.Add( new Models.MenuItem( ) { LinkText = "Home", ActionName = "Index", ControllerName = "Home" } );
 
-         foreach( var permission in permissions )
-         {
-            if( !MenuItems.Any( m => m.LinkText == permission.TableName ) )
-               MenuItems.Add( new Models.MenuItem( ) { LinkText = permission.TableName, ActionName = "Index", ControllerName = permission.TableName + "/Index" } );
-         }
+            foreach( var permission in permissions )
+            {
+               if( !MenuItems.Any( m => m.LinkText == permission.TableName ) )
+                  MenuItems.Add( new Models.MenuItem( ) { LinkText = permission.TableName, ActionName = "Index", ControllerName = permission.TableName + "/Index" } );
+            }
 
-         MenuItems.Add( new Models.MenuItem( ) { LinkText = "Logout", ActionName = "Logout", ControllerName = "Home" } );
-            */
-      }
+            MenuItems.Add( new Models.MenuItem( ) { LinkText = "Logout", ActionName = "Logout", ControllerName = "Home" } );
+               */
+        }
 
       [Authorize]
       private List<Permission> GetPermissions( string _Username )
