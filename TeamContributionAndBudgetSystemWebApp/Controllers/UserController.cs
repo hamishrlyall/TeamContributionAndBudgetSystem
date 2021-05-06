@@ -171,6 +171,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [HttpGet]
         public ActionResult CreateBulk()
         {
+            if (!IsUserLoggedIn()) return RedirectToAction("Login", "Home");
+
             ViewBag.Message = "Create New Users using CSV File";
 
             return View();
@@ -181,11 +183,52 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateBulk(FileCSV data)
+        public ActionResult CreateBulk(HttpPostedFileBase file)
         {
+            if (!IsUserLoggedIn()) return RedirectToAction("Login", "Home");
             try
             {
-                data.GenerateDataFromFile();
+                // Decode the CSV file
+                FileCSV data = new FileCSV(file);
+
+                // Make sure the headers are correct
+                // This will throw an exception if not
+                data.ValidateHeaders(new string[] {
+                    "Username",  // 0
+                    "FirstName", // 1
+                    "LastName",  // 2
+                    "Email",     // 3
+                    "PhoneNo",   // 4
+                    "Password"   // 5
+                });
+
+                // Loop through each row of data
+                // Generate the list of results
+                foreach (string[] row in data.Row)
+                {
+                    // Generate a password salt
+                    // Hash the password
+                    string passwordSalt = UserLogin.CreatePasswordSalt();
+                    string password = UserLogin.HashPassword(row[5], passwordSalt);
+
+                    // Create the user within the database
+                    try
+                    {
+                        int recordsCreated = CreateUser(
+                            row[0], // Username
+                            row[1], // FirstName
+                            row[2], // LastName
+                            row[3], // Email
+                            Convert.ToInt32(row[4]), // PhoneNo
+                            password,
+                            passwordSalt);
+                        data.SetComment(row, "");
+                    }
+                    catch(Exception e)
+                    {
+                        data.SetComment(row, e.Message);
+                    }
+                }
 
                 /*
                 foreach (var d in data.Data)
@@ -196,7 +239,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 }
                 //*/
 
-                ViewBag.Message = "File uploaded successfully (name: " + data.File.FileName + ", length: " + data.File.ContentLength + ")";
+                //ViewBag.Message = "File uploaded successfully (name: " + data.File.FileName + ", length: " + data.File.ContentLength + ")";
                 return View();
             }
             catch
