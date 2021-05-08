@@ -49,20 +49,20 @@ namespace TeamContributionAndBudgetSystemWebApp.Tests.Controllers
 
          var connection = new MockDbConnection( );
 
-         //connection
-         //   .Setup( c => c.Query<PermissionModel>(
-         //      It.IsAny<string>( ), It.IsAny<object>( ),
-         //      It.IsAny<IDbTransaction>( ), true, null, null ) )
-         //   .Returns( new List<PermissionModel>( ) { new PermissionModel( ) { PermissionId = 1 } } );
+         connection
+            .Setup( c => c.Query<PermissionModel>(
+               It.IsAny<string>( ), It.IsAny<object>( ),
+               It.IsAny<IDbTransaction>( ), true, null, CommandType.StoredProcedure ) )
+            .Returns( new List<PermissionModel>( ) { new PermissionModel( ) { PermissionId = 1 } } );
 
          HomeController controller = new HomeController( );
 
          ViewResult result = controller.Index( ) as ViewResult;
 
-         // Verify the LoadDataQuery was called
-         //connection.Verify( c => c.Query<PermissionModel>(
-         //       It.IsAny<string>( ), It.IsAny<object>( ),
-         //       It.IsAny<IDbTransaction>( ), true, null, null ) );
+         //Verify the LoadDataQuery was called
+         connection.Verify( c => c.Query<PermissionModel>(
+                It.IsAny<string>( ), It.IsAny<object>( ),
+                It.IsAny<IDbTransaction>( ), true, null, CommandType.StoredProcedure ) );
 
          Assert.IsNotNull( result );
       }

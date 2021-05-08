@@ -13,86 +13,91 @@
       <hr />
       @Html.ValidationSummary( true, "", new { @class = "text-danger" } )
       @Html.HiddenFor( model => model.User.UserId )
-      <dl class="dl-horizontal">
-         <dt>
-            @Html.DisplayNameFor( model => model.User.UserId )
-         </dt>
+   <dl class="dl-horizontal">
+      <dt>
+         @Html.DisplayNameFor( model => model.User.UserId )
+      </dt>
 
-         <dd>
-            @Html.DisplayFor( model => model.User.UserId )
-         </dd>
+      <dd>
+         @Html.DisplayFor( model => model.User.UserId )
+      </dd>
 
-         <dt>
-            @Html.DisplayNameFor( model => model.User.Username )
-         </dt>
+      <dt>
+         @Html.DisplayNameFor( model => model.User.Username )
+      </dt>
 
-         <dd>
-            @Html.DisplayFor( model => model.User.Username )
-         </dd>
+      <dd>
+         @Html.DisplayFor( model => model.User.Username )
+      </dd>
 
-         <dt>
-            @Html.DisplayNameFor( model => model.User.FirstName )
-         </dt>
+      <dt>
+         @Html.DisplayNameFor( model => model.User.FirstName )
+      </dt>
 
-         <dd>
-            @Html.DisplayFor( model => model.User.FirstName )
-         </dd>
+      <dd>
+         @Html.DisplayFor( model => model.User.FirstName )
+      </dd>
 
-         <dt>
-            @Html.DisplayNameFor( model => model.User.LastName )
-         </dt>
+      <dt>
+         @Html.DisplayNameFor( model => model.User.LastName )
+      </dt>
 
-         <dd>
-            @Html.DisplayFor( model => model.User.LastName )
-         </dd>
+      <dd>
+         @Html.DisplayFor( model => model.User.LastName )
+      </dd>
 
-         <dt>
-            @Html.DisplayNameFor( model => model.User.EmailAddress )
-         </dt>
+      <dt>
+         @Html.DisplayNameFor( model => model.User.EmailAddress )
+      </dt>
 
-         <dd>
-            @Html.DisplayFor( model => model.User.EmailAddress )
-         </dd>
+      <dd>
+         @Html.DisplayFor( model => model.User.EmailAddress )
+      </dd>
 
-         <dt>
-            @Html.DisplayNameFor( model => model.User.PhoneNumber )
-         </dt>
+      <dt>
+         @Html.DisplayNameFor( model => model.User.PhoneNumber )
+      </dt>
 
-         <dd>
-            @Html.DisplayFor( model => model.User.PhoneNumber )
-         </dd>
-         <dd>
-            <table class="table">
+      <dd>
+         @Html.DisplayFor( model => model.User.PhoneNumber )
+      </dd>
+      <dd>
+         <table class="table">
+            <tr>
+               <th>Roles</th>
+            </tr>
+            @foreach( var item in Model.User.UserRoles )
+            {
                <tr>
-                  <th>Roles</th>
+                  <td>
+                     @Html.DisplayFor( modelItem => item.Role.Name )
+                  </td>
+                  <td>
+                     @Html.ActionLink( "Delete", "DeleteUserRole", new { id = item.UserRoleId } )
+                  </td>
                </tr>
-               @foreach( var item in Model.User.UserRoles )
-               {
-                  <tr>
-                     <td>
-                        @Html.DisplayFor( modelItem => item.Role.Name )
-                     </td>
-                     <td>
-                        @Html.ActionLink( "Delete", "DeleteUserRole", new { id = item.UserRoleId } )
-                     </td>
-                  </tr>
-               }
-            </table>
-         </dd>
+            }
+         </table>
+      </dd>
+      @using( Html.BeginForm( ) )
+      {
+         <label class="control-label col-md-2" for="RoleId">Add New Role</label>
          <div class="form-group">
-            <label class="control-label col-md-2" for="RoleId">Add New Role</label>
+            <div class="col-md-10">
+               @Html.HiddenFor( model => model.User.UserId, Model.User.UserId )
+            </div>
             <div class="col-md-10">
                @Html.DropDownList( "RoleId", String.Empty )
                @Html.ValidationMessageFor( model => model.UserRoles )
             </div>
-         </div>
 
-         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                <input type="submit" name="action" value="Save" class="btn btn-default" />
             </div>
          </div>
-      </dl>
+      }
+
+   </dl>
    </div>
 }
 <p>

@@ -42,18 +42,25 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          return View( db );
       }
 
+      /// <summary>
+      /// This method is called when the user hits the submit button on the Details Page.
+      /// It is used to add new UserRoles to the database.
+      /// </summary>
+      /// <param name="_UserRole"></param>
+      /// The _UserRole parameter will contain the User data and the RoleId which will be sent to the database to insert a new UserRole row.
+      /// <returns> This method will return the view with either the newly added UserRole or an error message.</returns>
       [HttpPost]
       [ValidateAntiForgeryToken]
-      public ActionResult Details( [Bind( Include = "UserId,RoleId" )] User _User, Role _Role, string _Action )
+      public ActionResult Details( UserRole _UserRole )
       {
-         if( _User == null )
+         if( _UserRole.User == null )
          {
             return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
          }
          try
          {
             // Send Create procedure to DataAccess
-            var data = UserRoleProcessor.InsertUserRole( _User.UserId, _Role.RoleId );
+            var data = UserRoleProcessor.InsertUserRole( _UserRole.User.UserId, _UserRole.RoleId );
             if( data == null )
                throw new DataException("Role added was invalid.");
             var roleData = RoleProcessor.SelectRole( data.RoleId );
@@ -63,7 +70,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             userRole.RoleId = data.RoleId;
             userRole.Role = new Role { RoleId = roleData.RoleId, Name = roleData.Name };
 
-            _User.UserRoles.Add( userRole );
+            db.GetUser( _UserRole.User.UserId );
+            var user = db.User;
+            user.UserRoles.Add( userRole );
          }
          catch( DataException _Ex )
          {
@@ -71,7 +80,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          }
 
          //Reload User details here.
-         db.GetUser( _User.UserId );
+         db.GetUser( _UserRole.User.UserId );
 
          PopulateRoleDropDownList( );
 
