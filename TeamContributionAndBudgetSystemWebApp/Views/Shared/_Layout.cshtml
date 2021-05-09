@@ -1,5 +1,4 @@
 ﻿<!DOCTYPE html>
-@model TeamContributionAndBudgetSystemWebApp.Models.TCABS_Db_Context
 <html>
 <head>
    <meta charset="utf-8" />
@@ -20,24 +19,14 @@
             @Html.ActionLink( "Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" } )
          </div>
          <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-               @if( Request.IsAuthenticated )
-               {
-                  foreach( var item in Model.MenuItems )
-                  {
+             <ul class="nav navbar-nav">
+                 @foreach (var item in (List<TeamContributionAndBudgetSystemWebApp.Models.MenuItem>)ViewBag.MenuItems)
+                 {
                      <li class="nav-item">
-                        @Html.ActionLink( item.LinkText, item.ActionName, item.ControllerName )
+                         @Html.ActionLink(item.Title, item.Page, item.Controller)
                      </li>
-                  }
-               }
-               else
-               {
-                  <li class="nav-item">
-                     @Html.ActionLink( "Login", "Login", "Account", new { @class = "nav-link" } )
-                  </li>
-
-               }
-            </ul>
+                 }
+             </ul>
          </div>
       </div>
    </div>
@@ -46,6 +35,7 @@
       <hr />
       <footer>
          <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+         <p>DEBUG --- CurrentUser=@HttpContext.Current.User.Identity.Name : IsAuthenticated=@HttpContext.Current.User.Identity.IsAuthenticated --- End of DEBUG </p>
       </footer>
    </div>
 

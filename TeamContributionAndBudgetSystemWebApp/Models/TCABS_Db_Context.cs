@@ -12,7 +12,10 @@ using System.Web.WebPages;
 
 namespace TeamContributionAndBudgetSystemWebApp.Models
 {
-   public class TCABS_Db_Context
+    /// <summary>
+    /// Contains information relating to the currently logged in user and their session, if any.
+    /// </summary>
+    public class TCABS_Db_Context
    {
       public virtual User User { get; set; }
       public virtual UserRole UserRole { get; set; }
@@ -24,32 +27,44 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
       public virtual List<UserRole> UserRoles { get; set; }
       public virtual List<MenuItem> MenuItems { get; set; }
 
-      public TCABS_Db_Context( )
-      {
-         string username = System.Web.HttpContext.Current.User.Identity.Name;
+        /// <summary>
+        /// Default constructor for TCABS_Db_Context
+        /// </summary>
+        public TCABS_Db_Context( )
+        {
+            string username = System.Web.HttpContext.Current.User.Identity.Name;
+            if( !string.IsNullOrEmpty( username ) )
+            {
+               GetMenu( username );
+            }
+        }
 
-         GetUsers( );
-         if( !string.IsNullOrEmpty( username ) )
-         {
-            GetMenu( username );
-         }
-      }
+        /// <summary>
+        /// Check if a user (any user) is logged in.
+        /// </summary>
+        /// <returns>True if a user is already logged in, or false if not.</returns>
+        public bool IsUserLoggedIn()
+        {
+            return (User != null) && (User.Username != null);
+        }
 
-      private void GetMenu( string _Username )
-      {
-         MenuItems = new List<Models.MenuItem>( );
-         var permissions = GetPermissions( _Username );
+        private void GetMenu( string _Username )
+        {
+               /*
+            MenuItems = new List<Models.MenuItem>( );
+            var permissions = GetPermissions( _Username );
 
-         MenuItems.Add( new Models.MenuItem( ) { LinkText = "Home", ActionName = "Index", ControllerName = "Home" } );
+            MenuItems.Add( new Models.MenuItem( ) { LinkText = "Home", ActionName = "Index", ControllerName = "Home" } );
 
-         foreach( var permission in permissions )
-         {
-            if( !MenuItems.Any( m => m.LinkText == permission.TableName ) )
-               MenuItems.Add( new Models.MenuItem( ) { LinkText = permission.TableName, ActionName = "Index", ControllerName = permission.TableName + "/Index" } );
-         }
+            foreach( var permission in permissions )
+            {
+               if( !MenuItems.Any( m => m.LinkText == permission.TableName ) )
+                  MenuItems.Add( new Models.MenuItem( ) { LinkText = permission.TableName, ActionName = "Index", ControllerName = permission.TableName + "/Index" } );
+            }
 
-         MenuItems.Add( new Models.MenuItem( ) { LinkText = "Logout", ActionName = "Logout", ControllerName = "Account" } );
-      }
+            MenuItems.Add( new Models.MenuItem( ) { LinkText = "Logout", ActionName = "Logout", ControllerName = "Home" } );
+               */
+        }
 
       [Authorize]
       private List<Permission> GetPermissions( string _Username )
@@ -103,10 +118,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
                rolePermission.Role = role;
 
                var permissionData = PermissionProcessor.SelectPermission( rolePermissionData.PermissionId );
-               var permission = new Permission( );
-               permission.PermissionId = permissionData.PermissionId;
-               permission.TableName = permissionData.TableName;
-               permission.Action = permissionData.Action;
+               var permission = new Permission(permissionData);
 
                rolePermission.Permission = permission;
 
@@ -170,10 +182,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
                rolePermission.Role = role;
 
                var permissionData = PermissionProcessor.SelectPermission( rolePermissionData.PermissionId );
-               var permission = new Permission( );
-               permission.PermissionId = permissionData.PermissionId;
-               permission.TableName = permissionData.TableName;
-               permission.Action = permissionData.Action;
+               var permission = new Permission(permissionData);
 
                rolePermission.Permission = permission;
 

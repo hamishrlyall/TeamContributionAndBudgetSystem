@@ -83,6 +83,8 @@
     <Build Include="dbo\Stored Procedures\spSelectUserRolesForUserId.sql" />
     <Build Include="dbo\Stored Procedures\spSelectPermission.sql" />
     <Build Include="dbo\Stored Procedures\spSelectUserForUsername.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdatePassword.sql" />
+    <Build Include="dbo\Stored Procedures\spGetPermissionsFromUsername.sql" />
     <Build Include="dbo\Stored Procedures\spUpdateUser.sql" />
   </ItemGroup>
   <ItemGroup>
