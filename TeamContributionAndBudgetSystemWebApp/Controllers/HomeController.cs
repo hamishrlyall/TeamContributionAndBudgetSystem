@@ -91,30 +91,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             {
                 ModelState.AddModelError("", "invalid Username or Password");
             }
-
-            /*
-            bool IsValidUser = db.Users.Any(
-               u => u.Username.ToLower() == _User.Username.ToLower() &&
-               u.Password == _User.Password
-            );
-
-            if (IsValidUser)
-            {
-                FormsAuthentication.SetAuthCookie(_User.Username, false);
-
-                if (FormsAuthentication.Authenticate(_User.Username, _User.Password))
-                {
-                    Session["userID"] = _User.Username;
-                }
-
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                ModelState.AddModelError("", "invalid Username or Password");
-            }
-            */
-
             return View();
         }
 
@@ -133,6 +109,26 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             db = new TCABS_Db_Context();
 
             // Go to home page
+            return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// Called when a requested is made to download a file.
+        /// </summary>
+        /// <param name="label">The label used for the specific file to download.</param>
+        public ActionResult Download(string label)
+        {
+            // Make sure label pointers to a valid item.
+            if ((label != null) && (Session[label] != null))
+            {
+                // Make sure the object at label is a downloadable file
+                if (Session[label] is Downloadable)
+                {
+                    return (Downloadable)Session[label];
+                }
+            }
+
+            // If here then redirect to default page
             return RedirectToAction("Index");
         }
     }

@@ -32,6 +32,12 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
         }
 
         /// <summary>
+        /// The session label used to store the error log from the last bulk upload.
+        /// A label used to store the error file used for the last bulk upload error.
+        /// </summary>
+        public const string LabelLastBulkUploadErrorLog = "errorlog";
+
+        /// <summary>
         /// Default constructor.
         /// </summary>
         public FileCSV() { }
@@ -125,6 +131,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
                 if ((row.Length >= Header.Length) && (row[Header.Length].Length > 0))
                 {
                     // Add the row to the result
+                    isFirstColumn = true;
                     for (int column=0; column <= Header.Length; column++)
                     {
                         if (isFirstColumn) isFirstColumn = false; else buffer.Append(',');

@@ -171,7 +171,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [HttpGet]
         public ActionResult CreateBulk()
         {
-            if (!IsUserLoggedIn()) return RedirectToAction("Login", "Home");
+            //if (!IsUserLoggedIn()) return RedirectToAction("Login", "Home");
 
             ViewBag.Message = "Create New Users using CSV File";
 
@@ -185,7 +185,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateBulk(HttpPostedFileBase file)
         {
-            if (!IsUserLoggedIn()) return RedirectToAction("Login", "Home");
+            //if (!IsUserLoggedIn()) return RedirectToAction("Login", "Home");
             try
             {
                 // Decode the CSV file
@@ -205,6 +205,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 // Loop through each row of data
                 // Generate the list of results
                 int errorCount = 0;
+                int successCount = 0;
                 foreach (string[] row in data.Row)
                 {
                     // Generate a password salt
@@ -223,7 +224,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                             Convert.ToInt32(row[4]), // PhoneNo
                             password,
                             passwordSalt);
+                        if (recordsCreated == 0) throw new Exception("Failed to create record");
                         data.SetComment(row, "");
+                        successCount++;
                     }
                     catch(Exception e)
                     {
@@ -232,22 +235,22 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                     }
                 }
 
-                // Return the error file, if required
+                // Add success and error count to ViewBag, so that view can display it
+                ViewBag.UploadSuccessCount = successCount;
+                ViewBag.UploadFailureCount = errorCount;
+                
+                // Generate and record the error file, if required
                 if (errorCount > 0)
                 {
-                    SendFileCSV(data.GenerateErrorFile(), "errors-" + file.FileName);
+                    Session[FileCSV.LabelLastBulkUploadErrorLog] = Downloadable.CreateCSV(data.GenerateErrorFile(), "errors.csv");
                 }
-
-                /*
-                foreach (var d in data.Data)
+                else
                 {
-                    string line = "";
-                    foreach (string s in d) line += "[" + s + "]";
-                    System.Diagnostics.Debug.WriteLine(line);
+                    Session.Remove(FileCSV.LabelLastBulkUploadErrorLog);
                 }
-                //*/
+                // To get results use link as:
+                // @Html.ActionLink( "Download Error Log", "Download", "Index", new { label = TeamContributionAndBudgetSystemWebApp.Models.FileCSV.LabelLastBulkUploadErrorLog } )
 
-                //ViewBag.Message = "File uploaded successfully (name: " + data.File.FileName + ", length: " + data.File.ContentLength + ")";
                 return View();
             }
             catch

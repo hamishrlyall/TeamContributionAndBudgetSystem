@@ -27,6 +27,22 @@
             <input type="submit" value="Upload" class="btn btn-default" />
         </div>
     </div>
+
+    @if (@ViewBag.UploadSuccessCount > 0)
+    {
+    <div>
+        Successfully added @ViewBag.UploadSuccessCount user records.
+    </div>
+    }
+
+    @if (@ViewBag.UploadFailureCount > 0)
+    {
+    <div>
+        Failed to added @ViewBag.UploadFailureCount user records.
+        @Html.ActionLink("Download Error Log", "Download", "Home", new { label = TeamContributionAndBudgetSystemWebApp.Models.FileCSV.LabelLastBulkUploadErrorLog }, null)
+    </div>
+    }
+
 </div>
 }
 
