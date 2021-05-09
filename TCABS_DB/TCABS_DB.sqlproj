@@ -9,8 +9,7 @@
     <ProjectGuid>{d7b0eb32-7550-46f0-b76e-791665e149fc}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
-    <RootPath>
-    </RootPath>
+    <RootPath />
     <RootNamespace>TCABS_DB</RootNamespace>
     <AssemblyName>TCABS_DB</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
@@ -48,7 +47,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
-    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
     <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
     <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
   </PropertyGroup>
@@ -85,6 +83,7 @@
     <Build Include="dbo\Stored Procedures\spSelectUserRolesForUserId.sql" />
     <Build Include="dbo\Stored Procedures\spSelectPermission.sql" />
     <Build Include="dbo\Stored Procedures\spSelectUserForUsername.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="LoadTestData">
