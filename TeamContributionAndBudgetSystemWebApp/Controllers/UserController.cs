@@ -204,6 +204,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
                 // Loop through each row of data
                 // Generate the list of results
+                int errorCount = 0;
                 foreach (string[] row in data.Row)
                 {
                     // Generate a password salt
@@ -227,7 +228,14 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                     catch(Exception e)
                     {
                         data.SetComment(row, e.Message);
+                        errorCount++;
                     }
+                }
+
+                // Return the error file, if required
+                if (errorCount > 0)
+                {
+                    SendFileCSV(data.GenerateErrorFile(), "errors-" + file.FileName);
                 }
 
                 /*

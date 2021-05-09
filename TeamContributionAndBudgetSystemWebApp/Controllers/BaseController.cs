@@ -45,6 +45,23 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         }
 
         /// <summary>
+        /// Send a CSV file to the client browser as a download.
+        /// </summary>
+        /// <param name="fileContent">A string representing the content of the CSV file.</param>
+        /// <param name="fileName">The name of the file.</param>
+        public void SendFileCSV(string fileContent, string fileName)
+        {
+            Response.Clear(); // Clear everything and start from a clean slate
+            Response.Buffer = true;
+            Response.AppendHeader("content-disposition", "attachment; filename=" + fileName);
+            Response.AppendHeader("content-length", fileContent.Length.ToString());
+            Response.ContentType = "text/csv";
+            Response.Output.Write(fileContent);
+            Response.Flush();
+            Response.End();
+        }
+
+        /// <summary>
         /// Generate a list of menu items suitable for the top menu bar.
         /// The method will check if any user is currently logged in and generate the menu bar accordingly.
         /// </summary>

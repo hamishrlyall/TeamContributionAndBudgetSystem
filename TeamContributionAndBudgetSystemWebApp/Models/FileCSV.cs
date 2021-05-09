@@ -98,6 +98,47 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
         }
 
         /// <summary>
+        /// Generate a CSV file containing all rows which encountered errors while running SetFromFile().
+        /// </summary>
+        /// <returns>A string containing the generated CSV file.</returns>
+        public string GenerateErrorFile()
+        {
+            // Create a buffer to store the result
+            System.Text.StringBuilder buffer = new System.Text.StringBuilder();
+
+            // Define a new-line string
+            const string newLine = "\r\n";
+
+            // Add column titles/headers
+            bool isFirstColumn = true;
+            foreach (string column in Header)
+            {
+                if (isFirstColumn) isFirstColumn = false; else buffer.Append(',');
+                buffer.Append(column);
+            }
+            buffer.Append(newLine);
+
+            // Loop through all data rows
+            foreach (string[] row in Row)
+            {
+                // Check if the row has an error recorded
+                if ((row.Length >= Header.Length) && (row[Header.Length].Length > 0))
+                {
+                    // Add the row to the result
+                    for (int column=0; column <= Header.Length; column++)
+                    {
+                        if (isFirstColumn) isFirstColumn = false; else buffer.Append(',');
+                        buffer.Append(row[column]);
+                    }
+                    buffer.Append(newLine);
+                }
+            }
+
+            // Return result
+            return buffer.ToString();
+        }
+
+        /// <summary>
         /// Find the first instance of a usual component separator and return it.
         /// </summary>
         /// <param name="lineText">A line of a CSV which is likely to contain a separator.</param>
