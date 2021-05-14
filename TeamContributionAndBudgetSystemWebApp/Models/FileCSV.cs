@@ -13,6 +13,12 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
     public class FileCSV
     {
         /// <summary>
+        /// The session label used to store the error log from the last bulk upload.
+        /// A label used to store the error file used for the last bulk upload error.
+        /// </summary>
+        public const string SessionLabelUploadErrorLog = "uploadErrorLog";
+
+        /// <summary>
         /// Contains the column names/titles.
         /// </summary>
         public string[] Header { get; set; }
@@ -30,12 +36,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
         {
             return (Header != null) && (Row != null);
         }
-
-        /// <summary>
-        /// The session label used to store the error log from the last bulk upload.
-        /// A label used to store the error file used for the last bulk upload error.
-        /// </summary>
-        public const string LabelLastBulkUploadErrorLog = "errorlog";
 
         /// <summary>
         /// Default constructor.

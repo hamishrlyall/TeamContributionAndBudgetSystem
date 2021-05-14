@@ -251,11 +251,11 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 // Generate and record the error file, if required
                 if (errorCount > 0)
                 {
-                    Session[FileCSV.LabelLastBulkUploadErrorLog] = Downloadable.CreateCSV(data.GenerateErrorFile(), "errors.csv");
+                    Session[FileCSV.SessionLabelUploadErrorLog] = Downloadable.CreateCSV(data.GenerateErrorFile(), "errors.csv");
                 }
                 else
                 {
-                    Session.Remove(FileCSV.LabelLastBulkUploadErrorLog);
+                    Session.Remove(FileCSV.SessionLabelUploadErrorLog);
                 }
                 // To get results use link as:
                 // @Html.ActionLink( "Download Error Log", "Download", "Index", new { label = TeamContributionAndBudgetSystemWebApp.Models.FileCSV.LabelLastBulkUploadErrorLog } )
