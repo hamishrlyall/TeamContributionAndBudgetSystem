@@ -10,6 +10,8 @@ AS
 BEGIN
    SET NOCOUNT ON;
 
+   -- TODO - Need to add error handling to make error messages not horrible.
+
    INSERT INTO [dbo].[User] (Username, FirstName, LastName, Email, PhoneNo, [Password], PasswordSalt )
    VALUES ( @Username, @FirstName, @LastName, @Email, @PhoneNo, @Password, @PasswordSalt )
 END;

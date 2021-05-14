@@ -19,16 +19,33 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
    {
       
       private TCABS_Db_Context db = new TCABS_Db_Context( );
-      // GET: User
-      public ActionResult Index( )
-      {
-         ViewBag.Message = "Users List";
 
-         db.GetUsers( );
+        /// <summary>
+        /// The main page of the user controller.
+        /// Shows a list of all users in the system.
+        /// </summary>
+        [HttpGet]
+        public ActionResult Index()
+        {
+            // Make sure the user is logged in
+            if (!IsUserLoggedIn) return RedirectToAction("Login", "Home");
 
-         return View( db );
-      }
-      public ActionResult Details(int? id )
+            // Set the page message
+            ViewBag.Message = "Users List";
+
+            // Get all users from the database
+            var userModels = UserProcessor.SelectUsers();
+
+            // Change the format of the user list
+            List<User> users = new List<User>();
+            foreach (var u in userModels) users.Add(new User(u));
+
+            // Return the view, with the list of users
+            return View(users);
+        }
+
+
+        public ActionResult Details(int? id )
       {
          if( id == null )
          {
@@ -132,7 +149,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         }
 
         /// <summary>
-        /// Called when a POST request is made by the create user page.
+        /// Called when a POST request is made by the create user page, with attached user data.
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -151,20 +168,22 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 model.ConfirmPassword = null;
 
                 // Create the user within the database
-                int recordsCreated = CreateUser(
-                    model.Username,
-                    model.FirstName,
-                    model.LastName,
-                    model.EmailAddress,
-                    model.PhoneNumber,
-                    password,
-                    passwordSalt);
-
-                // Check for errors
-                if (recordsCreated == 1)
+                try
+                {
+                    CreateUser(
+                        model.Username,
+                        model.FirstName,
+                        model.LastName,
+                        model.EmailAddress,
+                        model.PhoneNumber,
+                        password,
+                        passwordSalt);
                     return RedirectToAction("Index");
-                else
-                    ModelState.AddModelError("", "Failed to create user"); // TODO: Need to add proper error checking here, to provide useful/detailed responses
+                }
+                catch(Exception e)
+                {
+                    ModelState.AddModelError("", e.Message);
+                }
             }
             else
             {
@@ -175,30 +194,27 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         }
 
         /// <summary>
-        /// Called when a GET request is made for the create user in bulk page.
-        /// </summary>
-        [HttpGet]
-        public ActionResult CreateBulk()
-        {
-            //if (!IsUserLoggedIn()) return RedirectToAction("Login", "Home");
-
-            ViewBag.Message = "Create New Users using CSV File";
-
-            return View();
-        }
-
-        /// <summary>
-        /// Called when a POST request is made by the create user in bulk page.
+        /// Called when a POST request is made to the create page, with an attached file.
+        /// The attached file should contain new user information for bulk upload.
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreateBulk(HttpPostedFileBase file)
         {
-            //if (!IsUserLoggedIn()) return RedirectToAction("Login", "Home");
+            // Make sure the user is logged in
+            if (!IsUserLoggedIn) return RedirectToAction("Login", "Home");
+
+            // Create data which needs to be outside the try-ctach block
+            FileCSV data = null;
+            int uploadCount = 0;
+            int failCount = 0;
+            Downloadable errorFile = null;
+
+            // Enter a try-catch block to make sure any exceptions are caught
             try
             {
                 // Decode the CSV file
-                FileCSV data = new FileCSV(file);
+                data = new FileCSV(file);
 
                 // Make sure the headers are correct
                 // This will throw an exception if not
@@ -213,8 +229,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
                 // Loop through each row of data
                 // Generate the list of results
-                int errorCount = 0;
-                int successCount = 0;
                 foreach (string[] row in data.Row)
                 {
                     // Generate a password salt
@@ -225,7 +239,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                     // Create the user within the database
                     try
                     {
-                        int recordsCreated = CreateUser(
+                        CreateUser(
                             row[0], // Username
                             row[1], // FirstName
                             row[2], // LastName
@@ -233,40 +247,33 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                             Convert.ToInt32(row[4]), // PhoneNo
                             password,
                             passwordSalt);
-                        if (recordsCreated == 0) throw new Exception("Failed to create record");
                         data.SetComment(row, "");
-                        successCount++;
+                        uploadCount++;
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         data.SetComment(row, e.Message);
-                        errorCount++;
+                        failCount++;
                     }
                 }
 
-                // Add success and error count to ViewBag, so that view can display it
-                ViewBag.UploadSuccessCount = successCount;
-                ViewBag.UploadFailureCount = errorCount;
-                
                 // Generate and record the error file, if required
-                if (errorCount > 0)
-                {
-                    Session[FileCSV.SessionLabelUploadErrorLog] = Downloadable.CreateCSV(data.GenerateErrorFile(), "errors.csv");
-                }
-                else
-                {
-                    Session.Remove(FileCSV.SessionLabelUploadErrorLog);
-                }
-                // To get results use link as:
-                // @Html.ActionLink( "Download Error Log", "Download", "Index", new { label = TeamContributionAndBudgetSystemWebApp.Models.FileCSV.LabelLastBulkUploadErrorLog } )
-
-                return View();
+                if (failCount > 0) errorFile = Downloadable.CreateCSV(data.GenerateErrorFile(), "errors.csv");
             }
-            catch
+            catch (Exception e)
             {
-                ViewBag.Message = "File upload failed.";
-                return View();
+                // Record error message for View
+                TempData["UploadError"] = e.Message;
             }
+
+            // Record item counts for View
+            if (uploadCount > 0) TempData["UploadCount"] = uploadCount;
+            if (failCount > 0) TempData["FailCount"] = failCount;
+            Session[FileCSV.SessionLabelUploadErrorLog] = (failCount > 0) ? errorFile : null;
+
+            // All file processing has been completed
+            // Go to the normal create page
+            return RedirectToAction("Create", "User");
         }
     }
 }
