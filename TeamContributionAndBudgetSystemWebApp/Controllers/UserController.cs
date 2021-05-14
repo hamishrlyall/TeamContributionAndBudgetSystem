@@ -173,5 +173,100 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             }
             return View();
         }
+
+        /// <summary>
+        /// Called when a GET request is made for the create user in bulk page.
+        /// </summary>
+        [HttpGet]
+        public ActionResult CreateBulk()
+        {
+            //if (!IsUserLoggedIn()) return RedirectToAction("Login", "Home");
+
+            ViewBag.Message = "Create New Users using CSV File";
+
+            return View();
+        }
+
+        /// <summary>
+        /// Called when a POST request is made by the create user in bulk page.
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateBulk(HttpPostedFileBase file)
+        {
+            //if (!IsUserLoggedIn()) return RedirectToAction("Login", "Home");
+            try
+            {
+                // Decode the CSV file
+                FileCSV data = new FileCSV(file);
+
+                // Make sure the headers are correct
+                // This will throw an exception if not
+                data.ValidateHeaders(new string[] {
+                    "Username",  // 0
+                    "FirstName", // 1
+                    "LastName",  // 2
+                    "Email",     // 3
+                    "PhoneNo",   // 4
+                    "Password"   // 5
+                });
+
+                // Loop through each row of data
+                // Generate the list of results
+                int errorCount = 0;
+                int successCount = 0;
+                foreach (string[] row in data.Row)
+                {
+                    // Generate a password salt
+                    // Hash the password
+                    string passwordSalt = UserLogin.CreatePasswordSalt();
+                    string password = UserLogin.HashPassword(row[5], passwordSalt);
+
+                    // Create the user within the database
+                    try
+                    {
+                        int recordsCreated = CreateUser(
+                            row[0], // Username
+                            row[1], // FirstName
+                            row[2], // LastName
+                            row[3], // Email
+                            Convert.ToInt32(row[4]), // PhoneNo
+                            password,
+                            passwordSalt);
+                        if (recordsCreated == 0) throw new Exception("Failed to create record");
+                        data.SetComment(row, "");
+                        successCount++;
+                    }
+                    catch(Exception e)
+                    {
+                        data.SetComment(row, e.Message);
+                        errorCount++;
+                    }
+                }
+
+                // Add success and error count to ViewBag, so that view can display it
+                ViewBag.UploadSuccessCount = successCount;
+                ViewBag.UploadFailureCount = errorCount;
+                
+                // Generate and record the error file, if required
+                if (errorCount > 0)
+                {
+                    Session[FileCSV.LabelLastBulkUploadErrorLog] = Downloadable.CreateCSV(data.GenerateErrorFile(), "errors.csv");
+                }
+                else
+                {
+                    Session.Remove(FileCSV.LabelLastBulkUploadErrorLog);
+                }
+                // To get results use link as:
+                // @Html.ActionLink( "Download Error Log", "Download", "Index", new { label = TeamContributionAndBudgetSystemWebApp.Models.FileCSV.LabelLastBulkUploadErrorLog } )
+
+                return View();
+            }
+            catch
+            {
+                ViewBag.Message = "File upload failed.";
+                return View();
+            }
+        }
     }
 }
