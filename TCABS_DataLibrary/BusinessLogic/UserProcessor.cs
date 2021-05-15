@@ -48,25 +48,32 @@ namespace TCABS_DataLibrary.BusinessLogic
         /// </summary>
         public static void CreateUser(string username, string firstName, string lastName, string email, int phoneNo, string password, string passwordSalt)
         {
-            // Open a connection to the database
-            using (IDbConnection con = new SqlConnection(GetConnectionString()))
+            try
             {
-                // Run the database command
-                string sql = "spCreateUser";
-                con.Query<UserModel>(
-                    sql,
-                    new
-                    {
-                        Username = username,
-                        FirstName = firstName,
-                        LastName = lastName,
-                        Email = email,
-                        PhoneNo = phoneNo,
-                        Password = password,
-                        PasswordSalt = passwordSalt
-                    },
-                    commandType: CommandType.StoredProcedure
-                );
+                // Open a connection to the database
+                using (IDbConnection con = new SqlConnection(GetConnectionString()))
+                {
+                    // Run the database command
+                    string sql = "spCreateUser";
+                    con.Query<UserModel>(
+                        sql,
+                        new
+                        {
+                            Username = username,
+                            FirstName = firstName,
+                            LastName = lastName,
+                            Email = email,
+                            PhoneNo = phoneNo,
+                            Password = password,
+                            PasswordSalt = passwordSalt
+                        },
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
+            }
+            catch(Exception e)
+            {
+                SqlDataAccess.TryConvertExceptionMessage(e);
             }
         }
 
