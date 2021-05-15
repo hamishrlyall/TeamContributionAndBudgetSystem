@@ -5,5 +5,6 @@
    [LinkTitle] NVARCHAR(50),
    [LinkPage] NVARCHAR(50),
    [LinkController] NVARCHAR(50),
-   CONSTRAINT PK_PermissionId PRIMARY KEY (PermissionId)
+   CONSTRAINT PK_PermissionId PRIMARY KEY (PermissionId),
+   CONSTRAINT UQ_Permission_PermissionName UNIQUE ([PermissionName])
 )

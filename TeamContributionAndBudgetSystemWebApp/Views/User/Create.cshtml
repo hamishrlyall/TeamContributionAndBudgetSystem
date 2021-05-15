@@ -1,27 +1,58 @@
 ﻿@model TeamContributionAndBudgetSystemWebApp.Models.User
-
 @{
     ViewBag.Title = "Create New User";
 }
 
-<h2>Create New User</h2>
-
-
-@using (Html.BeginForm()) 
+<h2>Bulk Upload New Users</h2>
+@using (Html.BeginForm("CreateBulk", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
     <div class="form-horizontal">
-        <h4>UserModel</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.UserId, htmlAttributes: new { @class = "control-label col-md-2" })
+
+        <div class="form-group">
             <div class="col-md-10">
-                @Html.EditorFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+                <input type="file" name="File" required />
             </div>
-        </div>*@
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Upload" class="btn btn-default" />
+            </div>
+        </div>
+
+        @if (TempData.ContainsKey("UploadError"))
+        {
+            <p>
+                Error: @TempData["UploadError"]
+            </p>
+        }
+
+        @if (TempData.ContainsKey("UploadCount"))
+        {
+            <p>
+                Successfully added @TempData["UploadCount"] user records.
+            </p>
+        }
+
+        @if (TempData.ContainsKey("FailCount"))
+        {
+            <p>
+                Failed to added @TempData["FailCount"] user records.
+                @Html.ActionLink("Download Error Log", "Download", "Home", new { label = TeamContributionAndBudgetSystemWebApp.Models.FileCSV.SessionLabelUploadErrorLog }, null)
+            </p>
+        }
+    </div>
+}
+
+<hr />
+
+<h2>Create New User</h2>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
             @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -86,6 +117,8 @@
         </div>
     </div>
 }
+
+<hr />
 
 <div>
     @Html.ActionLink("Back to List", "Index")

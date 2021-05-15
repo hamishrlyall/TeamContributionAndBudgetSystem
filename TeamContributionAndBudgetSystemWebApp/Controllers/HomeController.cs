@@ -49,7 +49,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             // Check if a user is already logged in
             // If so then redirect to the index page instead of showing the login page
-            if (db.IsUserLoggedIn())
+            if (IsUserLoggedIn)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -68,21 +68,16 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(UserLogin login)
         {
-
             // Check if a user is already logged in
-            if (db.IsUserLoggedIn())
+            if (IsUserLoggedIn)
                 return RedirectToAction("Index", "Home");
 
             // Try to login the user
             User user = login.ValidateUser();
             if (user != null)
             {
-                // Set authentification cookie
-                FormsAuthentication.SetAuthCookie(user.Username, false);
-
-                // Update session info
-                Session["userID"] = user.Username;
-                db.User = user;
+                // Record that user logged in successfully
+                SetUserLoggedIn(user);
 
                 // Go to home page
                 return RedirectToAction("Index", "Home");
@@ -99,14 +94,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         /// </summary>
         public ActionResult Logout()
         {
-            // Clear authentification cookie
-            FormsAuthentication.SignOut();
-
-            // Update session info
-            Session["userID"] = null;
-
-            // Reset the TCABS context
-            db = new TCABS_Db_Context();
+            // Record that user logged out
+            SetUserLoggedOut();
 
             // Go to home page
             return RedirectToAction("Index");

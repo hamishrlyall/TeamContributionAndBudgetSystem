@@ -9,6 +9,7 @@
                SELECT * FROM [$(TableName)]               
 --------------------------------------------------------------------------------------
 */
+/*
 DROP TABLE IF EXISTS [dbo].[RolePermission];
 
 DROP TABLE IF EXISTS [dbo].[Permission];
@@ -34,3 +35,4 @@ DROP PROCEDURE IF EXISTS [dbo].[spSelectUserWithRoles];
 DROP PROCEDURE IF EXISTS [dbo].[spLoadUsers];
 
 DROP PROCEDURE IF EXISTS [dbo].[spUpdatePassword]
+--*/

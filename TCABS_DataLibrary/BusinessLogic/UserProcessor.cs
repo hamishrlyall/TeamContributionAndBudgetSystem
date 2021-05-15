@@ -46,39 +46,34 @@ namespace TCABS_DataLibrary.BusinessLogic
         /// <summary>
         /// Create a new user record within the database.
         /// </summary>
-        /// <returns>The number of record created, which should be 1 on success or 0 on failure.</returns>
-        public static int CreateUser(string username, string firstName, string lastName, string email, int phoneNo, string password, string passwordSalt)
+        public static void CreateUser(string username, string firstName, string lastName, string email, int phoneNo, string password, string passwordSalt)
         {
             try
             {
                 // Open a connection to the database
-                using (IDbConnection _Cnn = new SqlConnection(GetConnectionString()))
+                using (IDbConnection con = new SqlConnection(GetConnectionString()))
                 {
                     // Run the database command
                     string sql = "spCreateUser";
-                    IEnumerable<UserModel> user = _Cnn.Query<UserModel>
-                           (
-                              sql,
-                              new
-                              {
-                                  Username = username,
-                                  FirstName = firstName,
-                                  LastName = lastName,
-                                  Email = email,
-                                  PhoneNo = phoneNo,
-                                  Password = password,
-                                  PasswordSalt = passwordSalt
-                              },
-                              commandType: CommandType.StoredProcedure
-                           );
-                    // Return the number of records created, which should be 1 on success
-                    return user.Count();
+                    con.Query<UserModel>(
+                        sql,
+                        new
+                        {
+                            Username = username,
+                            FirstName = firstName,
+                            LastName = lastName,
+                            Email = email,
+                            PhoneNo = phoneNo,
+                            Password = password,
+                            PasswordSalt = passwordSalt
+                        },
+                        commandType: CommandType.StoredProcedure
+                    );
                 }
             }
-            catch (Exception)
+            catch(Exception e)
             {
-                // On error return zero, to indicate that no records were added
-                return 0;
+                SqlDataAccess.TryConvertExceptionMessage(e);
             }
         }
 
