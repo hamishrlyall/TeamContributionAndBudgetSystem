@@ -58,10 +58,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
             TCABS_DataLibrary.Models.UserModel userModel = UserProcessor.SelectUserForUserId(userId);
 
-            User user = new User {
-                FirstName = userModel.FirstName,
-                LastName = userModel.LastName,
-            };
+            User user = new User(userModel);
 
             return View(user);
         }
