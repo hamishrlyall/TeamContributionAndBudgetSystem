@@ -123,7 +123,28 @@ namespace TCABS_DataLibrary.BusinessLogic
          //}
       }
 
-      public static List<UserRoleModel> SelectUserRolesForUserId( int _Id )
+        public static UserModel SelectUserForUserId(int _UserId)
+        {
+            string sql = "spSelectUserForUserId";
+
+            var dynamicData = new DynamicParameters();
+            dynamicData.Add("UserId", _UserId);
+
+            return SqlDataAccess.ExecuteStoredProcedure<UserModel>(sql, dynamicData);
+
+            //using( IDbConnection _Cnn = new SqlConnection( GetConnectionString( ) ) )
+            //{
+            //   var results = _Cnn.QueryMultiple( sql, new { Username = _Username }, commandType: CommandType.StoredProcedure );
+            //   var user = results.ReadSingle<UserModel>( );
+            //   var userRoles = results.Read<UserRoleModel>( );
+            //   user.UserRoles = new List<UserRoleModel>( );
+            //   user.UserRoles.AddRange( userRoles );
+
+            //   return user;
+            //}
+        }
+
+        public static List<UserRoleModel> SelectUserRolesForUserId( int _Id )
       {
          string sql = "spSelectUserRolesForUserId";
 
