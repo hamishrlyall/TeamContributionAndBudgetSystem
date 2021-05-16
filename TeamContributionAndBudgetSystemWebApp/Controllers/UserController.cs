@@ -42,14 +42,56 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          return View( db );
       }
 
-      /// <summary>
-      /// This method is called when the user hits the submit button on the Details Page.
-      /// It is used to add new UserRoles to the database.
-      /// </summary>
-      /// <param name="_UserRole"></param>
-      /// The _UserRole parameter will contain the User data and the RoleId which will be sent to the database to insert a new UserRole row.
-      /// <returns> This method will return the view with either the newly added UserRole or an error message.</returns>
-      [HttpPost]
+        [HttpGet]
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            int userId = (int)id;
+
+            // db.GetUser(userId);
+            // PopulateRoleDropDownList();
+
+            // return View(db);
+
+            TCABS_DataLibrary.Models.UserModel userModel = UserProcessor.SelectUserForUserId(userId);
+
+            User user = new User {
+                FirstName = userModel.FirstName,
+                LastName = userModel.LastName,
+            };
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(User user)
+        {
+            /*
+            if (user == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            int userId = (int)id;
+
+            // Look as Create() method //
+
+            db.GetUser(userId);
+            PopulateRoleDropDownList();
+            */
+            return View(db);
+        }
+
+        /// <summary>
+        /// This method is called when the user hits the submit button on the Details Page.
+        /// It is used to add new UserRoles to the database.
+        /// </summary>
+        /// <param name="_UserRole"></param>
+        /// The _UserRole parameter will contain the User data and the RoleId which will be sent to the database to insert a new UserRole row.
+        /// <returns> This method will return the view with either the newly added UserRole or an error message.</returns>
+        [HttpPost]
       [ValidateAntiForgeryToken]
       public ActionResult Details( UserRole _UserRole )
       {
