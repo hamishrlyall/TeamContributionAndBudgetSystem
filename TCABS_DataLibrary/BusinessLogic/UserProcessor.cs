@@ -77,6 +77,39 @@ namespace TCABS_DataLibrary.BusinessLogic
             }
         }
 
+        /// <summary>
+        /// Create a new user record within the database.
+        /// </summary>
+        public static void UpdateUser(int userId, string username, string firstName, string lastName, string email, int phoneNo)
+        {
+            try
+            {
+                // Open a connection to the database
+                using (IDbConnection con = new SqlConnection(GetConnectionString()))
+                {
+                    // Run the database command
+                    string sql = "spUpdateUser";
+                    con.Query<UserModel>(
+                        sql,
+                        new
+                        {
+                            UserId = userId,
+                            Username = username,
+                            FirstName = firstName,
+                            LastName = lastName,
+                            Email = email,
+                            PhoneNo = phoneNo
+                        },
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
+            }
+            catch (Exception e)
+            {
+                SqlDataAccess.TryConvertExceptionMessage(e);
+            }
+        }
+
         public static List<UserModel> SelectUsers( )
       {
          //string sql = @"select UserId, Username, FirstName, LastName, Email, PhoneNo, Password from [dbo].[User]";

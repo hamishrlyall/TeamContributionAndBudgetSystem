@@ -68,35 +68,72 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             }
             int userId = (int)id;
 
-            // db.GetUser(userId);
-            // PopulateRoleDropDownList();
-
-            // return View(db);
-
             TCABS_DataLibrary.Models.UserModel userModel = UserProcessor.SelectUserForUserId(userId);
 
-            User user = new User(userModel);
+            UserEdit user = new UserEdit(userModel);
 
             return View(user);
         }
 
         [HttpPost]
-        public ActionResult Edit(User user)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(UserEdit user)
         {
-            /*
-            if (user == null)
+            // Make sure the entered data is valid
+            if (ModelState.IsValid)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                // Update the user within the database
+                try
+                {
+                    UserProcessor.UpdateUser(
+                        user.UserId,
+                        user.Username,
+                        user.FirstName,
+                        user.LastName,
+                        user.EmailAddress,
+                        user.PhoneNumber);
+
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError("", e.Message);
+                }
             }
-            int userId = (int)id;
-
-            // Look as Create() method //
-
-            db.GetUser(userId);
-            PopulateRoleDropDownList();
-            */
-            return View(db);
+            else
+            {
+                //show error
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+            }
+            return View(user);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         /// <summary>
         /// This method is called when the user hits the submit button on the Details Page.
