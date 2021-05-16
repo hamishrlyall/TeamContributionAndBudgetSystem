@@ -4,9 +4,7 @@
    @FirstName NVARCHAR(50),
    @LastName NVARCHAR(100),
    @Email NVARCHAR(100),
-   @PhoneNo INT,
-   @Password NVARCHAR(64),
-   @PasswordSalt NVARCHAR(64)
+   @PhoneNo INT
 AS
 BEGIN
    SET NOCOUNT ON;
@@ -17,8 +15,6 @@ BEGIN
 		FirstName = @FirstName,
 		LastName = @LastName,
 		Email = @Email,
-		PhoneNo = @PhoneNo,
-		[Password] = @Password,
-		PasswordSalt = @PasswordSalt
+		PhoneNo = @PhoneNo
 	WHERE [UserId] = @UserId;
 END;
