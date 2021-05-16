@@ -46,10 +46,10 @@ VALUES ([Name]);
 -- [PermissionId], [PermissionName], [LinkTitle], [LinkPage], [LinkController]
 MERGE INTO [Permission] AS Target USING (
    VALUES
-   (1, 'UserCreate', NULL, NULL, NULL),
+   (1, 'UserModify', NULL, NULL, NULL),
    (2, 'UserRoleDelete', NULL, NULL, NULL),
-   (3, 'UserListAll', 'List Users', 'Index', 'User'),
-   (4, 'UserEdit', NULL, NULL, NULL),
+   (3, 'UserView', 'List Users', 'Index', 'User'),
+   (4, 'UserRoleModify', NULL, NULL, NULL),
    (5, 'DummyPermission1', 'Dummy Menu Item', 'Index', 'Home'),
    (6, 'DummyPermission2', 'Dummy Menu Item', 'Index', 'Home')
 )
