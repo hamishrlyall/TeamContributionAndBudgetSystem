@@ -29,7 +29,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
-            if (!UserHasPermission(PermissionName.UserView)) return RedirectToPermissionDenied();
+            //if (!UserHasPermission(PermissionName.UserView)) return RedirectToPermissionDenied();
 
             // Set the page message
             ViewBag.Message = "Users List";
@@ -150,7 +150,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
-            if (!UserHasPermission(PermissionName.UserModify)) return RedirectToPermissionDenied();
+            //if (!UserHasPermission(PermissionName.UserModify)) return RedirectToPermissionDenied();
 
             ViewBag.Message = "Create New User";
 
@@ -166,7 +166,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
-            if (!UserHasPermission(PermissionName.UserModify)) return RedirectToPermissionDenied();
+            //if (!UserHasPermission(PermissionName.UserModify)) return RedirectToPermissionDenied();
 
             // Make sure the entered data is valid
             if (ModelState.IsValid)
@@ -216,7 +216,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
-            if (!UserHasPermission(PermissionName.UserModify)) return RedirectToPermissionDenied();
+            //if (!UserHasPermission(PermissionName.UserModify)) return RedirectToPermissionDenied();
 
             // Create data which needs to be outside the try-ctach block
             FileCSV data = null;
