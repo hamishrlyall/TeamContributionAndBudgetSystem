@@ -61,7 +61,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         /// <returns></returns>
         protected ActionResult RedirectToPermissionDenied()
         {
-            return new HttpStatusCodeResult(System.Net.HttpStatusCode.Forbidden);
+            //return new HttpStatusCodeResult(System.Net.HttpStatusCode.Forbidden);
+            return RedirectToAction("Forbidden", "Home");
         }
 
         /// <summary>
