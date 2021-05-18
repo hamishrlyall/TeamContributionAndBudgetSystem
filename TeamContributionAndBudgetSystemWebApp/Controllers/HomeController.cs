@@ -42,6 +42,14 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       }
 
         /// <summary>
+        /// A page used to display a permission-denied message.
+        /// </summary>
+        public ActionResult Forbidden()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// Called when a GET request is made for the Login page.
         /// </summary>
         [HttpGet]
