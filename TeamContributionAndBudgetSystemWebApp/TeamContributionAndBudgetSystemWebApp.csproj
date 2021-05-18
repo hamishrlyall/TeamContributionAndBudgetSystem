@@ -185,6 +185,7 @@
     <Content Include="Views\User\DeleteUserRole.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Home\Forbidden.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
