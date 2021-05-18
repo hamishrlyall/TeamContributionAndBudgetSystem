@@ -134,6 +134,7 @@
     <Compile Include="Models\FileCSV.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\Permission.cs" />
+    <Compile Include="Models\PermissionName.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\TCABS_Db_Context.cs" />
     <Compile Include="Models\RolePermission.cs" />
@@ -185,6 +186,7 @@
     <Content Include="Views\User\DeleteUserRole.cshtml" />
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Home\Forbidden.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

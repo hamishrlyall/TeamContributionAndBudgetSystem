@@ -27,8 +27,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            // Make sure the user is logged in
-            if (!IsUserLoggedIn) return RedirectToAction("Login", "Home");
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            //if (!UserHasPermission(PermissionName.UserView)) return RedirectToPermissionDenied();
 
             // Set the page message
             ViewBag.Message = "Users List";
@@ -44,20 +45,24 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             return View(users);
         }
 
+        /// <summary>
+        /// The details page shows information about a single user.
+        /// </summary>
+        /// <param name="id">The ID of the user to display.</param>
+        public ActionResult Details(int? id)
+        {
+            // Make sure the user is logged in
+            if (!IsUserLoggedIn) return RedirectToLogin();
+          
+            // Check if a user ID was provided
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            int userId = (int)id;
 
-        public ActionResult Details(int? id )
-      {
-         if( id == null )
-         {
-            return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
-         }
-         int userId = ( int ) id;
+            db.GetUser(userId);
+            PopulateRoleDropDownList();
 
-         db.GetUser( userId );
-         PopulateRoleDropDownList( );
-
-         return View( db );
-      }
+            return View(db);
+        }
 
         [HttpGet]
         public ActionResult Edit(int? id)
@@ -219,6 +224,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         /// </summary>
         public ActionResult Create()
         {
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            //if (!UserHasPermission(PermissionName.UserModify)) return RedirectToPermissionDenied();
+
             ViewBag.Message = "Create New User";
 
             return View();
@@ -231,6 +240,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(User model)
         {
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            //if (!UserHasPermission(PermissionName.UserModify)) return RedirectToPermissionDenied();
+
             // Make sure the entered data is valid
             if (ModelState.IsValid)
             {
@@ -277,8 +290,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateBulk(HttpPostedFileBase file)
         {
-            // Make sure the user is logged in
-            if (!IsUserLoggedIn) return RedirectToAction("Login", "Home");
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            //if (!UserHasPermission(PermissionName.UserModify)) return RedirectToPermissionDenied();
 
             // Create data which needs to be outside the try-ctach block
             FileCSV data = null;

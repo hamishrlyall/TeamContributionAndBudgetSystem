@@ -47,6 +47,25 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         }
 
         /// <summary>
+        /// Returns an ActionResult which redirects to the login page.
+        /// Use this when the user needs to login before they can access a page.
+        /// </summary>
+        protected ActionResult RedirectToLogin()
+        {
+            return RedirectToAction("Login", "Home");
+        }
+
+        /// <summary>
+        /// Returns an ActionResult which redirects to a page used to indicat that the user does not have permission for this function.
+        /// </summary>
+        /// <returns></returns>
+        protected ActionResult RedirectToPermissionDenied()
+        {
+            //return new HttpStatusCodeResult(System.Net.HttpStatusCode.Forbidden);
+            return RedirectToAction("Forbidden", "Home");
+        }
+
+        /// <summary>
         /// Check if the currently logged in user has permission to use a specific function.
         /// </summary>
         /// <param name="permissionName">The name used to identify the specific permission.</param>
