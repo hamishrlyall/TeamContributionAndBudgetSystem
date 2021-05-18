@@ -9,5 +9,5 @@
    [Password] NVARCHAR(100) NOT NULL,
    [PasswordSalt] NVARCHAR(100)
    CONSTRAINT PK_UserId PRIMARY KEY (UserId),
-   CONSTRAINT Login_User_Username UNIQUE (Username)
+   CONSTRAINT UQ_User_Username UNIQUE (Username)
 )

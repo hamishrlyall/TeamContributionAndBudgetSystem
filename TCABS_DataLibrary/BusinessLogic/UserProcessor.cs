@@ -46,39 +46,67 @@ namespace TCABS_DataLibrary.BusinessLogic
         /// <summary>
         /// Create a new user record within the database.
         /// </summary>
-        /// <returns>The number of record created, which should be 1 on success or 0 on failure.</returns>
-        public static int CreateUser(string username, string firstName, string lastName, string email, int phoneNo, string password, string passwordSalt)
+        public static void CreateUser(string username, string firstName, string lastName, string email, int phoneNo, string password, string passwordSalt)
         {
             try
             {
                 // Open a connection to the database
-                using (IDbConnection _Cnn = new SqlConnection(GetConnectionString()))
+                using (IDbConnection con = new SqlConnection(GetConnectionString()))
                 {
                     // Run the database command
                     string sql = "spCreateUser";
-                    IEnumerable<UserModel> user = _Cnn.Query<UserModel>
-                           (
-                              sql,
-                              new
-                              {
-                                  Username = username,
-                                  FirstName = firstName,
-                                  LastName = lastName,
-                                  Email = email,
-                                  PhoneNo = phoneNo,
-                                  Password = password,
-                                  PasswordSalt = passwordSalt
-                              },
-                              commandType: CommandType.StoredProcedure
-                           );
-                    // Return the number of records created, which should be 1 on success
-                    return user.Count();
+                    con.Query<UserModel>(
+                        sql,
+                        new
+                        {
+                            Username = username,
+                            FirstName = firstName,
+                            LastName = lastName,
+                            Email = email,
+                            PhoneNo = phoneNo,
+                            Password = password,
+                            PasswordSalt = passwordSalt
+                        },
+                        commandType: CommandType.StoredProcedure
+                    );
                 }
             }
-            catch (Exception)
+            catch(Exception e)
             {
-                // On error return zero, to indicate that no records were added
-                return 0;
+                SqlDataAccess.TryConvertExceptionMessage(e);
+            }
+        }
+
+        /// <summary>
+        /// Create a new user record within the database.
+        /// </summary>
+        public static void UpdateUser(int userId, string username, string firstName, string lastName, string email, int phoneNo)
+        {
+            try
+            {
+                // Open a connection to the database
+                using (IDbConnection con = new SqlConnection(GetConnectionString()))
+                {
+                    // Run the database command
+                    string sql = "spUpdateUser";
+                    con.Query<UserModel>(
+                        sql,
+                        new
+                        {
+                            UserId = userId,
+                            Username = username,
+                            FirstName = firstName,
+                            LastName = lastName,
+                            Email = email,
+                            PhoneNo = phoneNo
+                        },
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
+            }
+            catch (Exception e)
+            {
+                SqlDataAccess.TryConvertExceptionMessage(e);
             }
         }
 
@@ -128,7 +156,28 @@ namespace TCABS_DataLibrary.BusinessLogic
          //}
       }
 
-      public static List<UserRoleModel> SelectUserRolesForUserId( int _Id )
+        public static UserModel SelectUserForUserId(int _UserId)
+        {
+            string sql = "spSelectUserForUserId";
+
+            var dynamicData = new DynamicParameters();
+            dynamicData.Add("UserId", _UserId);
+
+            return SqlDataAccess.ExecuteStoredProcedure<UserModel>(sql, dynamicData);
+
+            //using( IDbConnection _Cnn = new SqlConnection( GetConnectionString( ) ) )
+            //{
+            //   var results = _Cnn.QueryMultiple( sql, new { Username = _Username }, commandType: CommandType.StoredProcedure );
+            //   var user = results.ReadSingle<UserModel>( );
+            //   var userRoles = results.Read<UserRoleModel>( );
+            //   user.UserRoles = new List<UserRoleModel>( );
+            //   user.UserRoles.AddRange( userRoles );
+
+            //   return user;
+            //}
+        }
+
+        public static List<UserRoleModel> SelectUserRolesForUserId( int _Id )
       {
          string sql = "spSelectUserRolesForUserId";
 

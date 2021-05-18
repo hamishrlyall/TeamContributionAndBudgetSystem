@@ -9,20 +9,19 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
     /// <summary>
     /// Contains information about a specific user, with respect to the web application.
     /// </summary>
-    public class User
+    public class UserEdit
     {
         /// <summary>
         /// Default constructor for the User class.
         /// </summary>
-        public User()
+        public UserEdit()
         {
-            UserRoles = new HashSet<UserRole>();
         }
 
         /// <summary>
         /// A constructor which copies the information from a database user model.
         /// </summary>
-        public User(TCABS_DataLibrary.Models.UserModel userModel)
+        public UserEdit(TCABS_DataLibrary.Models.UserModel userModel)
         {
             UserId = userModel.UserId;
             Username = userModel.Username;
@@ -30,9 +29,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
             LastName = userModel.LastName;
             EmailAddress = userModel.Email;
             PhoneNumber = userModel.PhoneNo;
-            Password = userModel.Password;
-
-            UserRoles = new HashSet<UserRole>();
         }
 
         public int UserId { get; set; }
@@ -57,17 +53,5 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
         [DataType(DataType.PhoneNumber)]
         public int PhoneNumber { get; set; }
 
-        [Display(Name = "Password")]
-        [Required(ErrorMessage = "You must enter a password.")]
-        [DataType(DataType.Password)]
-        [StringLength(100, MinimumLength = 8, ErrorMessage = "Your password must have between 8-100 characters.")]
-        public string Password { get; set; }
-
-        [Display(Name = "Confirm Password")]
-        [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Your password and confirm password do not match.")]
-        public string ConfirmPassword { get; set; }
-
-        public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 }
