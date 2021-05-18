@@ -3,84 +3,89 @@
 @{
    ViewBag.Title = "Details";
 }
+<div>
+   <h4>@Html.DisplayFor( model => model.User.Username ) Details</h4>
+   <hr />
+   @Html.ValidationSummary( true, "", new { @class = "text-danger" } )
+<dl class="dl-horizontal">
+   <dt>
+      @Html.DisplayNameFor( model => model.User.UserId )
+   </dt>
 
+   <dd>
+      @Html.DisplayFor( model => model.User.UserId )
+   </dd>
 
-@using( Html.BeginForm( ) )
-{
-   @Html.AntiForgeryToken( )
-   <div>
-      <h4>@Html.DisplayFor( model => model.User.Username ) Details</h4>
-      <hr />
-      @Html.ValidationSummary( true, "", new { @class = "text-danger" } )
-      @Html.HiddenFor( model => model.User.UserId )
-   <dl class="dl-horizontal">
-      <dt>
-         @Html.DisplayNameFor( model => model.User.UserId )
-      </dt>
+   <dt>
+      @Html.DisplayNameFor( model => model.User.Username )
+   </dt>
 
-      <dd>
-         @Html.DisplayFor( model => model.User.UserId )
-      </dd>
+   <dd>
+      @Html.DisplayFor( model => model.User.Username )
+   </dd>
 
-      <dt>
-         @Html.DisplayNameFor( model => model.User.Username )
-      </dt>
+   <dt>
+      @Html.DisplayNameFor( model => model.User.FirstName )
+   </dt>
 
-      <dd>
-         @Html.DisplayFor( model => model.User.Username )
-      </dd>
+   <dd>
+      @Html.DisplayFor( model => model.User.FirstName )
+   </dd>
 
-      <dt>
-         @Html.DisplayNameFor( model => model.User.FirstName )
-      </dt>
+   <dt>
+      @Html.DisplayNameFor( model => model.User.LastName )
+   </dt>
 
-      <dd>
-         @Html.DisplayFor( model => model.User.FirstName )
-      </dd>
+   <dd>
+      @Html.DisplayFor( model => model.User.LastName )
+   </dd>
 
-      <dt>
-         @Html.DisplayNameFor( model => model.User.LastName )
-      </dt>
+   <dt>
+      @Html.DisplayNameFor( model => model.User.EmailAddress )
+   </dt>
 
-      <dd>
-         @Html.DisplayFor( model => model.User.LastName )
-      </dd>
+   <dd>
+      @Html.DisplayFor( model => model.User.EmailAddress )
+   </dd>
 
-      <dt>
-         @Html.DisplayNameFor( model => model.User.EmailAddress )
-      </dt>
+   <dt>
+      @Html.DisplayNameFor( model => model.User.PhoneNumber )
+   </dt>
 
-      <dd>
-         @Html.DisplayFor( model => model.User.EmailAddress )
-      </dd>
+   <dd>
+      @Html.DisplayFor( model => model.User.PhoneNumber )
+   </dd>
 
-      <dt>
-         @Html.DisplayNameFor( model => model.User.PhoneNumber )
-      </dt>
+   <dd>
+      <table class="table">
+         <tr>
+            <th>Roles</th>
+         </tr>
 
-      <dd>
-         @Html.DisplayFor( model => model.User.PhoneNumber )
-      </dd>
-      <dd>
-         <table class="table">
-            <tr>
-               <th>Roles</th>
-            </tr>
-            @foreach( var item in Model.User.UserRoles )
+         @foreach( var item in Model.User.UserRoles )
+         {
+            using( Html.BeginForm( ) )
             {
+               @Html.AntiForgeryToken( )
                <tr>
                   <td>
-                     @Html.DisplayFor( modelItem => item.Role.Name )
+                     @Html.Hidden( "_UserId", item.UserId )
+                     @Html.Hidden( "_UserRoleId", item.UserRoleId )
+                     @Html.DisplayFor( modelItem => item.Role.Name, item.Role.Name )
+                     @Html.ValidationMessageFor( model => model.UserRoles )
                   </td>
                   <td>
-                     @Html.ActionLink( "Delete", "DeleteUserRole", new { id = item.UserRoleId } )
+                     <input type="submit" name="action" value="Delete" class="btn btn-default" />
                   </td>
                </tr>
             }
-         </table>
-      </dd>
+         }
+      </table>
+   </dd>
+   <dd>
       @using( Html.BeginForm( ) )
       {
+         @Html.AntiForgeryToken( )
          <label class="control-label col-md-2" for="RoleId">Add New Role</label>
          <div class="form-group">
             <div class="col-md-10">
@@ -90,16 +95,15 @@
                @Html.DropDownList( "RoleId", String.Empty )
                @Html.ValidationMessageFor( model => model.UserRoles )
             </div>
-
             <div class="col-md-offset-2 col-md-10">
                <input type="submit" name="action" value="Save" class="btn btn-default" />
             </div>
          </div>
       }
+   </dd>
+</dl>
+</div>
 
-   </dl>
-   </div>
-}
 <p>
    @Html.ActionLink( "Edit", "Edit", new { /* id = Model.PrimaryKey */ } ) |
    @Html.ActionLink( "Back to List", "Index" )

@@ -32,7 +32,7 @@ namespace TCABS_DataLibrary.BusinessLogic
          UserRoleModel data = new UserRoleModel { UserRoleId = _Id };
          string sql = "spDeleteUserRole";
 
-         return SqlDataAccess.DeleteRecord( sql, data );
+         return SqlDataAccess.DeleteRecord( sql, new { UserRoleId = _Id } );
       }
 
       public static List<UserRoleModel> SelectUserRoles( )

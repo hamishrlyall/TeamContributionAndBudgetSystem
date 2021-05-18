@@ -102,6 +102,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
          foreach( var userRoleData in data.UserRoles )
          {
             var userRole = new UserRole( );
+            userRole.UserRoleId = userRoleData.UserRoleId;
             userRole.RoleId = userRoleData.RoleId;
             userRole.UserId = userRoleData.UserId;
             userRole.User = user;
@@ -222,11 +223,13 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
                };
                var userRole = new UserRole
                {
+                  UserRoleId = ur.UserRoleId,
                   UserId = ur.UserId,
                   RoleId = ur.RoleId,
                   User = user,
                   Role = role
                };
+               user.UserRoles.Add( userRole );
             }
             Users.Add( user );
          }

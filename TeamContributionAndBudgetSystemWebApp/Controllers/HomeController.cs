@@ -66,7 +66,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(UserLogin login)
+        public ActionResult Login( UserLogin login )
         {
 
             // Check if a user is already logged in
