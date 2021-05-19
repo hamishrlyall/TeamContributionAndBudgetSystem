@@ -131,6 +131,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Downloadable.cs" />
+    <Compile Include="Models\Enrollment.cs" />
     <Compile Include="Models\FileCSV.cs" />
     <Compile Include="Models\MenuItem.cs" />
     <Compile Include="Models\Permission.cs" />
@@ -138,10 +139,14 @@
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\TCABS_Db_Context.cs" />
     <Compile Include="Models\RolePermission.cs" />
+    <Compile Include="Models\TeachingPeriod.cs" />
+    <Compile Include="Models\Unit.cs" />
+    <Compile Include="Models\UnitOffering.cs" />
     <Compile Include="Models\UserEdit.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserLogin.cs" />
     <Compile Include="Models\UserRole.cs" />
+    <Compile Include="Models\Year.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

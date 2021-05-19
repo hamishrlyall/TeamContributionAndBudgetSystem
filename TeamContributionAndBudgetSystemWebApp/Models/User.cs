@@ -17,6 +17,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
         public User()
         {
             UserRoles = new HashSet<UserRole>();
+            Enrollments = new HashSet<Enrollment>( );
+            UnitOfferings = new HashSet<UnitOffering>( );
         }
 
         /// <summary>
@@ -33,6 +35,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
             Password = userModel.Password;
 
             UserRoles = new HashSet<UserRole>();
+            Enrollments = new HashSet<Enrollment>( );
+            UnitOfferings = new HashSet<UnitOffering>( );
         }
 
         public int UserId { get; set; }
@@ -69,5 +73,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
         public string ConfirmPassword { get; set; }
 
         public virtual ICollection<UserRole> UserRoles { get; set; }
+
+        public virtual ICollection<Enrollment> Enrollments { get; set; }
+        
+        public virtual ICollection<UnitOffering> UnitOfferings { get; set; }
     }
 }

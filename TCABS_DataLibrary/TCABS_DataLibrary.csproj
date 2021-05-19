@@ -50,11 +50,16 @@
     <Compile Include="BusinessLogic\UserProcessor.cs" />
     <Compile Include="BusinessLogic\UserRoleProcessor.cs" />
     <Compile Include="DataAccess\SqlDataAccess.cs" />
+    <Compile Include="Models\EnrollmentModel.cs" />
     <Compile Include="Models\PermissionModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\RolePermissionModel.cs" />
+    <Compile Include="Models\TeachingPeriodModel.cs" />
+    <Compile Include="Models\UnitModel.cs" />
+    <Compile Include="Models\UnitOfferingModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\UserRoleModel.cs" />
+    <Compile Include="Models\YearModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
