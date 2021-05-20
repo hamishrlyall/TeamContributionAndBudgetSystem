@@ -15,23 +15,9 @@ using System.Reflection;
 
 namespace TeamContributionAndBudgetSystemWebApp.Controllers
 {
-   [AttributeUsage( AttributeTargets.Method, AllowMultiple = false, Inherited = true )]
-   public class MultiButtonAttribute : ActionNameSelectorAttribute
-   {
-      public string MatchFormKey { get; set; }
-      public string MatchFormValue { get; set; }
-
-      public override bool IsValidName( ControllerContext controllerContext, string actionName, MethodInfo methodInfo )
-      {
-         return controllerContext.HttpContext.Request[ MatchFormKey ] != null &&
-            controllerContext.HttpContext.Request[ MatchFormKey ] == MatchFormValue;
-      }
-   }
-
    // Comment
    public class UserController : BaseController
    {
-
       private TCABS_Db_Context db = new TCABS_Db_Context( );
 
       /// <summary>
@@ -53,7 +39,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
          // Change the format of the user list
          List<User> users = new List<User>( );
-         foreach( var u in userModels ) users.Add( new User( u ) );
+         foreach( var u in userModels ) 
+            users.Add( new User( u ) );
 
          // Return the view, with the list of users
          return View( users );
@@ -119,6 +106,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [ValidateAntiForgeryToken]
       public ActionResult Save( UserRole _UserRole )
       {
+         // Make sure the user is logged in and that they have permission
+         if( !IsUserLoggedIn ) return RedirectToLogin( );
+
          // Null safe check to prevent crashes.
          if( _UserRole.User == null )
          {
@@ -142,50 +132,20 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          return Redirect( Request.UrlReferrer.ToString( ) );
       }
 
+       /// <summary>
+       /// Used to add the List of available Roles to the ViewBag.
+       /// </summary>
+       private void PopulateRoleDropDownList( )
+       {
+          ViewBag.RoleId = new SelectList( db.GetRoles( ), "RoleId", "Name", null );
+       }
+
       /// <summary>
-      /// Used to add the List of available Roles to the ViewBag.
+      /// Called when a GET request is made for the create user page.
       /// </summary>
-      private void PopulateRoleDropDownList( )
+      public ActionResult Create()
       {
-         ViewBag.RoleId = new SelectList( db.GetRoles( ), "RoleId", "Name", null );
-      }
-
-      //public ActionResult Delete( int id )
-      //{
-      //   if( id < 1 )
-      //   {
-      //      return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
-      //   }
-      //   var userRole = UserRoleProcessor.SelectUserRole( id );
-
-      //   if( userRole == null )
-      //   {
-      //      return HttpNotFound( );
-      //   }
-
-      //   var user = UserProcessor.SelectUserWithRoles( userRole.UserId );
-      //   return View( User );
-      //}
-
-      //[HttpDelete]
-      //[ValidateAntiForgeryToken]
-      //public ActionResult Delete( UserRole _UserRole )
-      //{
-      //   if( _UserRole == null )
-      //   {
-      //      return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
-      //   }
-      //   var row = UserRoleProcessor.DeleteUserRole( _UserRole.UserId );
-
-      //   return View( User );
-      //}
-
-        /// <summary>
-        /// Called when a GET request is made for the create user page.
-        /// </summary>
-        public ActionResult Create()
-        {
-            ViewBag.Message = "Create New User";
+         ViewBag.Message = "Create New User";
 
          return View();
       }

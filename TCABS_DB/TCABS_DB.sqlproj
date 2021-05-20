@@ -94,6 +94,7 @@
     <Build Include="dbo\Tables\UnitOffering.sql" />
     <Build Include="dbo\Tables\Year.sql" />
     <Build Include="dbo\Tables\Meeting.sql" />
+    <Build Include="dbo\Stored Procedures\spInsertYear.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="LoadTestData">

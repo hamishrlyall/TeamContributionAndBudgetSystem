@@ -22,6 +22,12 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
       public virtual Role Role { get; set; }
       public virtual RolePermission RolePermission { get; set; }
       public virtual Permission Permission { get; set; }
+      public virtual Year Year { get; set; }
+      public virtual Unit Unit { get; set; }
+      public virtual TeachingPeriod TeachingPeriod { get; set; }
+      public virtual UnitOffering UnitOffering { get; set; }
+      public virtual Enrollment Enrollment { get; set; }
+
       public virtual List<User> Users { get; set; }
       public virtual List<Role> Roles { get; set; }
       public virtual List<UserRole> UserRoles { get; set; }

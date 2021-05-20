@@ -110,7 +110,7 @@ namespace TCABS_DataLibrary.BusinessLogic
             }
         }
 
-        public static List<UserModel> SelectUsers( )
+      public static List<UserModel> SelectUsers( )
       {
          //string sql = @"select UserId, Username, FirstName, LastName, Email, PhoneNo, Password from [dbo].[User]";
 
