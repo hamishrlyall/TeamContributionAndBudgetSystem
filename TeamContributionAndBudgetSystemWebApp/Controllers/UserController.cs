@@ -46,6 +46,12 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          return View( users );
       }
 
+
+      /// <summary>
+      /// Provides Details regarding the User entity based on the given id
+      /// </summary>
+      /// <param name="id"></param>
+      /// <returns>Redirects to Details View</returns>
       public ActionResult Details(int? id )
       {
          if( id == null )
