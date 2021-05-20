@@ -9,29 +9,29 @@ using static TCABS_DataLibrary.BusinessLogic.YearProcessor;
 
 namespace TeamContributionAndBudgetSystemWebApp.Controllers
 {
-    public class YearController : BaseController
-    {
-         private TCABS_Db_Context db = new TCABS_Db_Context( );
-         // GET: Year
-         public ActionResult Index()
-         {
-            // Make sure the user is logged in and that they have permission
-            if( !IsUserLoggedIn ) return RedirectToLogin( );
+   public class YearController : BaseController
+   {
+      private TCABS_Db_Context db = new TCABS_Db_Context( );
+      // GET: Year
+      public ActionResult Index()
+      {
+         // Make sure the user is logged in and that they have permission
+         if( !IsUserLoggedIn ) return RedirectToLogin( );
 
-            // Set the page message
-            ViewBag.Message = "Years List";
+         // Set the page message
+         ViewBag.Message = "Years List";
 
-            // Get all years from the database
-            var yearModels = YearProcessor.SelectYears( );
+         // Get all years from the database
+         var yearModels = YearProcessor.SelectYears( );
 
-            // Change the format of the year list
-            List<Year> years = new List<Year>( );
-            foreach( var y in yearModels )
-               years.Add( new Year( y ) );
+         // Change the format of the year list
+         List<Year> years = new List<Year>( );
+         foreach( var y in yearModels )
+            years.Add( new Year( y ) );
 
-            // Return the view, with the list of years
-            return View( years);
-         }
+         // Return the view, with the list of years
+         return View( years);
+      }
 
       [HttpPost]
       [MultiButton( MatchFormKey = "action", MatchFormValue = "Add Year")]
@@ -61,5 +61,5 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          // Redirects to page where data is reloaded.
          return Redirect( Request.UrlReferrer.ToString( ) );
       }
-    }
+   }
 }
