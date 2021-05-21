@@ -50,7 +50,7 @@ MERGE INTO [Permission] AS Target USING (
    (2, 'UserRoleDelete', NULL, NULL, NULL),
    (3, 'UserView', 'List Users', 'Index', 'User'),
    (4, 'UserRoleModify', NULL, NULL, NULL),
-   (5, 'DummyPermission1', 'Dummy Menu Item', 'Index', 'Home'),
+   (5, 'RolePermissionView', 'Role Permissions', 'Index', 'RolePermission'),
    (6, 'DummyPermission2', 'Dummy Menu Item', 'Index', 'Home')
 )
 AS Source ([PermissionId], [PermissionName], [LinkTitle], [LinkPage], [LinkController])

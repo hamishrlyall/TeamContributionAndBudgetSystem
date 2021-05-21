@@ -26,6 +26,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
       public virtual List<Role> Roles { get; set; }
       public virtual List<UserRole> UserRoles { get; set; }
       public virtual List<MenuItem> MenuItems { get; set; }
+        public int curRoleId { get; set; }
+        public virtual List<Permission> Permissions { get; set; }
 
         /// <summary>
         /// Default constructor for TCABS_Db_Context
@@ -37,6 +39,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
             {
                GetMenu( username );
             }
+            GetUsers();
+            GetRoles();
+            GetUserRole();
         }
 
         /// <summary>
@@ -85,7 +90,23 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
          return permissions;
       }
 
-      public void GetUser( int id )
+        public List<Permission> GetPermissions()
+        {
+
+            var data = PermissionProcessor.SelectPermissions();
+
+            Permissions = new List<Permission>();
+
+            foreach (var row in data)
+            {
+                Permissions.Add(new Permission(row));
+            }
+
+            return Permissions;
+
+        }
+
+        public void GetUser( int id )
       {
          var data = UserProcessor.SelectUserWithRoles( id );
          var user = new User
@@ -234,5 +255,40 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
             Users.Add( user );
          }
       }
-   }
+
+        public List<RolePermission> getRolePermissionByRoleId(int roleId)
+        {
+            var roleData = RoleProcessor.SelectRoleWithPermissions(roleId);
+            var role = new Role();
+            role.RoleId = roleData.RoleId;
+            role.Name = roleData.Name;
+            foreach (var rolePermissionData in roleData.RolePermissions)
+            {
+                var rolePermission = new RolePermission();
+                rolePermission.RoleId = rolePermissionData.RoleId;
+                rolePermission.PermissionId = rolePermissionData.RoleId;
+                rolePermission.Role = role;
+
+                var permissionData = PermissionProcessor.SelectPermission(rolePermissionData.PermissionId);
+                var permission = new Permission();
+                permission.PermissionId = permissionData.PermissionId;
+                permission.PermissionName = permissionData.PermissionName;
+                rolePermission.Permission = permission;
+
+                role.RolePermissions.Add(rolePermission);
+            }
+            return role.RolePermissions.ToList();
+        }
+
+        public void GetUserRole()
+        {
+            var userRoles = UserRoleProcessor.SelectUserRoles();
+            UserRoles = new List<UserRole>();
+            foreach (var row in userRoles)
+            {
+                UserRoles.Add(new UserRole() { UserId = row.UserId, RoleId = row.RoleId, UserRoleId = row.UserRoleId });
+            }
+
+        }
+    }
 }

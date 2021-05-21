@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic\PermissionProcessor.cs" />
+    <Compile Include="BusinessLogic\RolePermissionProcessor.cs" />
     <Compile Include="BusinessLogic\RoleProcessor.cs" />
     <Compile Include="BusinessLogic\UserProcessor.cs" />
     <Compile Include="BusinessLogic\UserRoleProcessor.cs" />
