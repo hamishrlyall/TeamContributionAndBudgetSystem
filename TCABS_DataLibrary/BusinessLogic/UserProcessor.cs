@@ -110,6 +110,31 @@ namespace TCABS_DataLibrary.BusinessLogic
             }
         }
 
+        public static void DeleteUser(int userId)
+        {
+            try
+            {
+                // Open a connection to the database
+                using (IDbConnection con = new SqlConnection(GetConnectionString()))
+                {
+                    // Run the database command
+                    string sql = "spDeleteUser";
+                    con.Query<UserModel>(
+                        sql,
+                        new
+                        {
+                            UserId = userId
+                        },
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
+            }
+            catch (Exception e)
+            {
+                SqlDataAccess.TryConvertExceptionMessage(e);
+            }
+        }
+
         public static List<UserModel> SelectUsers( )
       {
          //string sql = @"select UserId, Username, FirstName, LastName, Email, PhoneNo, Password from [dbo].[User]";

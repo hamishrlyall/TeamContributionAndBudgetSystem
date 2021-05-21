@@ -86,6 +86,7 @@
     <Build Include="dbo\Stored Procedures\spUpdatePassword.sql" />
     <Build Include="dbo\Stored Procedures\spGetPermissionsFromUsername.sql" />
     <Build Include="dbo\Stored Procedures\spUpdateUser.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="LoadTestData">

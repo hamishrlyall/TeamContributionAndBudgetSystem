@@ -351,5 +351,40 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             // Go to the normal create page
             return RedirectToAction("Create", "User");
         }
+
+        // GET: Employees/Delete/1
+        [HttpGet]
+        public ActionResult Delete(int? id)
+        {
+            if (id == null) return RedirectToAction("Index");
+            int userId = (int)id;
+
+            TCABS_DataLibrary.Models.UserModel userModel = UserProcessor.SelectUserForUserId(userId);
+
+            UserEdit user = new UserEdit(userModel);
+
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(UserEdit user)
+        {
+                // Update the user within the database
+                try
+                {
+                    UserProcessor.DeleteUser(user.UserId);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    //ModelState.AddModelError("", e.Message);
+                    ModelState.AddModelError("", "Cannot delete this user");
+                }
+            return View(user);
+        }
+
+
     }
 }
+
