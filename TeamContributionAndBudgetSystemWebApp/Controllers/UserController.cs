@@ -370,6 +370,13 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(UserEdit user)
         {
+
+            if (user.UserId == 1) // <-- TODO: Make this check better!!!
+            {
+                ModelState.AddModelError("", "Cannot delete super-user");
+            }
+            else
+            {
                 // Update the user within the database
                 try
                 {
@@ -381,6 +388,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                     //ModelState.AddModelError("", e.Message);
                     ModelState.AddModelError("", "Cannot delete this user");
                 }
+            }
             return View(user);
         }
 
