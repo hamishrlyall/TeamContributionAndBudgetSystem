@@ -1,6 +1,4 @@
 ﻿CREATE PROCEDURE [dbo].[spSelectUserRoles]
-   @param1 int = 0,
-   @param2 int
-AS
-   SELECT @param1, @param2
+  AS
+    SELECT * FROM [dbo].[UserRole]
 RETURN 0

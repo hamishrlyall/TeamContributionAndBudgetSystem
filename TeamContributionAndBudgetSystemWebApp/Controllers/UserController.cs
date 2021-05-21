@@ -234,6 +234,37 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         //   return View( User );
         //}
 
+        [HttpGet]
+        public ActionResult DeleteUserRole(int id)
+        {
+            if (id < 1)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var userRole = UserRoleProcessor.SelectUserRole(id);
+
+            if (userRole == null)
+            {
+                return HttpNotFound();
+            }
+
+            var user = UserProcessor.SelectUserWithRoles(userRole.UserId);
+            return View(User);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteUserRole(UserRole _UserRole)
+        {
+            if (_UserRole == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var row = UserRoleProcessor.DeleteUserRole(_UserRole.UserId);
+
+            return View(User);
+        }
+
         /// <summary>
         /// Called when a GET request is made for the create user page.
         /// </summary>

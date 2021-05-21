@@ -94,6 +94,9 @@
     <Build Include="dbo\Tables\UnitOffering.sql" />
     <Build Include="dbo\Tables\Year.sql" />
     <Build Include="dbo\Tables\Meeting.sql" />
+    <Build Include="dbo\Stored Procedures\sp_CreateUserRole.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteUserRoles.sql" />
+    <Build Include="dbo\Stored Procedures\spSelectPermissions.sql" />
     <Build Include="dbo\Tables\ProjectRoleGroup.sql" />
     <Build Include="dbo\Tables\ProjectRole.sql" />
     <Build Include="dbo\Stored Procedures\spGetAllProjects.sql" />
