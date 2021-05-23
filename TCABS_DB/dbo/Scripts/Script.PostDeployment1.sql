@@ -98,22 +98,6 @@ INSERT ( [RoleId], [PermissionId])
 VALUES ( [RoleId], [PermissionId]);
 
 
--- Create roles
-MERGE INTO [Role] AS Target USING (
-   VALUES
-   (1, 'Super Admin'),
-   (2, 'Admin'),
-   (3, 'Convener'),
-   (4, 'Student'),
-   (5, 'Supervisor')
-)
-AS Source ([RoleId], [Name])
-ON Target.RoleId = Source.RoleId
-WHEN NOT MATCHED BY TARGET THEN
-INSERT ([Name])
-VALUES ([Name]);
-
-
 -- Create project role groups
 MERGE INTO [ProjectRoleGroup] AS Target USING (
    VALUES
