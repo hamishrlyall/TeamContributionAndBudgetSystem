@@ -47,11 +47,15 @@
   <ItemGroup>
     <Compile Include="BusinessLogic\PermissionProcessor.cs" />
     <Compile Include="BusinessLogic\RoleProcessor.cs" />
+    <Compile Include="BusinessLogic\ProjectProcessor.cs" />
     <Compile Include="BusinessLogic\UserProcessor.cs" />
     <Compile Include="BusinessLogic\UserRoleProcessor.cs" />
     <Compile Include="DataAccess\SqlDataAccess.cs" />
     <Compile Include="Models\EnrollmentModel.cs" />
     <Compile Include="Models\PermissionModel.cs" />
+    <Compile Include="Models\ProjectModel.cs" />
+    <Compile Include="Models\ProjectRoleModel.cs" />
+    <Compile Include="Models\ProjectRoleGroupModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\RolePermissionModel.cs" />
     <Compile Include="Models\TeachingPeriodModel.cs" />

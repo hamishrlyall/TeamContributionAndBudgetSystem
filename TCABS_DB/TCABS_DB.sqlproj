@@ -94,6 +94,15 @@
     <Build Include="dbo\Tables\UnitOffering.sql" />
     <Build Include="dbo\Tables\Year.sql" />
     <Build Include="dbo\Tables\Meeting.sql" />
+    <Build Include="dbo\Tables\ProjectRoleGroup.sql" />
+    <Build Include="dbo\Tables\ProjectRole.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAllProjects.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProject.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAllProjectRoleGroups.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateProject.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProjectRoleGroup.sql" />
+    <Build Include="dbo\Stored Procedures\spCreateProject.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteProject.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="LoadTestData">

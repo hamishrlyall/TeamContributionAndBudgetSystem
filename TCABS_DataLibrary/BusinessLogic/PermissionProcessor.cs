@@ -15,10 +15,6 @@ namespace TCABS_DataLibrary.BusinessLogic
 {
    public static class PermissionProcessor
    {
-      public static string GetConnectionString( string _ConnectionName = "TCABS_DB" )
-      {
-         return ConfigurationManager.ConnectionStrings[ _ConnectionName ].ConnectionString;
-      }
       public static PermissionModel SelectPermission( int _Id )
       {
          PermissionModel data = new PermissionModel { PermissionId = _Id };

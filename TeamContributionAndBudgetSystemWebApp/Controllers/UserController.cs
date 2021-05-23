@@ -15,170 +15,224 @@ using System.Reflection;
 
 namespace TeamContributionAndBudgetSystemWebApp.Controllers
 {
-   [AttributeUsage( AttributeTargets.Method, AllowMultiple = false, Inherited = true )]
-   public class MultiButtonAttribute : ActionNameSelectorAttribute
-   {
-      public string MatchFormKey { get; set; }
-      public string MatchFormValue { get; set; }
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+    public class MultiButtonAttribute : ActionNameSelectorAttribute
+    {
+        public string MatchFormKey { get; set; }
+        public string MatchFormValue { get; set; }
 
-      public override bool IsValidName( ControllerContext controllerContext, string actionName, MethodInfo methodInfo )
-      {
-         return controllerContext.HttpContext.Request[ MatchFormKey ] != null &&
-            controllerContext.HttpContext.Request[ MatchFormKey ] == MatchFormValue;
-      }
-   }
+        public override bool IsValidName(ControllerContext controllerContext, string actionName, MethodInfo methodInfo)
+        {
+            return controllerContext.HttpContext.Request[MatchFormKey] != null &&
+               controllerContext.HttpContext.Request[MatchFormKey] == MatchFormValue;
+        }
+    }
 
-   // Comment
-   public class UserController : BaseController
-   {
+    // Comment
+    public class UserController : BaseController
+    {
 
-      private TCABS_Db_Context db = new TCABS_Db_Context( );
+        private TCABS_Db_Context db = new TCABS_Db_Context();
 
-      /// <summary>
-      /// The main page of the user controller.
-      /// Shows a list of all users in the system.
-      /// </summary>
-      [HttpGet]
-      public ActionResult Index( )
-      {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn ) return RedirectToLogin( );
-         //if (!UserHasPermission(PermissionName.UserView)) return RedirectToPermissionDenied();
+        /// <summary>
+        /// The main page of the user controller.
+        /// Shows a list of all users in the system.
+        /// </summary>
+        [HttpGet]
+        public ActionResult Index()
+        {
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            //if (!UserHasPermission(PermissionName.UserView)) return RedirectToPermissionDenied();
 
-         // Set the page message
-         ViewBag.Message = "Users List";
+            // Set the page message
+            ViewBag.Message = "Users List";
 
-         // Get all users from the database
-         var userModels = UserProcessor.SelectUsers( );
+            // Get all users from the database
+            var userModels = UserProcessor.SelectUsers();
 
-         // Change the format of the user list
-         List<User> users = new List<User>( );
-         foreach( var u in userModels ) users.Add( new User( u ) );
+            // Change the format of the user list
+            List<User> users = new List<User>();
+            foreach (var u in userModels) users.Add(new User(u));
 
-         // Return the view, with the list of users
-         return View( users );
-      }
+            // Return the view, with the list of users
+            return View(users);
+        }
 
-      public ActionResult Details(int? id )
-      {
-         if( id == null )
-         {
-            return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
-         }
-         int userId = ( int ) id;
+        /// <summary>
+        /// The details page shows information about a single user.
+        /// </summary>
+        /// <param name="id">The ID of the user to display.</param>
+        public ActionResult Details(int? id)
+        {
+            // Make sure the user is logged in
+            if (!IsUserLoggedIn) return RedirectToLogin();
 
-         db.GetUser( userId );
-         PopulateRoleDropDownList( );
+            // Check if a user ID was provided
+            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            int userId = (int)id;
 
-         return View( db );
-      }
+            db.GetUser(userId);
+            PopulateRoleDropDownList();
 
-      /// <summary>
-      /// This method is called when the user hits the delete button on a UserRole Row on the Details Page.
-      /// It is used to remove UserRoles from the database.
-      /// </summary>
-      /// <param name="_UserRoleId"></param>
-      /// The _UserRoleId which will be sent to the database to remove the referenced UserRole row.
-      /// <returns>This method will Redirect to the Details view with the UserRole removed.</returns>
-      [HttpPost]
-      [MultiButton( MatchFormKey = "action", MatchFormValue = "Delete" )]
-      [ValidateAntiForgeryToken]
-      public ActionResult Delete( int _UserRoleId )
-      {
-         // Null safe check to prevent crashes.
-         if( _UserRoleId <= 0 )
-         {
-            return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
-         }
-         try
-         {
-            // Attempt to delete UserRole from database
-            var rowsDeleted = UserRoleProcessor.DeleteUserRole( _UserRoleId );
-            // If Delete operation was unsuccessful throw an error.
-            if( rowsDeleted <= 0 )
-               throw new DataException( "Unable to delete UserRole" );
-         }
-         catch( DataException _Ex )
-         {
-            // Error handling
-            ModelState.AddModelError( "", $"Unable to save changes due to Error: { _Ex.Message }" );
-         }
-         // Redirects to page where data is reloaded.
-         return Redirect( Request.UrlReferrer.ToString( ) );
-      }
+            return View(db);
+        }
 
-      /// <summary>
-      /// This method is called when the user hits the submit button on the Details Page.
-      /// It is used to add new UserRoles to the database.
-      /// </summary>
-      /// <param name="_UserRole"></param>
-      /// The _UserRole parameter will contain the User data and the RoleId which will be sent to the database to insert a new UserRole row.
-      /// <returns> This method will return the view with either the newly added UserRole or an error message.</returns>
-      [HttpPost]
-      [MultiButton( MatchFormKey = "action", MatchFormValue = "Save" )]
-      [ValidateAntiForgeryToken]
-      public ActionResult Save( UserRole _UserRole )
-      {
-         // Null safe check to prevent crashes.
-         if( _UserRole.User == null )
-         {
-            return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
-         }
-         try
-         {
-            // Attempt to insert new UserRole to database using data from parameter
-            var data = UserRoleProcessor.InsertUserRole( _UserRole.User.UserId, _UserRole.RoleId );
-            // Checks if Insert operation was successful. If not throws an error.
-            if( data == null )
-               throw new DataException( "Role added was invalid." );
-         }
-         catch( DataException _Ex )
-         {
-            // Error handling
-            ModelState.AddModelError( "", $"Unable to save changes due to Error: { _Ex.Message }" );
-         }
+        [HttpGet]
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            int userId = (int)id;
 
-         // Redirects to page where data is reloaded.
-         return Redirect( Request.UrlReferrer.ToString( ) );
-      }
+            TCABS_DataLibrary.Models.UserModel userModel = UserProcessor.SelectUserForUserId(userId);
 
-      /// <summary>
-      /// Used to add the List of available Roles to the ViewBag.
-      /// </summary>
-      private void PopulateRoleDropDownList( )
-      {
-         ViewBag.RoleId = new SelectList( db.GetRoles( ), "RoleId", "Name", null );
-      }
+            UserEdit user = new UserEdit(userModel);
 
-      //public ActionResult Delete( int id )
-      //{
-      //   if( id < 1 )
-      //   {
-      //      return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
-      //   }
-      //   var userRole = UserRoleProcessor.SelectUserRole( id );
+            return View(user);
+        }
 
-      //   if( userRole == null )
-      //   {
-      //      return HttpNotFound( );
-      //   }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(UserEdit user)
+        {
+            // Make sure the entered data is valid
+            if (ModelState.IsValid)
+            {
+                // Update the user within the database
+                try
+                {
+                    UserProcessor.UpdateUser(
+                        user.UserId,
+                        user.Username,
+                        user.FirstName,
+                        user.LastName,
+                        user.EmailAddress,
+                        user.PhoneNumber);
 
-      //   var user = UserProcessor.SelectUserWithRoles( userRole.UserId );
-      //   return View( User );
-      //}
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError("", e.Message);
+                }
+            }
+            else
+            {
+                //show error
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+            }
+            return View(user);
+        }
 
-      //[HttpDelete]
-      //[ValidateAntiForgeryToken]
-      //public ActionResult Delete( UserRole _UserRole )
-      //{
-      //   if( _UserRole == null )
-      //   {
-      //      return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
-      //   }
-      //   var row = UserRoleProcessor.DeleteUserRole( _UserRole.UserId );
+        /// <summary>
+        /// This method is called when the user hits the delete button on a UserRole Row on the Details Page.
+        /// It is used to remove UserRoles from the database.
+        /// </summary>
+        /// <param name="_UserRoleId"></param>
+        /// The _UserRoleId which will be sent to the database to remove the referenced UserRole row.
+        /// <returns>This method will Redirect to the Details view with the UserRole removed.</returns>
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int _UserRoleId)
+        {
+            // Null safe check to prevent crashes.
+            if (_UserRoleId <= 0)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            try
+            {
+                // Attempt to delete UserRole from database
+                var rowsDeleted = UserRoleProcessor.DeleteUserRole(_UserRoleId);
+                // If Delete operation was unsuccessful throw an error.
+                if (rowsDeleted <= 0)
+                    throw new DataException("Unable to delete UserRole");
+            }
+            catch (DataException _Ex)
+            {
+                // Error handling
+                ModelState.AddModelError("", $"Unable to save changes due to Error: { _Ex.Message }");
+            }
+            // Redirects to page where data is reloaded.
+            return Redirect(Request.UrlReferrer.ToString());
+        }
 
-      //   return View( User );
-      //}
+        /// <summary>
+        /// This method is called when the user hits the submit button on the Details Page.
+        /// It is used to add new UserRoles to the database.
+        /// </summary>
+        /// <param name="_UserRole"></param>
+        /// The _UserRole parameter will contain the User data and the RoleId which will be sent to the database to insert a new UserRole row.
+        /// <returns> This method will return the view with either the newly added UserRole or an error message.</returns>
+        [HttpPost]
+        [MultiButton(MatchFormKey = "action", MatchFormValue = "Save")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Save(UserRole _UserRole)
+        {
+            // Null safe check to prevent crashes.
+            if (_UserRole.User == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            try
+            {
+                // Attempt to insert new UserRole to database using data from parameter
+                var data = UserRoleProcessor.InsertUserRole(_UserRole.User.UserId, _UserRole.RoleId);
+                // Checks if Insert operation was successful. If not throws an error.
+                if (data == null)
+                    throw new DataException("Role added was invalid.");
+            }
+            catch (DataException _Ex)
+            {
+                // Error handling
+                ModelState.AddModelError("", $"Unable to save changes due to Error: { _Ex.Message }");
+            }
+
+            // Redirects to page where data is reloaded.
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+
+        /// <summary>
+        /// Used to add the List of available Roles to the ViewBag.
+        /// </summary>
+        private void PopulateRoleDropDownList()
+        {
+            ViewBag.RoleId = new SelectList(db.GetRoles(), "RoleId", "Name", null);
+        }
+
+        //public ActionResult Delete( int id )
+        //{
+        //   if( id < 1 )
+        //   {
+        //      return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+        //   }
+        //   var userRole = UserRoleProcessor.SelectUserRole( id );
+
+        //   if( userRole == null )
+        //   {
+        //      return HttpNotFound( );
+        //   }
+
+        //   var user = UserProcessor.SelectUserWithRoles( userRole.UserId );
+        //   return View( User );
+        //}
+
+        //[HttpDelete]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete( UserRole _UserRole )
+        //{
+        //   if( _UserRole == null )
+        //   {
+        //      return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+        //   }
+        //   var row = UserRoleProcessor.DeleteUserRole( _UserRole.UserId );
+
+        //   return View( User );
+        //}
 
         /// <summary>
         /// Called when a GET request is made for the create user page.
@@ -187,140 +241,140 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             ViewBag.Message = "Create New User";
 
-         return View();
-      }
+            return View();
+        }
 
-      /// <summary>
-      /// Called when a POST request is made by the create user page, with attached user data.
-      /// </summary>
-      [HttpPost]
-      [ValidateAntiForgeryToken]
-      public ActionResult Create( User model )
-      {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn ) return RedirectToLogin( );
-         //if (!UserHasPermission(PermissionName.UserModify)) return RedirectToPermissionDenied();
+        /// <summary>
+        /// Called when a POST request is made by the create user page, with attached user data.
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(User model)
+        {
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            //if (!UserHasPermission(PermissionName.UserModify)) return RedirectToPermissionDenied();
 
-         // Make sure the entered data is valid
-         if( ModelState.IsValid )
-         {
-            // Generate a password salt
-            // Hash the password
-            string passwordSalt = UserLogin.CreatePasswordSalt( );
-            string password = UserLogin.HashPassword( model.Password, passwordSalt );
+            // Make sure the entered data is valid
+            if (ModelState.IsValid)
+            {
+                // Generate a password salt
+                // Hash the password
+                string passwordSalt = UserLogin.CreatePasswordSalt();
+                string password = UserLogin.HashPassword(model.Password, passwordSalt);
 
-            // Clear password info from model, just in case for security
-            model.Password = null;
-            model.ConfirmPassword = null;
+                // Clear password info from model, just in case for security
+                model.Password = null;
+                model.ConfirmPassword = null;
 
-            // Create the user within the database
+                // Create the user within the database
+                try
+                {
+                    CreateUser(
+                        model.Username,
+                        model.FirstName,
+                        model.LastName,
+                        model.EmailAddress,
+                        model.PhoneNumber,
+                        password,
+                        passwordSalt);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    ModelState.AddModelError("", e.Message);
+                }
+            }
+            else
+            {
+                //show error
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+            }
+            return View();
+        }
+
+        /// <summary>
+        /// Called when a POST request is made to the create page, with an attached file.
+        /// The attached file should contain new user information for bulk upload.
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateBulk(HttpPostedFileBase file)
+        {
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            //if (!UserHasPermission(PermissionName.UserModify)) return RedirectToPermissionDenied();
+
+            // Create data which needs to be outside the try-ctach block
+            FileCSV data = null;
+            int uploadCount = 0;
+            int failCount = 0;
+            Downloadable errorFile = null;
+
+            // Enter a try-catch block to make sure any exceptions are caught
             try
             {
-               CreateUser(
-                   model.Username,
-                   model.FirstName,
-                   model.LastName,
-                   model.EmailAddress,
-                   model.PhoneNumber,
-                   password,
-                   passwordSalt );
-               return RedirectToAction( "Index" );
-            }
-            catch( Exception e )
-            {
-               ModelState.AddModelError( "", e.Message );
-            }
-         }
-         else
-         {
-            //show error
-            var errors = ModelState.Values.SelectMany( v => v.Errors );
-         }
-         return View( );
-      }
+                // Decode the CSV file
+                data = new FileCSV(file);
 
-      /// <summary>
-      /// Called when a POST request is made to the create page, with an attached file.
-      /// The attached file should contain new user information for bulk upload.
-      /// </summary>
-      [HttpPost]
-      [ValidateAntiForgeryToken]
-      public ActionResult CreateBulk( HttpPostedFileBase file )
-      {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn ) return RedirectToLogin( );
-         //if (!UserHasPermission(PermissionName.UserModify)) return RedirectToPermissionDenied();
-
-         // Create data which needs to be outside the try-ctach block
-         FileCSV data = null;
-         int uploadCount = 0;
-         int failCount = 0;
-         Downloadable errorFile = null;
-
-         // Enter a try-catch block to make sure any exceptions are caught
-         try
-         {
-            // Decode the CSV file
-            data = new FileCSV( file );
-
-            // Make sure the headers are correct
-            // This will throw an exception if not
-            data.ValidateHeaders( new string[ ] {
+                // Make sure the headers are correct
+                // This will throw an exception if not
+                data.ValidateHeaders(new string[] {
                     "Username",  // 0
                     "FirstName", // 1
                     "LastName",  // 2
                     "Email",     // 3
                     "PhoneNo",   // 4
                     "Password"   // 5
-                } );
+                });
 
-            // Loop through each row of data
-            // Generate the list of results
-            foreach( string[ ] row in data.Row )
+                // Loop through each row of data
+                // Generate the list of results
+                foreach (string[] row in data.Row)
+                {
+                    // Generate a password salt
+                    // Hash the password
+                    string passwordSalt = UserLogin.CreatePasswordSalt();
+                    string password = UserLogin.HashPassword(row[5], passwordSalt);
+
+                    // Create the user within the database
+                    try
+                    {
+                        CreateUser(
+                            row[0], // Username
+                            row[1], // FirstName
+                            row[2], // LastName
+                            row[3], // Email
+                            Convert.ToInt32(row[4]), // PhoneNo
+                            password,
+                            passwordSalt);
+                        data.SetComment(row, "");
+                        uploadCount++;
+                    }
+                    catch (Exception e)
+                    {
+                        data.SetComment(row, e.Message);
+                        failCount++;
+                    }
+                }
+
+                // Generate and record the error file, if required
+                if (failCount > 0) errorFile = Downloadable.CreateCSV(data.GenerateErrorFile(), "errors.csv");
+            }
+            catch (Exception e)
             {
-               // Generate a password salt
-               // Hash the password
-               string passwordSalt = UserLogin.CreatePasswordSalt( );
-               string password = UserLogin.HashPassword( row[ 5 ], passwordSalt );
-
-               // Create the user within the database
-               try
-               {
-                  CreateUser(
-                      row[ 0 ], // Username
-                      row[ 1 ], // FirstName
-                      row[ 2 ], // LastName
-                      row[ 3 ], // Email
-                      Convert.ToInt32( row[ 4 ] ), // PhoneNo
-                      password,
-                      passwordSalt );
-                  data.SetComment( row, "" );
-                  uploadCount++;
-               }
-               catch( Exception e )
-               {
-                  data.SetComment( row, e.Message );
-                  failCount++;
-               }
+                // Record error message for View
+                TempData["UploadError"] = e.Message;
             }
 
-            // Generate and record the error file, if required
-            if( failCount > 0 ) errorFile = Downloadable.CreateCSV( data.GenerateErrorFile( ), "errors.csv" );
-         }
-         catch( Exception e )
-         {
-            // Record error message for View
-            TempData[ "UploadError" ] = e.Message;
-         }
+            // Record item counts for View
+            if (uploadCount > 0) TempData["UploadCount"] = uploadCount;
+            if (failCount > 0) TempData["FailCount"] = failCount;
+            Session[FileCSV.SessionLabelUploadErrorLog] = (failCount > 0) ? errorFile : null;
 
-         // Record item counts for View
-         if( uploadCount > 0 ) TempData[ "UploadCount" ] = uploadCount;
-         if( failCount > 0 ) TempData[ "FailCount" ] = failCount;
-         Session[ FileCSV.SessionLabelUploadErrorLog ] = ( failCount > 0 ) ? errorFile : null;
-
-         // All file processing has been completed
-         // Go to the normal create page
-         return RedirectToAction( "Create", "User" );
-      }
-   }
+            // All file processing has been completed
+            // Go to the normal create page
+            return RedirectToAction("Create", "User");
+        }
+    }
 }
