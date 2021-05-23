@@ -113,33 +113,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             return View(user);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         /// <summary>
         /// This method is called when the user hits the submit button on the Details Page.
         /// It is used to add new UserRoles to the database.
