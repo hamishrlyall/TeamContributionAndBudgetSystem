@@ -52,6 +52,14 @@ namespace TCABS_DataLibrary.DataAccess
       }
 
         /// <summary>
+        /// A shorthand method to open a new database connection.
+        /// </summary>
+        public static IDbConnection OpenDatabaseConnection()
+        {
+            return new System.Data.SqlClient.SqlConnection(SqlDataAccess.GetConnectionString());
+        }
+
+        /// <summary>
         /// Try to convert an SQL exception to a more user readable message.
         /// This method will always throw an exception.
         /// </summary>
