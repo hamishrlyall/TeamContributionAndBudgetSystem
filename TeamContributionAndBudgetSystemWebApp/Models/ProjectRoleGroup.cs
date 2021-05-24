@@ -22,6 +22,19 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
         [DataType(DataType.Text)]
         [StringLength(50)]
         public string Name { get; set; }
+
+        /// <summary>
+        /// This property is used when adding new links to this project role group
+        /// </summary>
+        [Display(Name = "Add Role")]
+        public int AddLink { get; set; }
+
+        /// <summary>
+        /// (optional) A list of project role links which are assigned to this project role group.
+        /// </summary>
+        [Display(Name = "Assigned Roles")]
+        public List<ProjectRoleLink> Links { get; set; }
+
         /// <summary>
         /// Default constructor.
         /// </summary>

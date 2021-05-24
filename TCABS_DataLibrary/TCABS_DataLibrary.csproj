@@ -54,6 +54,7 @@
     <Compile Include="Models\EnrollmentModel.cs" />
     <Compile Include="Models\PermissionModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
+    <Compile Include="Models\ProjectRoleLinkModel.cs" />
     <Compile Include="Models\ProjectRoleModel.cs" />
     <Compile Include="Models\ProjectRoleGroupModel.cs" />
     <Compile Include="Models\RoleModel.cs" />

@@ -143,4 +143,18 @@ INSERT ([Name], [Description], [ProjectRoleGroupId])
 VALUES ([Name], [Description], [ProjectRoleGroupId]);
 
 
+-- Create project role linkss
+MERGE INTO [ProjectRoleLink] AS Target USING (
+   VALUES
+   (1, 1, 1),
+   (2, 2, 1)
+)
+AS Source ([ProjectRoleLinkId], [ProjectRoleId], [ProjectRoleGroupId])
+ON Target.ProjectRoleLinkId = Source.ProjectRoleLinkId
+WHEN NOT MATCHED BY TARGET THEN
+INSERT ([ProjectRoleId], [ProjectRoleGroupId])
+VALUES ([ProjectRoleId], [ProjectRoleGroupId]);
+
+
+
 END;
