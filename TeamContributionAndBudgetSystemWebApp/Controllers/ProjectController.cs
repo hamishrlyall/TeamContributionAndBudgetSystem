@@ -143,7 +143,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         /// <summary>
         /// The POST edit page is called when a submit button is pressed on the project edit View.
         /// </summary>
-        /// <param name="id">The project information as returned by the View.</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Project project)
@@ -160,7 +159,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                         project.Description,
                         project.ProjectRoleGroupId);
 
-                    return RedirectToAction("Index");
+                    return RedirectToIndex();
                 }
                 catch (Exception e)
                 {
@@ -216,7 +215,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         /// <summary>
         /// The POST edit page is called when a submit button is pressed on the project edit View.
         /// </summary>
-        /// <param name="id">The project information as returned by the View.</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Project project)
@@ -231,7 +229,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             try
             {
                 ProjectProcessor.DeleteProject(project.ProjectId);
-                return RedirectToAction("Index");
+                return RedirectToIndex();
             }
             catch (Exception e)
             {
@@ -261,7 +259,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         /// <summary>
         /// The POST create page is called when a submit button is pressed on the project create View.
         /// </summary>
-        /// <param name="id">The project information as returned by the View.</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Project project)
@@ -277,7 +274,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                         project.Description,
                         project.ProjectRoleGroupId);
 
-                    return RedirectToAction("Index");
+                    return RedirectToIndex();
                 }
                 catch (Exception e)
                 {

@@ -51,7 +51,8 @@ MERGE INTO [Permission] AS Target USING (
    (3, 'UserView', 'List Users', 'Index', 'User'),
    (4, 'UserRoleModify', NULL, NULL, NULL),
    (5, 'DummyPermission1', 'Dummy Menu Item', 'Index', 'Home'),
-   (6, 'ProjectView', 'Projects', 'Index', 'Project')
+   (6, 'ViewProject', 'Projects', 'Index', 'Project'),
+   (7, 'ViewProjectRole', 'Project Roles', 'Index', 'ProjectRole')
 )
 AS Source ([PermissionId], [PermissionName], [LinkTitle], [LinkPage], [LinkController])
 ON Target.PermissionId = Source.PermissionId
@@ -89,13 +90,28 @@ MERGE INTO [RolePermission] AS Target USING (
    (9, 2, 3),
    (10, 2, 4),
    (11, 2, 5),
-   (12, 2, 6)
+   (12, 2, 6),
+   (13, 1, 7),
+   (14, 2, 7)
 )
 AS Source ([RolePermissionId], [RoleId], [PermissionId])
 ON Target.RolePermissionId = Source.RolePermissionId
 WHEN NOT MATCHED BY TARGET THEN
 INSERT ( [RoleId], [PermissionId])
 VALUES ( [RoleId], [PermissionId]);
+
+
+-- Create project roles
+MERGE INTO [ProjectRole] AS Target USING (
+   VALUES
+   (1, 'Team Leader'),
+   (2, 'Programmer')
+)
+AS Source ([ProjectRoleId], [Name])
+ON Target.[ProjectRoleId] = Source.[ProjectRoleId]
+WHEN NOT MATCHED BY TARGET THEN
+INSERT ([Name])
+VALUES ([Name]);
 
 
 -- Create project role groups

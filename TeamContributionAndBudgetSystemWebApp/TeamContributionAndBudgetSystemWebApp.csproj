@@ -127,6 +127,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Controllers\ProjectRoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -201,6 +202,10 @@
     <Content Include="Views\Project\Edit.cshtml" />
     <Content Include="Views\Project\Delete.cshtml" />
     <Content Include="Views\Project\Create.cshtml" />
+    <Content Include="Views\ProjectRole\Index.cshtml" />
+    <Content Include="Views\ProjectRole\Edit.cshtml" />
+    <Content Include="Views\ProjectRole\Delete.cshtml" />
+    <Content Include="Views\ProjectRole\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
