@@ -11,9 +11,14 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
     public class ProjectRoleGroupController : BaseController
     {
         /// <summary>
-        /// A string to use with TempData[] for project error messages shown on the Index() page.
+        /// A string to use with TempData[] for project role group error messages shown on the Index() page.
         /// </summary>
         public const string LabelError = "projectRoleGroupError";
+
+        /// <summary>
+        /// A string to use with TempData[] for project role group success messages shown on the Index() page.
+        /// </summary>
+        public const string LabelSuccess = "projectRoleGroupSuccess";
 
         /// <summary>
         /// The main page of the project role group controller.
@@ -120,7 +125,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                     ProjectProcessor.UpdateProjectRoleGroup(
                         projectRoleGroup.ProjectRoleGroupId,
                         projectRoleGroup.Name);
-
+                    TempData[LabelSuccess] = "Updated group: " + projectRoleGroup.Name;
                     return RedirectToIndex();
                 }
                 catch (Exception e)
@@ -180,12 +185,11 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             // Make sure the user is logged in
             if (!IsUserLoggedIn) return RedirectToLogin();
 
-            // TODO: Need to add some checking before Delete occurs
-
             // Delete the project from the database
             try
             {
                 ProjectProcessor.DeleteProjectRoleGroup(projectRoleGroup.ProjectRoleGroupId);
+                TempData[LabelSuccess] = "Deleted group: " + projectRoleGroup.Name;
                 return RedirectToIndex();
             }
             catch (Exception e)
@@ -222,7 +226,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 try
                 {
                     ProjectProcessor.CreateProjectRoleGroup(projectRoleGroup.Name);
-
+                    TempData[LabelSuccess] = "Created new group: " + projectRoleGroup.Name;
                     return RedirectToIndex();
                 }
                 catch (Exception e)
