@@ -5,7 +5,12 @@
 }
 
 <h2>Index</h2>
-
+@if (TempData[TeamContributionAndBudgetSystemWebApp.Controllers.ProjectRoleController.LabelError] != null)
+{
+    <p class="text-danger">
+        @TempData[TeamContributionAndBudgetSystemWebApp.Controllers.ProjectRoleController.LabelError]
+    </p>
+}
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>

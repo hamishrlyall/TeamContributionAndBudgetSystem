@@ -52,7 +52,8 @@ MERGE INTO [Permission] AS Target USING (
    (4, 'UserRoleModify', NULL, NULL, NULL),
    (5, 'DummyPermission1', 'Dummy Menu Item', 'Index', 'Home'),
    (6, 'ViewProject', 'Projects', 'Index', 'Project'),
-   (7, 'ViewProjectRole', 'Project Roles', 'Index', 'ProjectRole')
+   (7, 'ViewProjectRole', 'Project Roles', 'Index', 'ProjectRole'),
+   (8, 'ViewProjectRoleGroup', 'Project Role Groups', 'Index', 'ProjectRoleGroup')
 )
 AS Source ([PermissionId], [PermissionName], [LinkTitle], [LinkPage], [LinkController])
 ON Target.PermissionId = Source.PermissionId
@@ -92,7 +93,9 @@ MERGE INTO [RolePermission] AS Target USING (
    (11, 2, 5),
    (12, 2, 6),
    (13, 1, 7),
-   (14, 2, 7)
+   (14, 2, 7),
+   (15, 1, 8),
+   (16, 2, 8)
 )
 AS Source ([RolePermissionId], [RoleId], [PermissionId])
 ON Target.RolePermissionId = Source.RolePermissionId

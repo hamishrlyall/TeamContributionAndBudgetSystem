@@ -86,7 +86,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             {
                 // Get the project data
                 var projectModel = ProjectProcessor.GetProject(projectId);
-                if (projectModel == null) return RedirectToIndexProjectNotFound(projectId);
+                if (projectModel == null) return RedirectToIndexIdNotFound(projectId);
 
                 // Get name of assigned project role group
                 var roleGroup = ProjectProcessor.GetProjectRoleGroup(projectModel.ProjectRoleGroupId);
@@ -121,7 +121,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             {
                 // Get the project data
                 var projectModel = ProjectProcessor.GetProject(projectId);
-                if (projectModel == null) return RedirectToIndexProjectNotFound(projectId);
+                if (projectModel == null) return RedirectToIndexIdNotFound(projectId);
 
                 // Get all project role groups from the database
                 var projectRoleGroupModels = ProjectProcessor.GetAllProjectRoleGroups();
@@ -200,7 +200,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             {
                 // Get the project data
                 var projectModel = ProjectProcessor.GetProject(projectId);
-                if (projectModel == null) return RedirectToIndexProjectNotFound(projectId);
+                if (projectModel == null) return RedirectToIndexIdNotFound(projectId);
 
                 // Convert the model data to non-model data
                 // Pass the data to the view
@@ -318,7 +318,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         /// Also displays an error message saying that the requested project does not exist.
         /// </summary>
         /// <param name="projectId">The project (ID) which could no be found.</param>
-        private ActionResult RedirectToIndexProjectNotFound(int projectId)
+        private ActionResult RedirectToIndexIdNotFound(int projectId)
         {
             TempData[LabelError] = "A project with ID:" + projectId + " does not appear to exist";
             return RedirectToIndex();

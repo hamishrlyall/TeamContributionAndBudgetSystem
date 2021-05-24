@@ -108,6 +108,9 @@
     <Build Include="dbo\Stored Procedures\spGetAllProjectRoles.sql" />
     <Build Include="dbo\Stored Procedures\spGetProjectRole.sql" />
     <Build Include="dbo\Stored Procedures\spUpdateProjectRole.sql" />
+    <Build Include="dbo\Stored Procedures\spCreateProjectRoleGroup.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteProjectRoleGroup.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateProjectRoleGroup.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="LoadTestData">
