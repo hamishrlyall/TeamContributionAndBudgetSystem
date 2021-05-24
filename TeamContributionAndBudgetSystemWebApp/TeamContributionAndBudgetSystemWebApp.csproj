@@ -131,6 +131,7 @@
     <Compile Include="Controllers\UnitController.cs" />
     <Compile Include="Controllers\UnitOfferingController.cs" />
     <Compile Include="Controllers\ProjectRoleController.cs" />
+    <Compile Include="Controllers\ProjectRoleGroupController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\YearController.cs" />
     <Compile Include="Global.asax.cs">
@@ -231,6 +232,11 @@
     <Content Include="Views\ProjectRole\Edit.cshtml" />
     <Content Include="Views\ProjectRole\Delete.cshtml" />
     <Content Include="Views\ProjectRole\Create.cshtml" />
+    <Content Include="Views\ProjectRoleGroup\Index.cshtml" />
+    <Content Include="Views\ProjectRoleGroup\Edit.cshtml" />
+    <Content Include="Views\ProjectRoleGroup\Delete.cshtml" />
+    <Content Include="Views\ProjectRoleGroup\Create.cshtml" />
+    <Content Include="Views\ProjectRoleGroup\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

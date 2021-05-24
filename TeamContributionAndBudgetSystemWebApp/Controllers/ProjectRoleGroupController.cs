@@ -8,16 +8,16 @@ using TeamContributionAndBudgetSystemWebApp.Models;
 
 namespace TeamContributionAndBudgetSystemWebApp.Controllers
 {
-    public class ProjectRoleController : BaseController
+    public class ProjectRoleGroupController : BaseController
     {
         /// <summary>
         /// A string to use with TempData[] for project error messages shown on the Index() page.
         /// </summary>
-        public const string LabelError = "projectRoleError";
+        public const string LabelError = "projectRoleGroupError";
 
         /// <summary>
-        /// The main page of the project role controller.
-        /// Shows a list of all project roles in the system.
+        /// The main page of the project role group controller.
+        /// Shows a list of all project role groups in the system.
         /// </summary>
         [HttpGet]
         public ActionResult Index()
@@ -29,42 +29,42 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             // Set the page message
             ViewBag.Message = "Project List";
 
-            // Get all project roles from the database
-            var projectRoleModels = ProjectProcessor.GetAllProjectRoles();
+            // Get all project role groups from the database
+            var projectRoleGroupModels = ProjectProcessor.GetAllProjectRoleGroups();
 
             // Convert the list to the correct type
-            List<ProjectRole> projectRoles = new List<ProjectRole>();
-            foreach (var p in projectRoleModels) projectRoles.Add(new ProjectRole(p));
+            List<ProjectRoleGroup> projectRoleGroups = new List<ProjectRoleGroup>();
+            foreach (var p in projectRoleGroupModels) projectRoleGroups.Add(new ProjectRoleGroup(p));
 
-            // Return the view, with the list of project roles
-            return View(projectRoles);
+            // Return the view, with the list of project role groups
+            return View(projectRoleGroups);
         }
 
         /// <summary>
-        /// The edit page shows information about a specific project role.
+        /// The details page shows information about a specific project role group.
         /// </summary>
-        /// <param name="id">The ID of the project role to display.</param>
+        /// <param name="id">The ID of the project role group to display.</param>
         [HttpGet]
-        public ActionResult Edit(int? id)
+        public ActionResult Details(int? id)
         {
             // Make sure the user is logged in
             if (!IsUserLoggedIn) return RedirectToLogin();
 
-            // Check if a project role ID was provided
+            // Check if a project role group ID was provided
             if (id == null) return RedirectToIndex();
-            int projectRoleId = (int)id;
+            int projectRoleGroupId = (int)id;
 
             // Entry try-catch from here
             // Make sure any errors are displayed
             try
             {
-                // Get the project role data
-                var projectRoleModel = ProjectProcessor.GetProjectRole(projectRoleId);
-                if (projectRoleModel == null) return RedirectToIndexIdNotFound(projectRoleId);
+                // Get the project role group data
+                var projectRoleGroupModel = ProjectProcessor.GetProjectRoleGroup(projectRoleGroupId);
+                if (projectRoleGroupModel == null) return RedirectToIndexIdNotFound(projectRoleGroupId);
 
                 // Convert the model data to non-model data
                 // Pass the data to the view
-                return View(new ProjectRole(projectRoleModel));
+                return View(new ProjectRoleGroup(projectRoleGroupModel));
             }
             catch (Exception e)
             {
@@ -73,21 +73,53 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         }
 
         /// <summary>
-        /// The POST edit page is called when a submit button is pressed on the project role edit View.
+        /// The edit page shows information about a specific project role group.
+        /// </summary>
+        /// <param name="id">The ID of the project role group to display.</param>
+        [HttpGet]
+        public ActionResult Edit(int? id)
+        {
+            // Make sure the user is logged in
+            if (!IsUserLoggedIn) return RedirectToLogin();
+
+            // Check if a project role group ID was provided
+            if (id == null) return RedirectToIndex();
+            int projectRoleGroupId = (int)id;
+
+            // Entry try-catch from here
+            // Make sure any errors are displayed
+            try
+            {
+                // Get the project role data
+                var projectRoleGroupModel = ProjectProcessor.GetProjectRoleGroup(projectRoleGroupId);
+                if (projectRoleGroupModel == null) return RedirectToIndexIdNotFound(projectRoleGroupId);
+
+                // Convert the model data to non-model data
+                // Pass the data to the view
+                return View(new ProjectRoleGroup(projectRoleGroupModel));
+            }
+            catch (Exception e)
+            {
+                return RedirectToIndex(e);
+            }
+        }
+
+        /// <summary>
+        /// The POST edit page is called when a submit button is pressed on the project role group edit View.
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ProjectRole projectRole)
+        public ActionResult Edit(ProjectRoleGroup projectRoleGroup)
         {
             // Make sure the entered data is valid
             if (ModelState.IsValid)
             {
-                // Update the project role within the database
+                // Update the project role group within the database
                 try
                 {
-                    ProjectProcessor.UpdateProjectRole(
-                        projectRole.ProjectRoleId,
-                        projectRole.Name);
+                    ProjectProcessor.UpdateProjectRoleGroup(
+                        projectRoleGroup.ProjectRoleGroupId,
+                        projectRoleGroup.Name);
 
                     return RedirectToIndex();
                 }
@@ -103,34 +135,34 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             }
 
             // Return to same page with same data
-            return View(projectRole);
+            return View(projectRoleGroup);
         }
 
         /// <summary>
-        /// The delete page shows a confirmation message about deleting the project role.
+        /// The delete page shows a confirmation message about deleting the project role group.
         /// </summary>
-        /// <param name="id">The ID of the project role to display.</param>
+        /// <param name="id">The ID of the project role group to display.</param>
         [HttpGet]
         public ActionResult Delete(int? id)
         {
             // Make sure the user is logged in
             if (!IsUserLoggedIn) return RedirectToLogin();
 
-            // Check if a project role ID was provided
+            // Check if a project role group ID was provided
             if (id == null) return RedirectToIndex();
-            int projectRoleId = (int)id;
+            int projectRoleGroupId = (int)id;
 
             // Entry try-catch from here
             // Make sure any errors are displayed
             try
             {
-                // Get the project role data
-                var projectRoleModel = ProjectProcessor.GetProjectRole(projectRoleId);
-                if (projectRoleModel == null) return RedirectToIndexIdNotFound(projectRoleId);
+                // Get the project role group data
+                var projectRoleGroupModel = ProjectProcessor.GetProjectRoleGroup(projectRoleGroupId);
+                if (projectRoleGroupModel == null) return RedirectToIndexIdNotFound(projectRoleGroupId);
 
                 // Convert the model data to non-model data
                 // Pass the data to the view
-                return View(new ProjectRole(projectRoleModel));
+                return View(new ProjectRoleGroup(projectRoleGroupModel));
             }
             catch (Exception e)
             {
@@ -139,11 +171,11 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         }
 
         /// <summary>
-        /// The POST edit page is called when a submit button is pressed on the project role edit View.
+        /// The POST edit page is called when a submit button is pressed on the project role group edit View.
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(ProjectRole projectRole)
+        public ActionResult Delete(ProjectRoleGroup projectRoleGroup)
         {
             // Make sure the user is logged in
             if (!IsUserLoggedIn) return RedirectToLogin();
@@ -153,7 +185,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             // Delete the project from the database
             try
             {
-                ProjectProcessor.DeleteProjectRole(projectRole.ProjectRoleId);
+                ProjectProcessor.DeleteProjectRoleGroup(projectRoleGroup.ProjectRoleGroupId);
                 return RedirectToIndex();
             }
             catch (Exception e)
@@ -164,7 +196,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         }
 
         /// <summary>
-        /// The create page is used to create a new project role.
+        /// The create page is used to create a new project role group.
         /// </summary>
         [HttpGet]
         public ActionResult Create()
@@ -177,11 +209,11 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         }
 
         /// <summary>
-        /// The POST create page is called when a submit button is pressed on the project role create View.
+        /// The POST create page is called when a submit button is pressed on the project role group create View.
         /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ProjectRole projectRole)
+        public ActionResult Create(ProjectRoleGroup projectRoleGroup)
         {
             // Make sure the entered data is valid
             if (ModelState.IsValid)
@@ -189,7 +221,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 // Update the project within the database
                 try
                 {
-                    ProjectProcessor.CreateProjectRole(projectRole.Name);
+                    ProjectProcessor.CreateProjectRoleGroup(projectRoleGroup.Name);
 
                     return RedirectToIndex();
                 }
@@ -205,7 +237,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             }
 
             // Return to same page with same data
-            return View(projectRole);
+            return View(projectRoleGroup);
         }
 
         /// <summary>
@@ -230,10 +262,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         /// A shorthand method for getting a RedirectToAction() leading to the index page.
         /// Also displays an error message saying that the requested project role does not exist.
         /// </summary>
-        /// <param name="projectRoleId">The project role (ID) which could no be found.</param>
-        private ActionResult RedirectToIndexIdNotFound(int projectRoleId)
+        /// <param name="projectRoleGroupId">The project role (ID) which could no be found.</param>
+        private ActionResult RedirectToIndexIdNotFound(int projectRoleGroupId)
         {
-            TempData[LabelError] = "A project-role with ID:" + projectRoleId + " does not appear to exist";
+            TempData[LabelError] = "A project-role-group with ID:" + projectRoleGroupId + " does not appear to exist";
             return RedirectToIndex();
         }
 
