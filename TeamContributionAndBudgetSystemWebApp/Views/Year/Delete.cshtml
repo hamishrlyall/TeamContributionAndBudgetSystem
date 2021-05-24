@@ -1,0 +1,32 @@
+﻿@model TeamContributionAndBudgetSystemWebApp.Models.TCABS_Db_Context
+
+@{
+   ViewBag.Title = "Delete Year";
+}
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+   <h4>Year</h4>
+   <hr />
+   <dl class="dl-horizontal">
+      <dt>
+         @Html.DisplayNameFor( model => model.Year )
+      </dt>
+
+      <dd>
+         @Html.DisplayFor( model => model.Year.YearValue )
+      </dd>
+
+   </dl>
+
+   @using( Html.BeginForm( ) )
+   {
+      @Html.AntiForgeryToken( )
+      @Html.ValidationSummary( true, "", new { @class = "text-danger" } )
+      @Html.HiddenFor( model => model.Year.YearId )
+      <div class="form-actions no-color">
+         <input type="submit" value="Delete" class="btn btn-default" /> |
+         @Html.ActionLink( "Back to List", "Index" )
+      </div>
+   }
+</div>

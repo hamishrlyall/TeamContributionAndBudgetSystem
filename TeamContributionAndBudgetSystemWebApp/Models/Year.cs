@@ -10,6 +10,11 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
 {
    public class Year
    {
+
+      public Year( ) 
+      {
+
+      }
       /// <summary>
       /// A constructor which copies the information from a database year model.
       /// </summary>

@@ -1,0 +1,89 @@
+﻿@model TeamContributionAndBudgetSystemWebApp.Models.TCABS_Db_Context
+
+@{
+   ViewBag.Title = "Edit Unit Offering";
+}
+
+   @using (Html.BeginForm())
+   {
+      @Html.AntiForgeryToken()
+        
+<div class="form-horizontal">
+   <h4>UnitOffering</h4>
+   <hr />
+   @Html.ValidationSummary( true, "", new { @class = "text-danger" } )
+   @Html.HiddenFor( model => model.UnitOfferingId )
+   <div class="form-group">
+      @Html.LabelFor( model => model.UnitOffering.Unit, htmlAttributes: new { @class = "control-label col-md-2" } )
+      <div class="col-md-10">
+         @Html.DropDownList( "UnitId", String.Empty )
+         @Html.ValidationMessageFor( model => model.UnitOffering.UnitId, "", new { @class = "text-danger" } )
+      </div>
+   </div>
+
+   <div class="form-group">
+      @Html.LabelFor( model => model.UnitOffering.TeachingPeriod, htmlAttributes: new { @class = "control-label col-md-2" } )
+      <div class="col-md-10">
+         @Html.DropDownList( "TeachingPeriodId", String.Empty )
+         @Html.ValidationMessageFor( model => model.UnitOffering.TeachingPeriodId, "", new { @class = "text-danger" } )
+      </div>
+   </div>
+
+   <div class="form-group">
+      @Html.LabelFor( model => model.UnitOffering.Year, htmlAttributes: new { @class = "control-label col-md-2" } )
+      <div class="col-md-10">
+         @Html.DropDownList( "YearId", String.Empty )
+         @Html.ValidationMessageFor( model => model.UnitOffering.YearId, "", new { @class = "text-danger" } )
+      </div>
+   </div>
+
+   <div class="form-group">
+      @Html.LabelFor( model => model.UnitOffering.Convenor, htmlAttributes: new { @class = "control-label col-md-2" } )
+      <div class="col-md-10">
+         @Html.DropDownList( "ConvenorId", String.Empty )
+         @Html.ValidationMessageFor( model => model.UnitOffering.ConvenorId, "", new { @class = "text-danger" } )
+      </div>
+   </div>
+   @*<div class="form-group">
+            @Html.LabelFor(model => model.ConvenorId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               @Html.EditorFor(model => model.ConvenorId, new { htmlAttributes = new { @class = "form-control" } })
+               @Html.ValidationMessageFor(model => model.ConvenorId, "", new { @class = "text-danger" })
+            </div>
+      </div>
+
+      <div class="form-group">
+            @Html.LabelFor(model => model.UnitId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               @Html.EditorFor(model => model.UnitId, new { htmlAttributes = new { @class = "form-control" } })
+               @Html.ValidationMessageFor(model => model.UnitId, "", new { @class = "text-danger" })
+            </div>
+      </div>
+
+      <div class="form-group">
+            @Html.LabelFor(model => model.TeachingPeriodId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               @Html.EditorFor(model => model.TeachingPeriodId, new { htmlAttributes = new { @class = "form-control" } })
+               @Html.ValidationMessageFor(model => model.TeachingPeriodId, "", new { @class = "text-danger" })
+            </div>
+      </div>
+
+      <div class="form-group">
+            @Html.LabelFor(model => model.YearId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               @Html.EditorFor(model => model.YearId, new { htmlAttributes = new { @class = "form-control" } })
+               @Html.ValidationMessageFor(model => model.YearId, "", new { @class = "text-danger" })
+            </div>
+      </div>*@
+
+   <div class="form-group">
+      <div class="col-md-offset-2 col-md-10">
+         <input type="submit" value="Save" class="btn btn-default" />
+      </div>
+   </div>
+</div>
+   }
+    
+   <div>
+      @Html.ActionLink("Back to List", "Index")
+   </div>

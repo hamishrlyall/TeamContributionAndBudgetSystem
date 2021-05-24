@@ -125,7 +125,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\EnrollmentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TeachingPeriodController.cs" />
     <Compile Include="Controllers\UnitController.cs" />
@@ -198,16 +197,30 @@
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Forbidden.cshtml" />
+    <Content Include="Views\Unit\Details.cshtml" />
+    <Content Include="Views\Unit\Index.cshtml" />
+    <Content Include="Views\Year\Index.cshtml" />
+    <Content Include="Views\Year\Details.cshtml" />
+    <Content Include="Views\UnitOffering\Index.cshtml" />
+    <Content Include="Views\UnitOffering\Details.cshtml" />
+    <Content Include="Views\TeachingPeriod\Details.cshtml" />
+    <Content Include="Views\TeachingPeriod\Index.cshtml" />
+    <Content Include="Views\UnitOffering\Create.cshtml" />
+    <Content Include="Views\TeachingPeriod\Create.cshtml" />
+    <Content Include="Views\TeachingPeriod\Edit.cshtml" />
+    <Content Include="Views\Unit\Edit.cshtml" />
+    <Content Include="Views\Unit\Create.cshtml" />
+    <Content Include="Views\UnitOffering\Edit.cshtml" />
+    <Content Include="Views\Year\Create.cshtml" />
+    <Content Include="Views\Year\Delete.cshtml" />
+    <Content Include="Views\UnitOffering\Delete.cshtml" />
+    <Content Include="Views\Unit\Delete.cshtml" />
+    <Content Include="Views\TeachingPeriod\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Enrollment\" />
     <Folder Include="Views\Menu\" />
-    <Folder Include="Views\TeachingPeriod\" />
-    <Folder Include="Views\UnitEnrollment\" />
-    <Folder Include="Views\UnitOffering\" />
-    <Folder Include="Views\Unit\" />
-    <Folder Include="Views\Year\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

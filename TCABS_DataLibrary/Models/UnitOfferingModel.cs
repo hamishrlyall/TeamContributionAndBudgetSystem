@@ -13,5 +13,7 @@ namespace TCABS_DataLibrary.Models
       public int UnitId { get; set; }
       public int TeachingPeriodId { get; set; }
       public int YearId { get; set; }
+
+      public virtual List<EnrollmentModel> Enrollments { get; set; }
    }
 }

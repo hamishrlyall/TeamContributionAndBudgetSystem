@@ -1,0 +1,40 @@
+﻿@model TCABS_DataLibrary.Models.TCABS_Db_Context
+
+@{
+   ViewBag.Title = "Details";
+}
+
+<div>
+   <h4> Unit Offering Details</h4>
+   <hr />
+   <dl class="dl-horizontal">
+
+      <dt>
+         @Html.DisplayNameFor( model => model.Unit.Name )
+      </dt>
+
+      <dd>
+         @Html.DisplayFor( model => model.Unit.Name )
+      </dd>
+
+      <dt>
+         @Html.DisplayNameFor( model => model.TeachingPeriod.Name )
+      </dt>
+
+      <dd>
+         @Html.DisplayFor( model => model.TeachingPeriod.Name )
+      </dd>
+
+      <dt>
+         @Html.DisplayNameFor( model => model.Convenor.Name )
+      </dt>
+
+      <dd>
+         @Html.DisplayFor( model => model.Convenor.Name )
+      </dd>
+   </dl>
+</div>
+<p>
+   @Html.ActionLink( "Edit", "Edit", new { id = Model.UnitId } ) |
+   @Html.ActionLink( "Back to List", "Index" )
+</p>

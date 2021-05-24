@@ -12,7 +12,8 @@ BEGIN
 
    INSERT INTO [dbo].[UserRole]([UserId], [RoleId])
    SELECT @userid, @roleid
-   WHERE NOT EXISTS ( SELECT 1 FROM [dbo].[UserRole] WHERE [UserId] = @userid AND [RoleId] = @roleid );
+   WHERE NOT EXISTS ( SELECT 1 FROM [dbo].[UserRole] 
+   WHERE [UserId] = @userid AND [RoleId] = @roleid );
 
    --IF @@rowcount = 0 RETURN 99;
 

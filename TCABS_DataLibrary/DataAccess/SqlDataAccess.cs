@@ -51,46 +51,54 @@ namespace TCABS_DataLibrary.DataAccess
          }
       }
 
-        /// <summary>
-        /// Try to convert an SQL exception to a more user readable message.
-        /// This method will always throw an exception.
-        /// </summary>
-        public static void TryConvertExceptionMessage(Exception exception)
-        {
-            // Get the exception message
-            string message = exception.Message;
+      public static int SelectCount( string _Sql, DynamicParameters _Data )
+      {
+         using( IDbConnection con = new SqlConnection( GetConnectionString( ) ) )
+         {
+            return con.ExecuteScalar<int>( _Sql, _Data, commandType: CommandType.StoredProcedure );
+         }
+      }
 
-            // Check for violation of unique key constraint
-            if (message.StartsWith("Violation of UNIQUE KEY constraint"))
-            {
-                // Example:
-                // Violation of UNIQUE KEY constraint 'UQ_User_Username'. Cannot insert duplicate key in object 'dbo.User'. The duplicate key value is (TestUser1).
+      /// <summary>
+      /// Try to convert an SQL exception to a more user readable message.
+      /// This method will always throw an exception.
+      /// </summary>
+      public static void TryConvertExceptionMessage(Exception exception)
+      {
+         // Get the exception message
+         string message = exception.Message;
 
-                // Locate the unique constraint name
-                int indexBegin = message.IndexOf('\'');
-                if (indexBegin == -1) throw exception;
-                int indexEnd = message.IndexOf('\'', indexBegin + 1);
-                if (indexEnd == -1) throw exception;
+         // Check for violation of unique key constraint
+         if (message.StartsWith("Violation of UNIQUE KEY constraint"))
+         {
+               // Example:
+               // Violation of UNIQUE KEY constraint 'UQ_User_Username'. Cannot insert duplicate key in object 'dbo.User'. The duplicate key value is (TestUser1).
 
-                // Locate column name within constraint name
-                indexBegin = message.LastIndexOf('_', indexEnd);
-                if (indexBegin == -1) throw exception;
-                string columnName = message.Substring(indexBegin + 1, indexEnd - indexBegin - 1);
+               // Locate the unique constraint name
+               int indexBegin = message.IndexOf('\'');
+               if (indexBegin == -1) throw exception;
+               int indexEnd = message.IndexOf('\'', indexBegin + 1);
+               if (indexEnd == -1) throw exception;
 
-                // Locate duplicate value
-                indexBegin = message.IndexOf('(');
-                if (indexBegin == -1) throw exception;
-                indexEnd = message.LastIndexOf(')');
-                if (indexEnd == -1) throw exception;
-                string value = message.Substring(indexBegin + 1, indexEnd - indexBegin - 1);
+               // Locate column name within constraint name
+               indexBegin = message.LastIndexOf('_', indexEnd);
+               if (indexBegin == -1) throw exception;
+               string columnName = message.Substring(indexBegin + 1, indexEnd - indexBegin - 1);
 
-                // Throw new exception
-                throw new Exception("The value (" + value + ") already exists within column " + columnName + ". Values in this column must be unique.");
-            }
+               // Locate duplicate value
+               indexBegin = message.IndexOf('(');
+               if (indexBegin == -1) throw exception;
+               indexEnd = message.LastIndexOf(')');
+               if (indexEnd == -1) throw exception;
+               string value = message.Substring(indexBegin + 1, indexEnd - indexBegin - 1);
 
-            // If here then failed to identify exception type
-            // Rethrow the same exception
-            throw exception;
-        }
+               // Throw new exception
+               throw new Exception("The value (" + value + ") already exists within column " + columnName + ". Values in this column must be unique.");
+         }
+
+         // If here then failed to identify exception type
+         // Rethrow the same exception
+         throw exception;
+      }
    }
 }

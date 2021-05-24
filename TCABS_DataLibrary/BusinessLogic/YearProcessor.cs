@@ -23,20 +23,41 @@ namespace TCABS_DataLibrary.BusinessLogic
          return SqlDataAccess.LoadData<YearModel>( sql );
       }
 
-      public static void CreateYear( int year )
+      public static YearModel InsertYear( int year )
       {
-         try
-         {
-            using( IDbConnection con = new SqlConnection( GetConnectionString( ) ) )
-            {
-               string sql = "spInsertYear";
-               con.Query<YearModel>( sql, new { Year = year }, commandType: CommandType.StoredProcedure );
-            }
-         }
-         catch( Exception e )
-         {
-            SqlDataAccess.TryConvertExceptionMessage( e );
-         }
+         string sql = "spInsertYear";
+         var data = new DynamicParameters( );
+         data.Add( "year", year );
+         data.Add( "yearid", null );
+
+         return SqlDataAccess.ExecuteStoredProcedure<YearModel>( sql, data );
+      }
+
+      public static YearModel SelectYearForYearId( int yearId )
+      {
+         string sql = "spSelectYearForYearId";
+
+         var dynamicData = new DynamicParameters( );
+         dynamicData.Add( "YearId", yearId );
+
+         return SqlDataAccess.ExecuteStoredProcedure<YearModel>( sql, dynamicData );
+      }
+
+      public static YearModel SelectYearForYearValue( int year )
+      {
+         string sql = "spSelectYearForYearValue";
+
+         var dynamicData = new DynamicParameters( );
+         dynamicData.Add( "year", year );
+
+         return SqlDataAccess.ExecuteStoredProcedure<YearModel>( sql, dynamicData );
+      }
+
+      public static int DeleteYear( int yearId )
+      {
+         string sql = "spDeleteYear";
+
+         return SqlDataAccess.DeleteRecord( sql, new { YearId = yearId } );
       }
    }
 }

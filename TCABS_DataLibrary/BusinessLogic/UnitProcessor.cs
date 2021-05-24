@@ -20,17 +20,57 @@ namespace TCABS_DataLibrary.BusinessLogic
       {
          string sql = "spSelectUnits";
 
-         return SqlDataAccess.LoadData( sql );
+         return SqlDataAccess.LoadData<UnitModel>( sql );
       }
 
-      public static void CreateUnit( string unitName )
+      public static UnitModel InsertUnit( string name )
+      {
+         string sql = @"spInsertUnit";
+         var data = new DynamicParameters( );
+         data.Add( "name", name );
+         data.Add( "unitid", null );
+
+         return SqlDataAccess.ExecuteStoredProcedure<UnitModel>( sql, data );
+      }
+
+      public static UnitModel SelectUnitForUnitId( int unitId )
+      {
+         string sql = "spSelectUnitForUnitId";
+
+         var dynamicData = new DynamicParameters( );
+         dynamicData.Add( "UnitId", unitId );
+
+         return SqlDataAccess.ExecuteStoredProcedure<UnitModel>( sql, dynamicData );
+      }
+
+      public static UnitModel SelectUnitForName( string name )
+      {
+         string sql = "spSelectUnitForName";
+         var dynamicData = new DynamicParameters( );
+         dynamicData.Add( "name", name );
+
+         return SqlDataAccess.ExecuteStoredProcedure<UnitModel>( sql, dynamicData );
+      }
+
+      public static int DeleteUnit( int unitId )
+      {
+         string sql = "spDeleteUnit";
+
+         return SqlDataAccess.DeleteRecord( sql, new { UnitId = unitId } );
+      }
+
+      public static void EditUnit( UnitModel unit )
       {
          try
          {
             using( IDbConnection con = new SqlConnection( GetConnectionString( ) ) )
             {
-               string sql = "spInsertUnit";
-               con.Query<UnitModel>( sql = new { UnitName = unitName }, commandType.StoredProcedure );
+               string sql = "spUpdateUnit";
+               var dynamicData = new DynamicParameters( );
+               dynamicData.Add( "unitid", unit.UnitId );
+               dynamicData.Add( "name", unit.Name );
+
+               con.Query<UnitModel>( sql, dynamicData, commandType: CommandType.StoredProcedure );
             }
          }
          catch( Exception e )

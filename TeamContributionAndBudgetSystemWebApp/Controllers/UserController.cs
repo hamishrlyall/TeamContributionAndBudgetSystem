@@ -122,16 +122,27 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          }
          try
          {
+            if( _UserRole.RoleId <= 0 )
+               throw new DataException( "No Role selected." );
+
+            var rowsFound = UserRoleProcessor.SelectUserRoleForUserIdAndRoleId( _UserRole.User.UserId, _UserRole.RoleId );
+            if( rowsFound > 0 )
+               throw new DataException( $"User is already assigned this Role." );
+
             // Attempt to insert new UserRole to database using data from parameter
             var data = UserRoleProcessor.InsertUserRole( _UserRole.User.UserId, _UserRole.RoleId );
             // Checks if Insert operation was successful. If not throws an error.
             if( data == null )
                throw new DataException( "Role added was invalid." );
          }
-         catch( DataException _Ex )
+         catch( Exception _Ex )
          {
             // Error handling
             ModelState.AddModelError( "", $"Unable to save changes due to Error: { _Ex.Message }" );
+            db.GetUser( _UserRole.User.UserId );
+            PopulateRoleDropDownList( );
+
+            return View( db );
          }
 
          // Redirects to page where data is reloaded.
