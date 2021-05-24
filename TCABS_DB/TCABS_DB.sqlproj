@@ -111,6 +111,7 @@
     <Build Include="dbo\Stored Procedures\spCreateProjectRoleGroup.sql" />
     <Build Include="dbo\Stored Procedures\spDeleteProjectRoleGroup.sql" />
     <Build Include="dbo\Stored Procedures\spUpdateProjectRoleGroup.sql" />
+    <Build Include="dbo\Tables\ProjectRoleLink.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="LoadTestData">

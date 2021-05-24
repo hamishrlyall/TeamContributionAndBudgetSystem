@@ -20,6 +20,11 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         public const string LabelError = "projectError";
 
         /// <summary>
+        /// A string to use with TempData[] for project success messages shown on the Index() page.
+        /// </summary>
+        public const string LabelSuccess = "projectSuccess";
+
+        /// <summary>
         /// The main page of the project controller.
         /// Shows a list of all projects in the system.
         /// </summary>
@@ -158,7 +163,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                         project.Name,
                         project.Description,
                         project.ProjectRoleGroupId);
-
+                    TempData[LabelSuccess] = "Updated project: " + project.Name;
                     return RedirectToIndex();
                 }
                 catch (Exception e)
@@ -222,13 +227,11 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             // Make sure the user is logged in
             if (!IsUserLoggedIn) return RedirectToLogin();
 
-            // TODO: Need to add some checking before Delete occurs
-            // Cannot delete a project if there is a team assigned.
-
             // Delete the project from the database
             try
             {
                 ProjectProcessor.DeleteProject(project.ProjectId);
+                TempData[LabelSuccess] = "Deleted project: " + project.Name;
                 return RedirectToIndex();
             }
             catch (Exception e)
@@ -273,7 +276,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                         project.Name,
                         project.Description,
                         project.ProjectRoleGroupId);
-
+                    TempData[LabelSuccess] = "Created new project: " + project.Name;
                     return RedirectToIndex();
                 }
                 catch (Exception e)

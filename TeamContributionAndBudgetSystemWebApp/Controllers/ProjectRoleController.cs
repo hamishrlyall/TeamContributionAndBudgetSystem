@@ -11,9 +11,14 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
     public class ProjectRoleController : BaseController
     {
         /// <summary>
-        /// A string to use with TempData[] for project error messages shown on the Index() page.
+        /// A string to use with TempData[] for project role error messages shown on the Index() page.
         /// </summary>
         public const string LabelError = "projectRoleError";
+
+        /// <summary>
+        /// A string to use with TempData[] for project role success messages shown on the Index() page.
+        /// </summary>
+        public const string LabelSuccess = "projectRoleSuccess";
 
         /// <summary>
         /// The main page of the project role controller.
@@ -88,7 +93,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                     ProjectProcessor.UpdateProjectRole(
                         projectRole.ProjectRoleId,
                         projectRole.Name);
-
+                    TempData[LabelSuccess] = "Updated role: " + projectRole.Name;
                     return RedirectToIndex();
                 }
                 catch (Exception e)
@@ -148,12 +153,11 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             // Make sure the user is logged in
             if (!IsUserLoggedIn) return RedirectToLogin();
 
-            // TODO: Need to add some checking before Delete occurs
-
             // Delete the project from the database
             try
             {
                 ProjectProcessor.DeleteProjectRole(projectRole.ProjectRoleId);
+                TempData[LabelSuccess] = "Deleted role: " + projectRole.Name;
                 return RedirectToIndex();
             }
             catch (Exception e)
@@ -190,7 +194,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 try
                 {
                     ProjectProcessor.CreateProjectRole(projectRole.Name);
-
+                    TempData[LabelSuccess] = "Created new role: " + projectRole.Name;
                     return RedirectToIndex();
                 }
                 catch (Exception e)

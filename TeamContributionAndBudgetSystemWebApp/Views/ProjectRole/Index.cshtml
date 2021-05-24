@@ -5,6 +5,12 @@
 }
 
 <h2>Index</h2>
+@if (TempData[TeamContributionAndBudgetSystemWebApp.Controllers.ProjectRoleController.LabelSuccess] != null)
+{
+    <p class="text-success">
+        @TempData[TeamContributionAndBudgetSystemWebApp.Controllers.ProjectRoleController.LabelSuccess]
+    </p>
+}
 @if (TempData[TeamContributionAndBudgetSystemWebApp.Controllers.ProjectRoleController.LabelError] != null)
 {
     <p class="text-danger">
