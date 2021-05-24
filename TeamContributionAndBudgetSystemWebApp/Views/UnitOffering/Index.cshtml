@@ -1,0 +1,107 @@
+﻿@model List<TeamContributionAndBudgetSystemWebApp.Models.UnitOffering>
+@{
+   ViewBag.Title = "Index";
+}
+
+<h2>View Unit Offerings</h2>
+
+<div>
+   <p>
+      <a class="btn btn-primary btn-lg" href="~/Unit "> Units </a>
+   </p>
+   <p>
+      <a class="btn btn-primary btn-lg" href="~/TeachingPeriod "> Teaching Periods </a>
+   </p>
+   <p>
+      <a class="btn btn-primary btn-lg" href="~/Year "> Years </a>
+   </p>
+</div>
+
+<p>
+   @Html.ActionLink( "Create New", "Create" )
+</p>
+
+<table class="table">
+   <tr>
+      <th>
+         @Html.DisplayNameFor( model => model.First( ).Convenor )
+      </th>
+      <th>
+         @Html.DisplayNameFor( model => model.First( ).Unit )
+      </th>
+      <th>
+         @Html.DisplayNameFor( model => model.First( ).TeachingPeriod )
+      </th>
+      <th>
+         @Html.DisplayNameFor( model => model.First( ).Year )
+      </th>
+      <th></th>
+   </tr>
+
+   @foreach( var item in Model )
+   {
+      <tr>
+         <td>
+            @Html.DisplayFor( modelItem => item.Convenor.Username )
+         </td>
+         <td>
+            @Html.DisplayFor( modelItem => item.Unit.Name )
+         </td>
+         <td>
+            @Html.DisplayFor( modelItem => item.TeachingPeriod.Name )
+         </td>
+         <td>
+            @Html.DisplayFor( modelItem => item.Year.YearValue )
+         </td>
+         <td>
+            @*@Html.ActionLink( "Edit", "Edit", new { id = item.UnitOfferingId } ) |*@
+            @Html.ActionLink( "Enrol Students", "Details", new { id = item.UnitOfferingId } ) |
+            @Html.ActionLink( "Delete", "Delete", new { id = item.UnitOfferingId } )
+         </td>
+      </tr>
+   }
+
+</table>
+<hr />
+
+<h2>Bulk Upload new Enrollments</h2>
+@using( Html.BeginForm( "CreateBulkEnrollment", "UnitOffering", FormMethod.Post, new { enctype = "multipart/form-data" } ) )
+{
+   @Html.AntiForgeryToken( )
+   <div class="form-horizontal">
+      <div class="form-group">
+         <div class="col-md-10">
+            <input type="file" name="File" required />
+         </div>
+      </div>
+
+      <div class="form-group">
+         <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Upload" class="btn btn-default" />
+         </div>
+      </div>
+
+      @if( TempData.ContainsKey( "UploadError" ) )
+      {
+         <p>
+            Error: @TempData[ "UploadError" ]
+         </p>
+      }
+
+      @if( TempData.ContainsKey( "UploadCount" ) )
+      {
+         <p>
+            Successfully added @TempData[ "UploadCount" ] Enrollment records.
+         </p>
+      }
+
+      @if( TempData.ContainsKey( "FailCount" ) )
+      {
+         <p>
+            Failed to added @TempData[ "FailCount" ] Enrollment records.
+            @Html.ActionLink( "Download Error Log", "Download", "Home", new { label = TeamContributionAndBudgetSystemWebApp.Models.FileCSV.SessionLabelUploadErrorLog }, null )
+         </p>
+      }
+   </div>
+}
+<hr />

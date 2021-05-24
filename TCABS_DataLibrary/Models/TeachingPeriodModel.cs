@@ -10,5 +10,7 @@ namespace TCABS_DataLibrary.Models
    {
       public int TeachingPeriodId { get; set; }
       public string Name { get; set; }
+      public int Month { get; set; }
+      public int Day { get; set; }
    }
 }

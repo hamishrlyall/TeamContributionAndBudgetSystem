@@ -1,0 +1,94 @@
+﻿@model TeamContributionAndBudgetSystemWebApp.Models.TCABS_Db_Context
+
+@{
+   ViewBag.Title = "Details";
+}
+
+<div>
+   <h4>Unit Offering Details </h4>
+   <hr />
+   @Html.ValidationSummary( true, "", new { @class = "text-danger" } )
+   <dl class="dl-horizontal">
+      <dt>
+         @Html.DisplayNameFor( model => model.UnitOffering.Convenor )
+      </dt>
+
+      <dd>
+         @Html.DisplayFor( model => model.UnitOffering.Convenor.Username )
+      </dd>
+
+      <dt>
+         @Html.DisplayNameFor( model => model.UnitOffering.Unit )
+      </dt>
+
+      <dd>
+         @Html.DisplayFor( model => model.UnitOffering.Unit.Name )
+      </dd>
+
+      <dt>
+         @Html.DisplayNameFor( model => model.UnitOffering.TeachingPeriod )
+      </dt>
+
+      <dd>
+         @Html.DisplayFor( model => model.UnitOffering.TeachingPeriod.Name )
+      </dd>
+
+      <dt>
+         @Html.DisplayNameFor( model => model.UnitOffering.Year )
+      </dt>
+
+      <dd>
+         @Html.DisplayFor( model => model.UnitOffering.Year.YearValue )
+      </dd>
+
+   </dl>
+
+   <dd>
+      <table class="table">
+         <tr>
+            <th>Enrollments</th>
+         </tr>
+
+         @foreach( var item in Model.UnitOffering.Enrollments )
+         {
+            using( Html.BeginForm( ) )
+            {
+               @Html.AntiForgeryToken( )
+               <tr>
+                  <td>
+                     @Html.Hidden( "_EnrollmentId", item.EnrollmentId )
+                     @Html.DisplayFor( modelItem => item.Student.Username, item.Student.Username )
+                     @Html.ValidationMessageFor( model => model.Enrollments )
+                  </td>
+                  <td>
+                     <input type="submit" name="action" value="Unenrol" class="btn btn-default" />
+                  </td>
+               </tr>
+            }
+         }
+      </table>
+   </dd>
+   <dd>
+      @using( Html.BeginForm( ) )
+      {
+         @Html.AntiForgeryToken( )
+         <label class="control-label col-md-2" for="UserId">Enrol Student</label>
+         <div class="form-group">
+            <div class="col-md-10">
+               @Html.HiddenFor( model => model.UnitOffering.UnitOfferingId, Model.UnitOffering.UnitOfferingId )
+            </div>
+            <div class="col-md-10">
+               @Html.DropDownList( "UserId", String.Empty )
+               @Html.ValidationMessageFor( model => model.Enrollments )
+            </div>
+            <div class="col-md-offset-2 col-md-10">
+               <input type="submit" name="action" value="Enrol" class="btn btn-default" />
+            </div>
+         </div>
+      }
+   </dd>
+</div>
+<p>
+   @*@Html.ActionLink( "Edit", "Edit", new { id = Model.UnitOffering.UnitOfferingId } ) |*@
+   @Html.ActionLink( "Back to List", "Index" )
+</p>

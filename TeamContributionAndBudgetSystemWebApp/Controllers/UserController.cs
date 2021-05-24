@@ -15,24 +15,12 @@ using System.Reflection;
 
 namespace TeamContributionAndBudgetSystemWebApp.Controllers
 {
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-    public class MultiButtonAttribute : ActionNameSelectorAttribute
-    {
-        public string MatchFormKey { get; set; }
-        public string MatchFormValue { get; set; }
 
-        public override bool IsValidName(ControllerContext controllerContext, string actionName, MethodInfo methodInfo)
-        {
-            return controllerContext.HttpContext.Request[MatchFormKey] != null &&
-               controllerContext.HttpContext.Request[MatchFormKey] == MatchFormValue;
-        }
-    }
+   // Comment
+   public class UserController : BaseController
+   {
 
-    // Comment
-    public class UserController : BaseController
-    {
-
-        private TCABS_Db_Context db = new TCABS_Db_Context();
+      private TCABS_Db_Context db = new TCABS_Db_Context( );
 
         /// <summary>
         /// The main page of the user controller.
@@ -51,9 +39,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             // Get all users from the database
             var userModels = UserProcessor.SelectUsers();
 
-            // Change the format of the user list
-            List<User> users = new List<User>();
-            foreach (var u in userModels) users.Add(new User(u));
+         // Change the format of the user list
+         List<User> users = new List<User>( );
+         foreach( var u in userModels ) 
+            users.Add( new User( u ) );
 
             // Return the view, with the list of users
             return View(users);
@@ -86,6 +75,19 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             int userId = (int)id;
+
+      /// <summary>
+      /// Provides Details regarding the User entity based on the given id
+      /// </summary>
+      /// <param name="id"></param>
+      /// <returns>Redirects to Details View</returns>
+      public ActionResult Details(int? id )
+      {
+         if( id == null )
+         {
+            return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+         }
+         int userId = ( int ) id;
 
             TCABS_DataLibrary.Models.UserModel userModel = UserProcessor.SelectUserForUserId(userId);
 
@@ -161,79 +163,62 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             return Redirect(Request.UrlReferrer.ToString());
         }
 
-        /// <summary>
-        /// This method is called when the user hits the submit button on the Details Page.
-        /// It is used to add new UserRoles to the database.
-        /// </summary>
-        /// <param name="_UserRole"></param>
-        /// The _UserRole parameter will contain the User data and the RoleId which will be sent to the database to insert a new UserRole row.
-        /// <returns> This method will return the view with either the newly added UserRole or an error message.</returns>
-        [HttpPost]
-        [MultiButton(MatchFormKey = "action", MatchFormValue = "Save")]
-        [ValidateAntiForgeryToken]
-        public ActionResult Save(UserRole _UserRole)
-        {
+         /// <summary>
+         /// This method is called when the user hits the submit button on the Details Page.
+         /// It is used to add new UserRoles to the database.
+         /// </summary>
+         /// <param name="_UserRole"></param>
+         /// The _UserRole parameter will contain the User data and the RoleId which will be sent to the database to insert a new UserRole row.
+         /// <returns> This method will return the view with either the newly added UserRole or an error message.</returns>
+         [HttpPost]
+         [MultiButton( MatchFormKey = "action", MatchFormValue = "Save" )]
+         [ValidateAntiForgeryToken]
+         public ActionResult Save( UserRole _UserRole )
+         {
+            // Make sure the user is logged in and that they have permission
+            if( !IsUserLoggedIn ) return RedirectToLogin( );
+
             // Null safe check to prevent crashes.
-            if (_UserRole.User == null)
+            if( _UserRole.User == null )
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+               return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
             }
             try
             {
-                // Attempt to insert new UserRole to database using data from parameter
-                var data = UserRoleProcessor.InsertUserRole(_UserRole.User.UserId, _UserRole.RoleId);
-                // Checks if Insert operation was successful. If not throws an error.
-                if (data == null)
-                    throw new DataException("Role added was invalid.");
+               if( _UserRole.RoleId <= 0 )
+                  throw new DataException( "No Role selected." );
+
+               var rowsFound = UserRoleProcessor.SelectUserRoleForUserIdAndRoleId( _UserRole.User.UserId, _UserRole.RoleId );
+               if( rowsFound > 0 )
+                  throw new DataException( $"User is already assigned this Role." );
+
+               // Attempt to insert new UserRole to database using data from parameter
+               var data = UserRoleProcessor.InsertUserRole( _UserRole.User.UserId, _UserRole.RoleId );
+               // Checks if Insert operation was successful. If not throws an error.
+               if( data == null )
+                  throw new DataException( "Role added was invalid." );
             }
-            catch (DataException _Ex)
+            catch( Exception _Ex )
             {
-                // Error handling
-                ModelState.AddModelError("", $"Unable to save changes due to Error: { _Ex.Message }");
+               // Error handling
+               ModelState.AddModelError( "", $"Unable to save changes due to Error: { _Ex.Message }" );
+               db.GetUser( _UserRole.User.UserId );
+               PopulateRoleDropDownList( );
+
+               return View( db );
             }
 
             // Redirects to page where data is reloaded.
-            return Redirect(Request.UrlReferrer.ToString());
-        }
+            return Redirect( Request.UrlReferrer.ToString( ) );
+         }
 
-        /// <summary>
-        /// Used to add the List of available Roles to the ViewBag.
-        /// </summary>
-        private void PopulateRoleDropDownList()
-        {
-            ViewBag.RoleId = new SelectList(db.GetRoles(), "RoleId", "Name", null);
-        }
-
-        //public ActionResult Delete( int id )
-        //{
-        //   if( id < 1 )
-        //   {
-        //      return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
-        //   }
-        //   var userRole = UserRoleProcessor.SelectUserRole( id );
-
-        //   if( userRole == null )
-        //   {
-        //      return HttpNotFound( );
-        //   }
-
-        //   var user = UserProcessor.SelectUserWithRoles( userRole.UserId );
-        //   return View( User );
-        //}
-
-        //[HttpDelete]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete( UserRole _UserRole )
-        //{
-        //   if( _UserRole == null )
-        //   {
-        //      return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
-        //   }
-        //   var row = UserRoleProcessor.DeleteUserRole( _UserRole.UserId );
-
-        //   return View( User );
-        //}
-
+         /// <summary>
+         /// Used to add the List of available Roles to the ViewBag.
+         /// </summary>
+         private void PopulateRoleDropDownList( )
+      {
+         ViewBag.RoleId = new SelectList( db.GetRoles( ), "RoleId", "Name", null );
+      }
         /// <summary>
         /// Called when a GET request is made for the create user page.
         /// </summary>

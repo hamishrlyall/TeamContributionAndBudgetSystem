@@ -31,7 +31,7 @@ MERGE INTO [Role] AS Target USING (
    VALUES
    (1, 'Super Admin'),
    (2, 'Admin'),
-   (3, 'Convener'),
+   (3, 'Convenor'),
    (4, 'Student'),
    (5, 'Supervisor')
 )
@@ -48,9 +48,9 @@ MERGE INTO [Permission] AS Target USING (
    VALUES
    (1, 'UserModify', NULL, NULL, NULL),
    (2, 'UserRoleDelete', NULL, NULL, NULL),
-   (3, 'UserView', 'List Users', 'Index', 'User'),
+   (3, 'UserView', 'Users', 'Index', 'User'),
    (4, 'UserRoleModify', NULL, NULL, NULL),
-   (5, 'DummyPermission1', 'Dummy Menu Item', 'Index', 'Home'),
+   (5, 'UnitManagement', 'Unit Management', 'Index', 'UnitOffering'),
    (6, 'ProjectView', 'Projects', 'Index', 'Project')
 )
 AS Source ([PermissionId], [PermissionName], [LinkTitle], [LinkPage], [LinkController])
@@ -96,32 +96,5 @@ ON Target.RolePermissionId = Source.RolePermissionId
 WHEN NOT MATCHED BY TARGET THEN
 INSERT ( [RoleId], [PermissionId])
 VALUES ( [RoleId], [PermissionId]);
-
-
--- Create project role groups
-MERGE INTO [ProjectRoleGroup] AS Target USING (
-   VALUES
-   (1, 'RoleGroup1'),
-   (2, 'RoleGroup2')
-)
-AS Source ([ProjectRoleGroupId], [Name])
-ON Target.ProjectRoleGroupId = Source.ProjectRoleGroupId
-WHEN NOT MATCHED BY TARGET THEN
-INSERT ([Name])
-VALUES ([Name]);
-
-
--- Create projects
-MERGE INTO [Project] AS Target USING (
-   VALUES
-   (1, 'Project1','Description for Project1', 1),
-   (2, 'Project2','Description for Project2', 1)
-)
-AS Source ([ProjectId], [Name], [Description], [ProjectRoleGroupId])
-ON Target.ProjectId = Source.ProjectRoleGroupId
-WHEN NOT MATCHED BY TARGET THEN
-INSERT ([Name], [Description], [ProjectRoleGroupId])
-VALUES ([Name], [Description], [ProjectRoleGroupId]);
-
 
 END;

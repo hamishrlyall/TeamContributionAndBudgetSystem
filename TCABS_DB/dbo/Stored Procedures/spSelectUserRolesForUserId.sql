@@ -2,6 +2,6 @@
    @userid int
 AS
 BEGIN
-   SELECT * FROm [dbo].[UserRole]
+   SELECT * FROM [dbo].[UserRole]
    WHERE UserId = @userid
 END;

@@ -110,13 +110,23 @@ namespace TCABS_DataLibrary.BusinessLogic
             }
         }
 
-        public static List<UserModel> SelectUsers( )
+      public static List<UserModel> SelectUsers( )
       {
-         //string sql = @"select UserId, Username, FirstName, LastName, Email, PhoneNo, Password from [dbo].[User]";
-
          string sql = "spSelectUsers";
 
          return SqlDataAccess.LoadData<UserModel>( sql );
+      }
+
+      public static List<UserModel> SelectStudents( )
+      {
+         string sql = "spSelectStudents";
+         return SqlDataAccess.LoadData<UserModel>( sql );
+      }
+
+      public static List<UserModel> SelectConvenors( )
+      {
+         string sql = "spSelectConvenors";
+         return SqlDataAccess.LoadData<UserModel>( sql);
       }
 
       public static UserModel SelectUserWithRoles( int _Id )
@@ -143,41 +153,20 @@ namespace TCABS_DataLibrary.BusinessLogic
          dynamicData.Add( "Username", _Username );
 
          return SqlDataAccess.ExecuteStoredProcedure<UserModel>( sql, dynamicData );
-
-         //using( IDbConnection _Cnn = new SqlConnection( GetConnectionString( ) ) )
-         //{
-         //   var results = _Cnn.QueryMultiple( sql, new { Username = _Username }, commandType: CommandType.StoredProcedure );
-         //   var user = results.ReadSingle<UserModel>( );
-         //   var userRoles = results.Read<UserRoleModel>( );
-         //   user.UserRoles = new List<UserRoleModel>( );
-         //   user.UserRoles.AddRange( userRoles );
-
-         //   return user;
-         //}
       }
 
-        public static UserModel SelectUserForUserId(int _UserId)
-        {
-            string sql = "spSelectUserForUserId";
+      public static UserModel SelectUserForUserId(int _UserId)
+      {
+         string sql = "spSelectUserForUserId";
 
-            var dynamicData = new DynamicParameters();
-            dynamicData.Add("UserId", _UserId);
+         var dynamicData = new DynamicParameters();
+         dynamicData.Add("UserId", _UserId);
 
-            return SqlDataAccess.ExecuteStoredProcedure<UserModel>(sql, dynamicData);
+         return SqlDataAccess.ExecuteStoredProcedure<UserModel>(sql, dynamicData);
 
-            //using( IDbConnection _Cnn = new SqlConnection( GetConnectionString( ) ) )
-            //{
-            //   var results = _Cnn.QueryMultiple( sql, new { Username = _Username }, commandType: CommandType.StoredProcedure );
-            //   var user = results.ReadSingle<UserModel>( );
-            //   var userRoles = results.Read<UserRoleModel>( );
-            //   user.UserRoles = new List<UserRoleModel>( );
-            //   user.UserRoles.AddRange( userRoles );
+      }
 
-            //   return user;
-            //}
-        }
-
-        public static List<UserRoleModel> SelectUserRolesForUserId( int _Id )
+      public static List<UserRoleModel> SelectUserRolesForUserId( int _Id )
       {
          string sql = "spSelectUserRolesForUserId";
 

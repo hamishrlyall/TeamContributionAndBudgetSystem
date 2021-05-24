@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,24 @@ namespace TCABS_DataLibrary.BusinessLogic
          data.Add( "userroleid", _Id );
 
          return SqlDataAccess.ExecuteStoredProcedure<UserRoleModel>( sql, data );
+      }
+
+      public static int SelectUserRoleForUserIdAndRoleId( int _UserId, int _RoleId )
+      {
+         try 
+         {
+            string sql = "spSelectUserRoleCountForUserIdAndRoleId";
+            var data = new DynamicParameters( );
+            data.Add( "userid", _UserId );
+            data.Add( "roleid", _RoleId );
+
+            return SqlDataAccess.SelectCount( sql, data );
+         }
+         catch( Exception e )
+         {
+            SqlDataAccess.TryConvertExceptionMessage( e );
+         }
+         return 0;
       }
 
       public static int DeleteUserRole( int _Id )
@@ -52,14 +71,22 @@ namespace TCABS_DataLibrary.BusinessLogic
 
       public static UserRoleModel InsertUserRole( int _UserId, int _RoleId )
       {
-         string sql = @"spInsertUserRole";
-         var data = new DynamicParameters( );
-         data.Add( "userid", _UserId );
-         data.Add( "roleid", _RoleId );
-         data.Add( "userroleid", null );
+         try
+         {
+            string sql = @"spInsertUserRole";
+            var data = new DynamicParameters( );
+            data.Add( "userid", _UserId );
+            data.Add( "roleid", _RoleId );
+            data.Add( "userroleid", null );
 
-         return SqlDataAccess.ExecuteStoredProcedure<UserRoleModel>( sql, data );
+            return SqlDataAccess.ExecuteStoredProcedure<UserRoleModel>( sql, data );
+         }
+         catch( Exception e)
+         {
+            SqlDataAccess.TryConvertExceptionMessage( e );
+         }
 
+         return null;
       }
    }
 }

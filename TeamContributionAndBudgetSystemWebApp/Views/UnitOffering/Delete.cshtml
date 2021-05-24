@@ -1,0 +1,56 @@
+﻿@model TeamContributionAndBudgetSystemWebApp.Models.TCABS_Db_Context
+
+@{
+   ViewBag.Title = "Delete Unit Offering";
+}
+
+   <h3>Are you sure you want to delete this?</h3>
+   <div>
+      <h4>UnitOffering</h4>
+      <hr />
+      <dl class="dl-horizontal">
+         <dt>
+            @Html.DisplayNameFor( model => model.UnitOffering.Convenor )
+         </dt>
+
+         <dd>
+            @Html.DisplayFor( model => model.UnitOffering.Convenor.Username )
+         </dd>
+
+         <dt>
+            @Html.DisplayNameFor( model => model.UnitOffering.Unit )
+         </dt>
+
+         <dd>
+            @Html.DisplayFor( model => model.UnitOffering.Unit.Name )
+         </dd>
+
+         <dt>
+            @Html.DisplayNameFor( model => model.UnitOffering.TeachingPeriod )
+         </dt>
+
+         <dd>
+            @Html.DisplayFor( model => model.UnitOffering.TeachingPeriod.Name )
+         </dd>
+
+         <dt>
+            @Html.DisplayNameFor( model => model.UnitOffering.Year )
+         </dt>
+
+         <dd>
+            @Html.DisplayFor( model => model.UnitOffering.Year.YearValue )
+         </dd>
+
+      </dl>
+
+      @using( Html.BeginForm( ) )
+      {
+         @Html.AntiForgeryToken( )
+         @Html.ValidationSummary( true, "", new { @class = "text-danger" } )
+         @Html.HiddenFor( model => model.UnitOffering.UnitOfferingId )
+         <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink( "Back to List", "Index" )
+         </div>
+      }
+   </div>
