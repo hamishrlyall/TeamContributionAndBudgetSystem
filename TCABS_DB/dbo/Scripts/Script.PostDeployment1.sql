@@ -53,6 +53,8 @@ MERGE INTO [Permission] AS Target USING (
    (5, 'UnitManagement', 'Unit Management', 'Index', 'UnitOffering'),
    (6, 'ProjectView', 'Projects', 'Index', 'Project'),
    (7, 'RolePermissionView', 'Role Permissions', 'Index', 'RolePermission')
+   (8, 'ViewProject', 'Projects', 'Index', 'Project'),
+   (9, 'ViewProjectRole', 'Project Roles', 'Index', 'ProjectRole')
 )
 AS Source ([PermissionId], [PermissionName], [LinkTitle], [LinkPage], [LinkController])
 ON Target.PermissionId = Source.PermissionId
@@ -90,7 +92,13 @@ MERGE INTO [RolePermission] AS Target USING (
    (9, 2, 3),
    (10, 2, 4),
    (11, 2, 5),
-   (12, 2, 6)
+   (12, 2, 6),
+   (13, 1, 7),
+   (14, 2, 7),
+   (15, 1, 8),
+   (16, 2, 8),
+   (17, 1, 9),
+   (18, 2, 9)
 )
 AS Source ([RolePermissionId], [RoleId], [PermissionId])
 ON Target.RolePermissionId = Source.RolePermissionId
@@ -150,6 +158,19 @@ ON TARGET.UnitOfferingId = Source.UnitOfferingId
 WHEN NOT MATCHED BY TARGET THEN
 INSERT ( [ConvenorId], [UnitId], [TeachingPeriodId], [YearId] )
 VALUES ( [ConvenorId], [UnitId], [TeachingPeriodId], [YearId] );
+
+-- Create project roles
+MERGE INTO [ProjectRole] AS Target USING (
+   VALUES
+   (1, 'Team Leader'),
+   (2, 'Programmer')
+)
+AS Source ([ProjectRoleId], [Name])
+ON Target.[ProjectRoleId] = Source.[ProjectRoleId]
+WHEN NOT MATCHED BY TARGET THEN
+INSERT ([Name])
+VALUES ([Name]);
+
 
 -- Create project role groups
 MERGE INTO [ProjectRoleGroup] AS Target USING (

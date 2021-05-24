@@ -140,6 +140,11 @@
     <Build Include="dbo\Stored Procedures\spUpdateTeachingPeriod.sql" />
     <Build Include="dbo\Stored Procedures\spUpdateUnit.sql" />
     <Build Include="dbo\Stored Procedures\spUpdateUnitOffering.sql" />
+    <Build Include="dbo\Stored Procedures\spCreateProjectRole.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteProjectRole.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAllProjectRoles.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProjectRole.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateProjectRole.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="LoadTestData">
