@@ -36,5 +36,13 @@ namespace TCABS_DataLibrary.BusinessLogic
             data.Add("Username", username);
             return SqlDataAccess.LoadData<PermissionModel>(procedureName, data);
         }
-   }
+
+        public static List<PermissionModel> SelectPermissions()
+        {
+            //string sql = @"select RoleId, Name from [dbo].[Role]";
+            string sql = "spSelectPermissions";
+            return SqlDataAccess.LoadData<PermissionModel>(sql);
+        }
+
+    }
 }

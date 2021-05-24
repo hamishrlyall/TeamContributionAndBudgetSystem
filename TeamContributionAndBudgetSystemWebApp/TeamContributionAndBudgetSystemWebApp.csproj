@@ -127,7 +127,10 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Controllers\RolePermissionController.cs" />
+    <Compile Include="Controllers\RolePermissionController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\UserRoleController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -196,11 +199,21 @@
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Forbidden.cshtml" />
+    <Content Include="Views\RolePermission\Create.cshtml" />
+    <Content Include="Views\RolePermission\Delete.cshtml" />
+    <Content Include="Views\RolePermission\Details.cshtml" />
+    <Content Include="Views\RolePermission\Index.cshtml" />
+    <Content Include="Views\UserRole\index.cshtml" />
     <Content Include="Views\Project\Index.cshtml" />
     <Content Include="Views\Project\Details.cshtml" />
     <Content Include="Views\Project\Edit.cshtml" />
     <Content Include="Views\Project\Delete.cshtml" />
     <Content Include="Views\Project\Create.cshtml" />
+    <Content Include="Views\RolePermission\Create.cshtml" />
+    <Content Include="Views\RolePermission\Delete.cshtml" />
+    <Content Include="Views\RolePermission\Details.cshtml" />
+    <Content Include="Views\RolePermission\Index.cshtml" />
+    <Content Include="Views\UserRole\index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
