@@ -100,7 +100,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
          return permissions;
       }
 
-      public void GetUser( int id )
+      public User GetUser( int id )
       {
          var data = UserProcessor.SelectUserWithRoles( id );
          var user = new User
@@ -383,6 +383,146 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
             }
             Users.Add( user );
          }
+      }
+
+      public List<User> GetConvenors( )
+      {
+         var convenorData = UserProcessor.SelectConvenors( );
+         Users = new List<User>( );
+         foreach( var row in convenorData )
+         {
+            var rowData = UserProcessor.SelectUserForUserId( row.UserId );
+            var user = new User
+            {
+               UserId = rowData.UserId,
+               Username = rowData.Username,
+               FirstName = rowData.FirstName,
+               LastName = rowData.LastName,
+               EmailAddress = rowData.Email,
+               PhoneNumber = rowData.PhoneNo,
+               Password = rowData.Password
+            };
+
+            Users.Add( user );
+         }
+
+         return Users;
+      }
+      public List<Unit> GetUnits( )
+      {
+         var unitData = UnitProcessor.SelectUnits( );
+         Units = new List<Unit>( );
+         foreach( var row in unitData )
+         {
+            var unit = new Unit( )
+            {
+               UnitId = row.UnitId,
+               Name = row.Name
+            };
+
+            Units.Add( unit );
+         }
+         return Units;
+      }
+
+      public List<TeachingPeriod> GetTeachingPeriods( )
+      {
+         var teachingPeriodData = TeachingPeriodProcessor.SelectTeachingPeriods( );
+         TeachingPeriods = new List<TeachingPeriod>( );
+         foreach( var row in teachingPeriodData )
+         {
+            var teachingPeriod = new TeachingPeriod( )
+            {
+               TeachingPeriodId = row.TeachingPeriodId,
+               Name = row.Name
+            };
+
+            TeachingPeriods.Add( teachingPeriod );
+         }
+         return TeachingPeriods;
+      }
+
+      public List<Year> GetYears( )
+      {
+         var yearData = YearProcessor.SelectYears( );
+         Years = new List<Year>( );
+         foreach( var row in yearData )
+         {
+            var year = new Year( )
+            {
+               YearId = row.YearId,
+               YearValue = row.Year
+            };
+
+            Years.Add( year );
+         }
+         return Years;
+      }
+
+      public List<UnitOffering> GetUnitOfferings( )
+      {
+         var data = UnitOfferingProcessor.SelectUnitOfferings( );
+         UnitOfferings = new List<UnitOffering>( );
+
+         foreach( var row in data )
+         {
+            var unitOffering = new UnitOffering( )
+            {
+               UnitOfferingId = row.UnitOfferingId,
+               ConvenorId = row.ConvenorId,
+               UnitId = row.UnitId,
+               TeachingPeriodId = row.TeachingPeriodId,
+               YearId = row.YearId
+            };
+
+            unitOffering.Convenor = GetUser( row.ConvenorId );
+            unitOffering.Unit = GetUnit( row.UnitId );
+            unitOffering.Year = GetYear( row.YearId );
+            unitOffering.TeachingPeriod = GetTeachingPeriod( row.TeachingPeriodId );
+
+            UnitOfferings.Add( unitOffering );
+         }
+         return UnitOfferings;
+      }
+      public List<User> GetStudents( )
+      {
+         var studentData = UserProcessor.SelectStudents( );
+         Users = new List<User>( );
+
+         foreach( var row in studentData )
+         {
+            var rowData = UserProcessor.SelectUserForUserId( row.UserId );
+            var user = new User
+            {
+               UserId = rowData.UserId,
+               Username = rowData.Username,
+               FirstName = rowData.FirstName,
+               LastName = rowData.LastName,
+               EmailAddress = rowData.Email,
+               PhoneNumber = rowData.PhoneNo,
+               Password = rowData.Password
+            };
+
+            Users.Add( user );
+         }
+
+         return Users;
+      }
+      public List<Role> GetRoles( )
+      {
+         var data = RoleProcessor.SelectRoles( );
+         Roles = new List<Role>( );
+
+         foreach( var row in data )
+         {
+            Roles.Add( new Role
+            {
+               RoleId = row.RoleId,
+               Name = row.Name,
+            } );
+         }
+
+         return Roles;
       }
    }
 }
