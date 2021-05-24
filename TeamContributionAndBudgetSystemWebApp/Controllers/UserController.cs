@@ -22,66 +22,53 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
       private TCABS_Db_Context db = new TCABS_Db_Context( );
 
-        /// <summary>
-        /// The main page of the user controller.
-        /// Shows a list of all users in the system.
-        /// </summary>
-        [HttpGet]
-        public ActionResult Index()
-        {
-            // Make sure the user is logged in and that they have permission
-            if (!IsUserLoggedIn) return RedirectToLogin();
-            //if (!UserHasPermission(PermissionName.UserView)) return RedirectToPermissionDenied();
+      /// <summary>
+      /// The main page of the user controller.
+      /// Shows a list of all users in the system.
+      /// </summary>
+      [HttpGet]
+      public ActionResult Index()
+      {
+         // Make sure the user is logged in and that they have permission
+         if (!IsUserLoggedIn) return RedirectToLogin();
+         //if (!UserHasPermission(PermissionName.UserView)) return RedirectToPermissionDenied();
 
-            // Set the page message
-            ViewBag.Message = "Users List";
+         // Set the page message
+         ViewBag.Message = "Users List";
 
-            // Get all users from the database
-            var userModels = UserProcessor.SelectUsers();
+         // Get all users from the database
+         var userModels = UserProcessor.SelectUsers();
 
-         // Change the format of the user list
-         List<User> users = new List<User>( );
-         foreach( var u in userModels ) 
-            users.Add( new User( u ) );
+      // Change the format of the user list
+      List<User> users = new List<User>( );
+      foreach( var u in userModels ) 
+         users.Add( new User( u ) );
 
-            // Return the view, with the list of users
-            return View(users);
-        }
-
-        /// <summary>
-        /// The details page shows information about a single user.
-        /// </summary>
-        /// <param name="id">The ID of the user to display.</param>
-        public ActionResult Details(int? id)
-        {
-            // Make sure the user is logged in
-            if (!IsUserLoggedIn) return RedirectToLogin();
-
-            // Check if a user ID was provided
-            if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            int userId = (int)id;
-
-            db.GetUser(userId);
-            PopulateRoleDropDownList();
-
-            return View(db);
-        }
-
-        [HttpGet]
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            int userId = (int)id;
+         // Return the view, with the list of users
+         return View(users);
+      }
 
       /// <summary>
-      /// Provides Details regarding the User entity based on the given id
+      /// The details page shows information about a single user.
       /// </summary>
-      /// <param name="id"></param>
-      /// <returns>Redirects to Details View</returns>
-      public ActionResult Details(int? id )
+      /// <param name="id">The ID of the user to display.</param>
+      public ActionResult Details(int? id)
+      {
+         // Make sure the user is logged in
+         if (!IsUserLoggedIn) return RedirectToLogin();
+
+         // Check if a user ID was provided
+         if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+         int userId = (int)id;
+
+         db.GetUser(userId);
+         PopulateRoleDropDownList();
+
+         return View(db);
+      }
+
+      [HttpGet]
+      public ActionResult Edit( int? id )
       {
          if( id == null )
          {
@@ -89,79 +76,79 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          }
          int userId = ( int ) id;
 
-            TCABS_DataLibrary.Models.UserModel userModel = UserProcessor.SelectUserForUserId(userId);
+         TCABS_DataLibrary.Models.UserModel userModel = UserProcessor.SelectUserForUserId( userId );
 
-            UserEdit user = new UserEdit(userModel);
+         UserEdit user = new UserEdit( userModel );
 
-            return View(user);
-        }
+         return View( user );
+      }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(UserEdit user)
-        {
-            // Make sure the entered data is valid
-            if (ModelState.IsValid)
-            {
-                // Update the user within the database
-                try
-                {
-                    UserProcessor.UpdateUser(
-                        user.UserId,
-                        user.Username,
-                        user.FirstName,
-                        user.LastName,
-                        user.EmailAddress,
-                        user.PhoneNumber);
-
-                    return RedirectToAction("Index");
-                }
-                catch (Exception e)
-                {
-                    ModelState.AddModelError("", e.Message);
-                }
-            }
-            else
-            {
-                //show error
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-            }
-            return View(user);
-        }
-
-        /// <summary>
-        /// This method is called when the user hits the delete button on a UserRole Row on the Details Page.
-        /// It is used to remove UserRoles from the database.
-        /// </summary>
-        /// <param name="_UserRoleId"></param>
-        /// The _UserRoleId which will be sent to the database to remove the referenced UserRole row.
-        /// <returns>This method will Redirect to the Details view with the UserRole removed.</returns>
-        [HttpPost]
-        [MultiButton(MatchFormKey = "action", MatchFormValue = "Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int _UserRoleId)
-        {
-            // Null safe check to prevent crashes.
-            if (_UserRoleId <= 0)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+      [HttpPost]
+      [ValidateAntiForgeryToken]
+      public ActionResult Edit( UserEdit user )
+      {
+         // Make sure the entered data is valid
+         if( ModelState.IsValid )
+         {
+            // Update the user within the database
             try
             {
-                // Attempt to delete UserRole from database
-                var rowsDeleted = UserRoleProcessor.DeleteUserRole(_UserRoleId);
-                // If Delete operation was unsuccessful throw an error.
-                if (rowsDeleted <= 0)
-                    throw new DataException("Unable to delete UserRole");
+               UserProcessor.UpdateUser(
+                   user.UserId,
+                   user.Username,
+                   user.FirstName,
+                   user.LastName,
+                   user.EmailAddress,
+                   user.PhoneNumber );
+
+               return RedirectToAction( "Index" );
             }
-            catch (DataException _Ex)
+            catch( Exception e )
             {
-                // Error handling
-                ModelState.AddModelError("", $"Unable to save changes due to Error: { _Ex.Message }");
+               ModelState.AddModelError( "", e.Message );
             }
-            // Redirects to page where data is reloaded.
-            return Redirect(Request.UrlReferrer.ToString());
-        }
+         }
+         else
+         {
+            //show error
+            var errors = ModelState.Values.SelectMany( v => v.Errors );
+         }
+         return View( user );
+      }
+
+      /// <summary>
+      /// This method is called when the user hits the delete button on a UserRole Row on the Details Page.
+      /// It is used to remove UserRoles from the database.
+      /// </summary>
+      /// <param name="_UserRoleId"></param>
+      /// The _UserRoleId which will be sent to the database to remove the referenced UserRole row.
+      /// <returns>This method will Redirect to the Details view with the UserRole removed.</returns>
+      [HttpPost]
+      [MultiButton(MatchFormKey = "action", MatchFormValue = "Delete")]
+      [ValidateAntiForgeryToken]
+      public ActionResult Delete(int _UserRoleId)
+      {
+         // Null safe check to prevent crashes.
+         if (_UserRoleId <= 0)
+         {
+               return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+         }
+         try
+         {
+               // Attempt to delete UserRole from database
+               var rowsDeleted = UserRoleProcessor.DeleteUserRole(_UserRoleId);
+               // If Delete operation was unsuccessful throw an error.
+               if (rowsDeleted <= 0)
+                  throw new DataException("Unable to delete UserRole");
+         }
+         catch (DataException _Ex)
+         {
+               // Error handling
+               ModelState.AddModelError("", $"Unable to save changes due to Error: { _Ex.Message }");
+         }
+         // Redirects to page where data is reloaded.
+         return Redirect(Request.UrlReferrer.ToString());
+      }
 
          /// <summary>
          /// This method is called when the user hits the submit button on the Details Page.
@@ -216,9 +203,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          /// Used to add the List of available Roles to the ViewBag.
          /// </summary>
          private void PopulateRoleDropDownList( )
-      {
-         ViewBag.RoleId = new SelectList( db.GetRoles( ), "RoleId", "Name", null );
-      }
+         {
+            ViewBag.RoleId = new SelectList( db.GetRoles( ), "RoleId", "Name", null );
+         }
         /// <summary>
         /// Called when a GET request is made for the create user page.
         /// </summary>

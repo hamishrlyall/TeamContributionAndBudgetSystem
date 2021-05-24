@@ -97,4 +97,83 @@ WHEN NOT MATCHED BY TARGET THEN
 INSERT ( [RoleId], [PermissionId])
 VALUES ( [RoleId], [PermissionId]);
 
+MERGE INTO [Unit] AS Target USING (
+   VALUES
+   (1, 'INF300111' ),
+   (2, 'SWE30010' ),
+   (3, 'COS20001' ),
+   (4, 'SWD5002' )
+)
+AS Source ([UnitId], [Name])
+ON Target.UnitId = Source.UnitId
+WHEN NOT MATCHED BY TARGET THEN
+INSERT ( [Name] )
+VALUES ( [Name] );
+
+MERGE INTO [TeachingPeriod] AS Target USING(
+   VALUES
+   ( 1, 'Summer', 1, 4 ),
+   ( 2, 'Semester 1', 3, 1 ),
+   ( 3, 'Winter', 6, 21 ),
+   ( 4, 'Semester 2', 8, 2 )
+)
+AS Source ([TeachingPeriodId], [Name], [Month], [Day] )
+ON Target.TeachingPeriodId = Source.TeachingPeriodId
+WHEN NOT MATCHED BY TARGET THEN
+INSERT ( [Name], [Month], [Day] )
+VALUES ( [Name], [Month], [Day] );
+
+MERGE INTO [Year] AS Target USING(
+   VALUES
+   ( 1, 2020 ),
+   ( 2, 2021 ),
+   ( 3, 2022 ),
+   ( 4, 2023 ),
+   ( 5, 2024 )
+)
+AS Source ([YearId], [Year])
+ON Target.YearId = Source.YearId
+WHEN NOT MATCHED BY TARGET THEN
+INSERT ( [Year] )
+VALUES ( [Year] );
+
+MERGE INTO [UnitOffering] AS Target USING(
+   VALUES
+   ( 1, 3, 1, 2, 1 ),
+   ( 2, 3, 2, 2, 1 ),
+   ( 3, 3, 3, 2, 1 ),
+   ( 4, 3, 4, 2, 1 )
+)
+AS Source ([UnitOfferingId], [ConvenorId], [UnitId], [TeachingPeriodId], [YearId] )
+ON TARGET.UnitOfferingId = Source.UnitOfferingId
+WHEN NOT MATCHED BY TARGET THEN
+INSERT ( [ConvenorId], [UnitId], [TeachingPeriodId], [YearId] )
+VALUES ( [ConvenorId], [UnitId], [TeachingPeriodId], [YearId] );
+
+-- Create project role groups
+MERGE INTO [ProjectRoleGroup] AS Target USING (
+   VALUES
+   (1, 'RoleGroup1'),
+   (2, 'RoleGroup2')
+)
+AS Source ([ProjectRoleGroupId], [Name])
+ON Target.ProjectRoleGroupId = Source.ProjectRoleGroupId
+WHEN NOT MATCHED BY TARGET THEN
+INSERT ([Name])
+VALUES ([Name]);
+
+
+-- Create projects
+MERGE INTO [Project] AS Target USING (
+   VALUES
+   (1, 'Project1','Description for Project1', 1),
+   (2, 'Project2','Description for Project2', 1)
+)
+AS Source ([ProjectId], [Name], [Description], [ProjectRoleGroupId])
+ON Target.ProjectId = Source.ProjectRoleGroupId
+WHEN NOT MATCHED BY TARGET THEN
+INSERT ([Name], [Description], [ProjectRoleGroupId])
+VALUES ([Name], [Description], [ProjectRoleGroupId]);
+
+
 END;
