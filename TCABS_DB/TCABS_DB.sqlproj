@@ -140,7 +140,7 @@
     <Build Include="dbo\Stored Procedures\spUpdateTeachingPeriod.sql" />
     <Build Include="dbo\Stored Procedures\spUpdateUnit.sql" />
     <Build Include="dbo\Stored Procedures\spUpdateUnitOffering.sql" />
-    <Build Include="dbo\Stored Procedures\spSelectTeamsForProjectId.sql" />
+    <Build Include="dbo\Stored Procedures\spSelectTeamsForUnitOfferingId.sql" />
     <Build Include="dbo\Stored Procedures\spDeleteTeam.sql" />
     <Build Include="dbo\Stored Procedures\spInsertTeam.sql" />
     <Build Include="dbo\Stored Procedures\spSelectTeam.sql" />
@@ -167,6 +167,7 @@
     <Build Include="dbo\Tables\Minute.sql" />
     <Build Include="dbo\Tables\MeetingAgendaItem.sql" />
     <Build Include="dbo\Tables\Task.sql" />
+    <Build Include="dbo\Stored Procedures\spSelectEnrollmentForEnrollmentId.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="LoadTestData">

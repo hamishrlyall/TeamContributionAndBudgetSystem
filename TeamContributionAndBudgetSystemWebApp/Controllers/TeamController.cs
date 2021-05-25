@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using TCABS_DataLibrary.BusinessLogic;
 using TCABS_DataLibrary.Models;
 using TeamContributionAndBudgetSystemWebApp.Models;
@@ -21,31 +22,29 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       public const string LabelError = "projectError";
 
       // Details
-      public ActionResult Details( int id )
+      public ActionResult Details( int? id )
       {
          // Make sure the user is logged in and that they have permission
          if( !IsUserLoggedIn )
             return RedirectToLogin( );
 
-         if( id == 0 )
+         if( id == null )
          {
             return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
          }
 
          try
          {
+            int teamId = ( int ) id;
             // Get the team data
-            var teamModel = TeamProcessor.GetTeamForTeamId( id );
+            var teamModel = TeamProcessor.GetTeamForTeamId( teamId );
             if( teamModel == null )
-               return RedirectToProjectIndex( );
+               return RedirectToUnitOfferingIndex( );
 
-            var project = ProjectProcessor.GetProject( teamModel.ProjectId );
+            var unitOffering = UnitOfferingProcessor.SelectUnitOfferingForUnitOfferingId( teamModel.UnitOfferingId );
 
-            var enrollments = EnrollmentProcessor.LoadEnrollmentsForTeam( id );
-
-
-            var team = new Team( teamModel, project, enrollments );
-            ViewBag.UserId = new SelectList( team.GetAvailableEnrollments( team.ProjectId ), "UserId", "Username", null );
+            var team = new Team( teamModel, unitOffering );
+            ViewBag.EnrollmentId = new SelectList( team.GetAvailableEnrollments( team.UnitOfferingId ), "EnrollmentId", "Username", null );
             
             return View( team );
          }
@@ -56,32 +55,32 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
       }
 
-      [HttpPost]
-      [MultiButton( MatchFormKey = "action", MatchFormValue = "Remove Team Member" )]
-      [ValidateAntiForgeryToken]
-      public ActionResult RemoveTeamMember( int _EnrollmentId )
-      {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+      //[HttpPost]
+      //[MultiButton( MatchFormKey = "action", MatchFormValue = "Remove Team Member" )]
+      //[ValidateAntiForgeryToken]
+      //public ActionResult RemoveTeamMember( int _EnrollmentId )
+      //{
+      //   // Make sure the user is logged in and that they have permission
+      //   if( !IsUserLoggedIn )
+      //      return RedirectToLogin( );
 
-         if( _EnrollmentId <= 0 )
-         {
-            return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
-         }
-         try
-         {
-            //Attempt to delete Enrolment from database
-            EnrollmentProcessor.UpdateEnrollmentWithTeamId( _EnrollmentId, 0 );
-         }
-         catch( DataException _Ex )
-         {
-            //Error Handling
-            ModelState.AddModelError( "", $"Unable to save changes due to Error: { _Ex.Message }" );
-         }
+      //   if( _EnrollmentId <= 0 )
+      //   {
+      //      return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+      //   }
+      //   try
+      //   {
+      //      //Attempt to delete Enrolment from database
+      //      EnrollmentProcessor.UpdateEnrollmentWithTeamId( _EnrollmentId, 0 );
+      //   }
+      //   catch( DataException _Ex )
+      //   {
+      //      //Error Handling
+      //      ModelState.AddModelError( "", $"Unable to save changes due to Error: { _Ex.Message }" );
+      //   }
 
-         return Redirect( Request.UrlReferrer.ToString( ) );
-      }
+      //   return Redirect( Request.UrlReferrer.ToString( ) );
+      //}
 
       [HttpPost]
       [MultiButton( MatchFormKey = "action", MatchFormValue = "Add Team Member")]
@@ -99,19 +98,17 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          try
          {
             // Ensure a User has been selected
-            if( _Enrollment.UserId <= 0 )
-               throw new DataException( "No Enrolled User Selected." );
+            //if( _Enrollment.UserId <= 0 )
+            //   throw new DataException( "No Enrolled User Selected." );
+            var enrollmentData = EnrollmentProcessor.SelectEnrollmentForEnrollmentId( _Enrollment.EnrollmentId );
 
             //Check if Student is already a member of this team
-            var rowsFound = EnrollmentProcessor.SelectEnrollmentCountForTeamIdAndUserId( _Enrollment.TeamId, _Enrollment.UserId );
+            var rowsFound = EnrollmentProcessor.SelectEnrollmentCountForTeamIdAndUserId( _Enrollment.TeamId, enrollmentData.UserId );
             if( rowsFound > 0 )
                throw new DataException( $"User is already a member of this Team." );
 
             // Attempt to update enrollment with TeamId
-            var data = EnrollmentProcessor.UpdateEnrollmentWithTeamId( _Enrollment.EnrollmentId, _Enrollment.TeamId );
-            // Checks if Update operation was successful if not throws an error.
-            if( data == null )
-               throw new DataException( "Enrollment added was invalid." );
+            EnrollmentProcessor.UpdateEnrollmentWithTeamId( enrollmentData.EnrollmentId, _Enrollment.TeamId );
 
             return Redirect( Request.UrlReferrer.ToString( ) );
          }
@@ -125,32 +122,43 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          var teamModel = TeamProcessor.GetTeamForTeamId( _Enrollment.TeamId );
 
          if( teamModel == null )
-            return RedirectToProjectIndex( );
+            return RedirectToUnitOfferingIndex( );
 
-         var project = ProjectProcessor.GetProject( teamModel.ProjectId );
-         var enrollments = EnrollmentProcessor.LoadEnrollmentsForTeam( _Enrollment.TeamId );
-         var team = new Team( teamModel, project, enrollments );
-         ViewBag.UserId = new SelectList( team.GetAvailableEnrollments( team.ProjectId ), "UserId", "Username", null );
+         var unitOffering = UnitOfferingProcessor.SelectUnitOfferingForUnitOfferingId( teamModel.UnitOfferingId );
+
+         var team = new Team( teamModel, unitOffering );
+         ViewBag.EnrollmentId = new SelectList( team.GetAvailableEnrollments( team.UnitOfferingId ), "EnrollmentId", "Username", null );
+
          return View( team );
       }
 
       // Create
-      public ActionResult Create( int id )
+      public ActionResult Create( int? id )
       {
          // Make sure the user is logged in and that they have permission
          if( !IsUserLoggedIn )
             return RedirectToLogin( );
 
+         if( id == null )
+         {
+            return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+         }
+
          ViewBag.Message = "Create New UnitOffering";
 
-         var projectModel = ProjectProcessor.GetProject( id );
-         if( projectModel == null ) return RedirectToIndexProjectNotFound( id );
+         int unitOfferingId = ( int ) id;
+
+         var unitOfferingModel = UnitOfferingProcessor.SelectUnitOfferingForUnitOfferingId( unitOfferingId );
+         if( unitOfferingModel == null )
+            return RedirectToIndexUnitOfferingNotFound( unitOfferingId );
+
+         //var projectModel = ProjectProcessor.GetProject( id );
+         //if( projectModel == null ) return RedirectToIndexProjectNotFound( id );
 
          // Generate Supervisor Drop down List for each field.
          // Supervisor
 
-
-         var team = new Team( projectModel );
+         var team = new Team( unitOfferingModel );
 
          ViewBag.SupervisorId = new SelectList( team.GetAvailableSupervisors( ), "UserId", "Username", null );
 
@@ -170,10 +178,12 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             try
             {
                // Attempt to Insert new Team
-               TeamProcessor.InsertTeam( model.SupervisorId, model.ProjectId, model.Name );
+               TeamProcessor.InsertTeam( model.SupervisorId, model.UnitOfferingId, model.Name );
 
                // If Insert succesful return to Project
-               return RedirectToAction( "Details", "Project", model.ProjectId );
+               //return RedirectToAction( "Details", "UnitOffering", model.UnitOfferingId );
+               return RedirectToAction( "Details", new RouteValueDictionary(
+                        new { controller = "UnitOffering", action = "Details", Id = model.UnitOfferingId } ) );
             }
             catch(Exception e)
             {
@@ -192,27 +202,31 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
 
       // Edit
-      public ActionResult Edit(int id)
+      public ActionResult Edit(int? id)
       {
          // Make sure the user is logged in and that they have permission
          if( !IsUserLoggedIn )
             return RedirectToLogin( );
 
-         if( id <= 0 )
+         if( id == null )
          {
             //If no id supplied return error code
             return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
          }
 
+         int teamId = ( int ) id;
+
          //Attempt to Get team for Id
-         var teamModel = TeamProcessor.GetTeamForTeamId( id );
+         var teamModel = TeamProcessor.GetTeamForTeamId( teamId );
          if( teamModel == null )
-            return RedirectToProjectIndex( );
-
-         var project = ProjectProcessor.GetProject( teamModel.ProjectId );
+            return RedirectToUnitOfferingIndex( );
 
 
-         var team = new Team( teamModel, project );
+         var unitOffering = UnitOfferingProcessor.SelectUnitOfferingForUnitOfferingId( teamModel.UnitOfferingId );
+         //var project = ProjectProcessor.GetProject( teamModel.UnitOfferingId );
+
+
+         var team = new Team( teamModel, unitOffering );
          ViewBag.SupervisorId = new SelectList( team.GetAvailableSupervisors( ), "UserId", "Username", null );
 
          return View( team );
@@ -237,7 +251,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
                TeamProcessor.EditTeam( teamModel );
 
-               return RedirectToAction( "Details", "Project", team.ProjectId );
+               return RedirectToAction( "Details", new RouteValueDictionary(
+                           new { controller = "UnitOffering", action = "Details", Id = team.UnitOfferingId } ) );
             }
             catch( Exception e )
             {
@@ -255,7 +270,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
       // Delete
       [HttpGet]
-      public ActionResult Delete( int id )
+      public ActionResult Delete( int? id )
       {
          // Make sure the user is logged in and that they have permission
          if( !IsUserLoggedIn )
@@ -266,16 +281,20 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             // If no id provided show BadRequest Error
             return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
          }
+
+         int teamId = ( int ) id;
+
          // Get the team data
-         var teamModel = TeamProcessor.GetTeamForTeamId( id );
+         var teamModel = TeamProcessor.GetTeamForTeamId( teamId );
          if( teamModel == null )
-            return RedirectToProjectIndex( );
+            return RedirectToUnitOfferingIndex( );
 
-         var project = ProjectProcessor.GetProject( teamModel.ProjectId );
+         var unitOffering = UnitOfferingProcessor.SelectUnitOfferingForUnitOfferingId( teamModel.UnitOfferingId );
+         //var project = ProjectProcessor.GetProject( teamModel.UnitOfferingId );
 
-         var enrollments = EnrollmentProcessor.LoadEnrollmentsForTeam( id );
+         //var enrollments = EnrollmentProcessor.LoadEnrollmentsForTeam( id );
 
-         return View( new Team( teamModel, project, enrollments ) );
+         return View( new Team( teamModel, unitOffering ) );
       }
 
       [HttpPost]
@@ -288,21 +307,25 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
          try
          {
-            //Find Team
-            var teamModel = TeamProcessor.GetTeamForTeamId( team.TeamId );
+
 
             int rowsDeleted = TeamProcessor.DeleteTeam( team.TeamId );
             if( rowsDeleted <= 0 )
-               throw new DataException( "Unable to Delete UnitOffering." );
+               throw new DataException( "Unable to Delete Team." );
 
-            return RedirectToAction( "Details", "Project", team.ProjectId );
+            return RedirectToAction( "Details", new RouteValueDictionary(
+                        new { controller = "UnitOffering", action = "Details", Id = team.UnitOfferingId } ) );
          }
          catch( Exception e )
          {
             // Show any errors
             ModelState.AddModelError( "", e.Message );
          }
-         return View( team );
+
+         //Find Team
+         var teamModel = TeamProcessor.GetTeamForTeamId( team.TeamId );
+         var unitOffering = UnitOfferingProcessor.SelectUnitOfferingForUnitOfferingId( teamModel.UnitOfferingId );
+         return View( new Team( teamModel, unitOffering ) );
       }
 
 
@@ -321,25 +344,25 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       private ActionResult RedirectToIndex( Exception e )
       {
          TempData[ LabelError ] = e.Message;
-         return RedirectToProjectIndex( );
+         return RedirectToUnitOfferingIndex( );
       }
 
       /// <summary>
       /// A shorthand method for getting a RedirectToAction() leading to the index page.
       /// </summary>
-      private ActionResult RedirectToProjectIndex( )
+      private ActionResult RedirectToUnitOfferingIndex( )
       {
-         return RedirectToAction("Index", "Project" );
+         return RedirectToAction("Index", "UnitOffering" );
       }
 
       /// <summary>
       /// A shorthand method for getting a RedirectToAction() leading to the index page.
       /// Also displays an error message saying that the requested project does not exist.
       /// </summary>
-      /// <param name="projectId">The project (ID) which could no be found.</param>
-      private ActionResult RedirectToIndexProjectNotFound( int projectId )
+      /// <param name="unitOfferingId">The project (ID) which could no be found.</param>
+      private ActionResult RedirectToIndexUnitOfferingNotFound( int unitOfferingId )
       {
-         TempData[ LabelError ] = "A project with ID:" + projectId + " does not appear to exist";
+         TempData[ LabelError ] = "A Unit Offering with ID:" + unitOfferingId + " does not appear to exist";
          return RedirectToIndex( );
       }
    }

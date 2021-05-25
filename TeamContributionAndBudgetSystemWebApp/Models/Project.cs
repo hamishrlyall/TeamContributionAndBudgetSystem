@@ -43,16 +43,14 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
       [Display(Name = "Project Role Group")]
       public string ProjectRoleGroupName { get; set; }
 
-      public virtual ICollection<Team> Teams { get; set; }
 
-      public Team TeamHeadings = null;
 
       /// <summary>
       /// Default constructor.
       /// </summary>
       public Project() 
       {
-         Teams = new HashSet<Team>( );
+         
       }
 
       /// <summary>
@@ -66,8 +64,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
          Description = project.Description;
          ProjectRoleGroupId = project.ProjectRoleGroupId;
          ProjectRoleGroupName = null;
-
-         Teams = new HashSet<Team>( );
       }
 
       /// <summary>
@@ -82,8 +78,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
          Description = project.Description;
          ProjectRoleGroupId = project.ProjectRoleGroupId;
          if (roleGroups.TryGetValue(ProjectRoleGroupId, out string temp)) ProjectRoleGroupName = temp;
-
-         Teams = new HashSet<Team>( );
       }
 
       /// <summary>
@@ -108,8 +102,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
                   }
                }
          }
-
-         Teams = new HashSet<Team>( );
       }
 
       /// <summary>
@@ -117,35 +109,13 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
       /// </summary>
       /// <param name="project">ProjectModel data which will be used to setup this class.</param>
       /// <param name="roleGroup">A ProjectRoleGroup which should be the same as used by this project (safe if passing null).</param>
-      public Project(TCABS_DataLibrary.Models.ProjectModel project, TCABS_DataLibrary.Models.ProjectRoleGroupModel roleGroup, List<TCABS_DataLibrary.Models.TeamModel> teams )
+      public Project(TCABS_DataLibrary.Models.ProjectModel project, TCABS_DataLibrary.Models.ProjectRoleGroupModel roleGroup )
       {
          ProjectId = project.ProjectId;
          Name = project.Name;
          Description = project.Description;
          ProjectRoleGroupId = project.ProjectRoleGroupId;
          if (roleGroup?.ProjectRoleGroupId == ProjectRoleGroupId) ProjectRoleGroupName = roleGroup.Name;
-
-         Teams = new List<Team>( );
-
-         foreach( var t in teams )
-         {
-            var team = new Team( )
-            {
-               TeamId = t.TeamId,
-               Name = t.Name,
-               ProjectId = t.ProjectId,
-               SupervisorId = t.SupervisorId
-            };
-            team.Project = this;
-            var supervisorModel = UserProcessor.SelectUserForUserId( team.SupervisorId );
-            team.Supervisor = new User( )
-            {
-               UserId = supervisorModel.UserId,
-               Username = supervisorModel.Username
-            };
-
-            Teams.Add( team );
-         }
       }
    }
 }

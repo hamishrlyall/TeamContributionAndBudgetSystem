@@ -14,28 +14,30 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
 
       public int SupervisorId { get; set; }
 
-      public int ProjectId { get; set; }
+      public int UnitOfferingId { get; set; }
 
       public string Name { get; set; }
 
       public virtual User Supervisor { get; set; }
-      public virtual Project Project { get; set; }
+      public virtual UnitOffering UnitOffering { get; set; }
+      public string UnitName { get; set; }
 
       public virtual ICollection<Enrollment> Enrollments { get; set; }
 
       //public virtual List<User> AvailableEnrollments { get; set; }
       // Add list for Available Enrollments
-      public List<User> GetAvailableEnrollments( int unitOfferingId )
+      public List<Enrollment> GetAvailableEnrollments( int unitOfferingId )
       {
          var enrollmentData = EnrollmentProcessor.LoadEnrollmentsForUnitOffering( unitOfferingId );
-         var users = new List<User>( );
+         var enrollments = new List<Enrollment>( );
 
          foreach( var row in enrollmentData )
          {
             var rowData = UserProcessor.SelectUserForUserId( row.UserId );
-            var user = new User
+            var enrollment = new Enrollment
             {
-               UserId = rowData.UserId,
+               EnrollmentId = row.EnrollmentId,
+               UserId = row.UserId,
                Username = rowData.Username,
                //FirstName = rowData.FirstName,
                //LastName = rowData.LastName,
@@ -44,10 +46,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
                //Password = rowData.Password
             };
 
-            users.Add( user );
+            enrollments.Add( enrollment );
          }
 
-         return users;
+         return enrollments;
       }
 
       public List<User> GetAvailableSupervisors( )
@@ -74,49 +76,95 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
          Enrollments = new HashSet<Enrollment>( );
       }
 
-      public Team( TCABS_DataLibrary.Models.ProjectModel project )
+      public Team( TCABS_DataLibrary.Models.UnitOfferingModel unitOffering )
       {
-         ProjectId = project.ProjectId;
-         if( project?.ProjectId == project.ProjectId )
+         UnitOfferingId = unitOffering.UnitOfferingId;
+         if( unitOffering?.UnitOfferingId == unitOffering.UnitOfferingId )
          {
-            Project = new Project( )
-            {
-               ProjectId = project.ProjectId,
-               Name = project.Name
-            };
+            GetUnitOffering( unitOffering.UnitOfferingId );
+            //Project = new Project( )
+            //{
+            //   ProjectId = unitOffering.ProjectId,
+            //   Name = unitOffering.Name
+            //};
          }
       }
 
-      public Team( TCABS_DataLibrary.Models.TeamModel team, TCABS_DataLibrary.Models.ProjectModel project )
+      //public Team( TCABS_DataLibrary.Models.TeamModel team, TCABS_DataLibrary.Models.UnitOfferingModel unitOffering )
+      //{
+      //   TeamId = team.TeamId;
+      //   Name = team.Name;
+      //   UnitOfferingId = team.UnitOfferingId;
+      //   if( unitOffering?.UnitOfferingId == team.UnitOfferingId )
+      //   {
+      //      UnitOffering = new UnitOffering( )
+      //      {
+      //         UnitOfferingId = unitOffering.UnitOfferingId
+      //      };
+      //   }
+      //}
+
+      private void GetUnitOffering( int id )
       {
-         TeamId = team.TeamId;
-         Name = team.Name;
-         ProjectId = team.ProjectId;
-         if( project?.ProjectId == team.ProjectId )
+         var data = UnitOfferingProcessor.SelectUnitOfferingForUnitOfferingId( UnitOfferingId );
+         UnitOffering = new UnitOffering( )
          {
-            Project = new Project( )
-            {
-               ProjectId = project.ProjectId,
-               Name = project.Name
-            };
-         }
+            UnitOfferingId = data.UnitOfferingId,
+            TeachingPeriodId = data.TeachingPeriodId,
+            YearId = data.YearId,
+            ConvenorId = data.ConvenorId,
+            UnitId = data.UnitId,
+         };
+
+         var teachingperiodData = TeachingPeriodProcessor.SelectTeachingPeriodForTeachingPeriodId( UnitOffering.TeachingPeriodId );
+         UnitOffering.TeachingPeriod = new TeachingPeriod( )
+         {
+            TeachingPeriodId = teachingperiodData.TeachingPeriodId,
+            Name = teachingperiodData.Name,
+            Day = teachingperiodData.Day,
+            Month = teachingperiodData.Month
+         };
+         var yearData = YearProcessor.SelectYearForYearId( UnitOffering.YearId );
+         UnitOffering.Year = new Year( )
+         {
+            YearId = yearData.YearId,
+            YearValue = yearData.Year
+         };
+
+         var convenorData = UserProcessor.SelectUserForUserId( UnitOffering.ConvenorId );
+         UnitOffering.Convenor = new User( )
+         {
+            UserId = convenorData.UserId,
+            Username = convenorData.Username
+         };
+
+         var unitData = UnitProcessor.SelectUnitForUnitId( UnitOffering.UnitId );
+         UnitOffering.Unit = new Unit( )
+         {
+            UnitId = unitData.UnitId,
+            Name = unitData.Name
+         };
       }
 
-      public Team( TCABS_DataLibrary.Models.TeamModel team, TCABS_DataLibrary.Models.ProjectModel project, List<TCABS_DataLibrary.Models.EnrollmentModel> enrollments )
+      public Team( TCABS_DataLibrary.Models.TeamModel team, TCABS_DataLibrary.Models.UnitOfferingModel unitOffering )
       {
          TeamId = team.TeamId;
          Name = team.Name;
-         ProjectId = team.ProjectId;
-         if( project?.ProjectId == team.ProjectId )
+         UnitOfferingId = team.UnitOfferingId;
+         SupervisorId = team.SupervisorId;
+         if( unitOffering?.UnitOfferingId == team.UnitOfferingId )
          {
-            Project = new Project( )
-            {
-               ProjectId = project.ProjectId,
-               Name = project.Name
-            };
-            
-            //GetAvailableEnrollments( team.ProjectId );
+            GetUnitOffering( team.UnitOfferingId );
          }
+
+         var supervisor = UserProcessor.SelectUserForUserId( team.SupervisorId );
+         Supervisor = new User( )
+         {
+            UserId = supervisor.UserId,
+            Username = supervisor.Username
+         };
+
+         var enrollments = EnrollmentProcessor.LoadEnrollmentsForTeam( team.TeamId );
 
          Enrollments = new List<Enrollment>( );
 
@@ -138,7 +186,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
 
             Enrollments.Add( enrollment );
          }
-
       }
    }
 }

@@ -11,22 +11,23 @@
 <div class="form-horizontal">
    <h4>Team</h4>
    <hr />
-   @Html.ValidationSummary( true, "", new { @class = "text-danger" } )
+   @Html.ValidationSummary( false, "", new { @class = "text-danger" } )
    @Html.HiddenFor( model => model.TeamId )
+
+   <div class="form-group">
+      @Html.LabelFor( model => model.UnitOffering.Unit, htmlAttributes: new { @class = "control-label col-md-2" } )
+      <div class="col-md-10">
+         @Html.HiddenFor( model => model.UnitOfferingId )
+         @Html.DisplayFor( model => model.UnitOffering.Unit.Name, new { htmlAttributes = new { @class = "form-control" } } )
+         @*@Html.ValidationMessageFor( model => model.UnitOfferingId, "", new { @class = "text-danger" } )*@
+      </div>
+   </div>
 
    <div class="form-group">
       @Html.LabelFor( model => model.Supervisor, htmlAttributes: new { @class = "control-label col-md-2" } )
       <div class="col-md-10">
          @Html.DropDownList( "SupervisorId", "Select Supervisor" )
          @Html.ValidationMessageFor( model => model.SupervisorId, "", new { @class = "text-danger" } )
-      </div>
-   </div>
-
-   <div class="form-group">
-      @Html.LabelFor( model => model.ProjectId, htmlAttributes: new { @class = "control-label col-md-2" } )
-      <div class="col-md-10">
-         @Html.EditorFor( model => model.ProjectId, new { htmlAttributes = new { @class = "form-control" } } )
-         @Html.ValidationMessageFor( model => model.ProjectId, "", new { @class = "text-danger" } )
       </div>
    </div>
 
@@ -47,5 +48,5 @@
 }
     
 <div>
-   @Html.ActionLink( "Back to Project", "Details", "Project", new { id = Model.ProjectId }, new { @class = "ui-btn-right" } ))
+   @Html.ActionLink( "Back to Unit Offering", "Details", "UnitOffering", new { id = Model.UnitOfferingId }, new { @class = "ui-btn-right" } )
 </div>

@@ -96,11 +96,11 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 // Get name of assigned project role group
                 var roleGroup = ProjectProcessor.GetProjectRoleGroup(projectModel.ProjectRoleGroupId);
 
-                var teams = TeamProcessor.SelectTeamsForProjectId( projectId );
+                //var teams = TeamProcessor.SelectTeamsForUnitOfferingId( projectId );
 
                 // Convert the model data to non-model data
                 // Pass the data to the view
-                return View(new Project(projectModel, roleGroup, teams));
+                return View(new Project(projectModel, roleGroup ));
             }
             catch (Exception e)
             {

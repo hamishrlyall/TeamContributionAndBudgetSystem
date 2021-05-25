@@ -30,6 +30,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
       public virtual User Student { get; set; }
       public virtual UnitOffering UnitOffering { get; set; }
 
+      public string Username { get; set; }
+
       // TODO: Add Team model
       //public virtual Team Team { get; set; }
    }

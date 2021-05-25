@@ -10,37 +10,40 @@
    <hr />
    <dl class="dl-horizontal">
       <dt>
-            @Html.DisplayNameFor(model => model.Supervisor)
+         @Html.DisplayNameFor( model => model.Supervisor )
       </dt>
-    
+
       <dd>
-            @Html.DisplayFor( model => model.Supervisor.Username )
+         @Html.DisplayFor( model => model.Supervisor.Username )
       </dd>
-    
+
       <dt>
-            @Html.DisplayNameFor(model => model.Project)
+         @Html.DisplayNameFor( model => model.UnitOffering.Unit )
       </dt>
-    
+
       <dd>
-            @Html.DisplayFor(model => model.Project.Name)
+         @Html.DisplayFor( model => model.UnitOffering.Unit.Name )
       </dd>
-    
+
       <dt>
-            @Html.DisplayNameFor(model => model.Name)
+         @Html.DisplayNameFor( model => model.Name )
       </dt>
-    
+
       <dd>
-            @Html.DisplayFor(model => model.Name)
+         @Html.DisplayFor( model => model.Name )
       </dd>
-    
+
    </dl>
-    
+
    @using( Html.BeginForm( ) )
    {
       @Html.AntiForgeryToken( )
+      @Html.ValidationSummary( false, "", new { @class = "text-danger" } )
+      @Html.HiddenFor( model => model.UnitOfferingId )
+      @Html.HiddenFor( model => model.TeamId )
       <div class="form-actions no-color">
          <input type="submit" value="Delete" class="btn btn-default" /> |
-         @Html.ActionLink( "Back to Project", "Details", "Project", new { id = Model.ProjectId }, new { @class = "ui-btn-right" } ))
+         @Html.ActionLink( "Back to Unit Offering", "Details", "UnitOffering", new { id = Model.UnitOfferingId }, new { @class = "ui-btn-right" } )
       </div>
    }
 </div>

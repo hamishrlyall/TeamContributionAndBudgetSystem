@@ -21,11 +21,11 @@ namespace TCABS_DataLibrary.BusinessLogic
          return ConfigurationManager.ConnectionStrings[ _ConnectionName ].ConnectionString;
       }
 
-      public static List<TeamModel> SelectTeamsForProjectId( int _ProjectId  )
+      public static List<TeamModel> SelectTeamsForUnitOfferingId( int _UnitOfferingId )
       {
-         string sql = "spSelectTeamsForProjectId";
+         string sql = "spSelectTeamsForUnitOfferingId";
          var dynamicData = new DynamicParameters( );
-         dynamicData.Add( "projectid", _ProjectId );
+         dynamicData.Add( "unitofferingId", _UnitOfferingId );
 
          return SqlDataAccess.LoadData<TeamModel>( sql, dynamicData );
       }
@@ -37,14 +37,14 @@ namespace TCABS_DataLibrary.BusinessLogic
          return SqlDataAccess.DeleteRecord( sql, new { TeamId = _TeamId } );
       }
 
-      public static TeamModel InsertTeam( int _SupervisorId, int _ProjectId, string _Name )
+      public static TeamModel InsertTeam( int _SupervisorId, int _UnitOfferingId, string _Name )
       {
          try
          {
             string sql = @"spInsertTeam";
             var data = new DynamicParameters( );
             data.Add( "supervisorid", _SupervisorId );
-            data.Add( "projectid", _ProjectId );
+            data.Add( "unitofferingid", _UnitOfferingId );
             data.Add( "name", _Name );
             data.Add( "teamid", null );
 

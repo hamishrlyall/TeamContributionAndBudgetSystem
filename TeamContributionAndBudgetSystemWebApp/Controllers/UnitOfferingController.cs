@@ -17,6 +17,17 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 {
    public class UnitOfferingController : BaseController
    {
+      /// <summary>
+      /// A string to use with TempData[] for project error messages shown on the Index() page.
+      /// </summary>
+      public const string LabelError = "projectError";
+
+      /// <summary>
+      /// A string to use with TempData[] for project success messages shown on the Index() page.
+      /// </summary>
+      public const string LabelSuccess = "projectSuccess";
+
+
       private TCABS_Db_Context db = new TCABS_Db_Context( );
 
       // GET: UnitOffering
@@ -49,15 +60,40 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          {
             return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
          }
+         try
+         {
+            var unitOfferingModel = UnitOfferingProcessor.SelectUnitOfferingForUnitOfferingId( id );
+            if( unitOfferingModel == null )
+               return RedirectToIndexIdNotFound( id );
+
+            var unit = UnitProcessor.SelectUnitForUnitId( unitOfferingModel.UnitId );
+            var teachingPeriod = TeachingPeriodProcessor.SelectTeachingPeriodForTeachingPeriodId( unitOfferingModel.TeachingPeriodId );
+            var year = YearProcessor.SelectYearForYearId( unitOfferingModel.YearId );
+            var convenor = UserProcessor.SelectUserForUserId( unitOfferingModel.ConvenorId );
+
+            var teams = TeamProcessor.SelectTeamsForUnitOfferingId( id );
+            var enrollments = EnrollmentProcessor.LoadEnrollmentsForUnitOffering( id );
+
+            // Convert the model data to non-model data
+            // Pass the data to the view
+            var unitOffering = new UnitOffering( unitOfferingModel, unit, teachingPeriod, year, convenor, teams, enrollments );
+
+            ViewBag.UserId = new SelectList( unitOffering.GetStudents( ), "UserId", "Username", null );
+            return View( unitOffering );
+         }
+         catch( Exception e)
+         {
+            return RedirectToIndex( e );
+         }
 
          // Find Unit Offering
-         db.GetUnitOffering( id );
+         //db.GetUnitOffering( id );
 
          // Populate Student Drop Down List for to add new Enrollments
-         PopulateStudentDropDownList( );
+         //PopulateStudentDropDownList( );
 
          // Navigate to View
-         return View( db );
+         //return View( db );
       }
       
       /// <summary>
@@ -105,7 +141,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             return RedirectToLogin( );
 
          // Ensure Enrollment Model is associated with UnitOffering
-         if( _Enrollment.UnitOffering == null )
+         if( _Enrollment.UnitOfferingId <= null )
          {
             return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
          }
@@ -116,12 +152,12 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                throw new DataException( "No User Selected." );
 
             // Check if Student is already enrolled in this unit
-            var rowsFound = EnrollmentProcessor.SelectEnrollmentCountForUnitOfferingIdAndUserId( _Enrollment.UnitOffering.UnitOfferingId, _Enrollment.UserId );
+            var rowsFound = EnrollmentProcessor.SelectEnrollmentCountForUnitOfferingIdAndUserId( _Enrollment.UnitOfferingId, _Enrollment.UserId );
             if( rowsFound > 0 )
                throw new DataException( $"User is already enrolled in this Unit Offering." );
 
             //Attempt to insert new Enrollment to database using data from parameter
-            var data = EnrollmentProcessor.InsertEnrollmentModel( _Enrollment.UnitOffering.UnitOfferingId, _Enrollment.UserId );
+            var data = EnrollmentProcessor.InsertEnrollmentModel( _Enrollment.UnitOfferingId, _Enrollment.UserId );
             // Checks if Insert operation was successful if not throws an error.
             if( data == null )
                throw new DataException( "Enrollmment added was invalid." );
@@ -130,7 +166,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          {
             // Show Model Errors reload data and return to view.
             ModelState.AddModelError( "", $"Unable to save changes due to Error: { _Ex.Message}" );
-            db.GetUnitOffering( _Enrollment.UnitOffering.UnitOfferingId );
+            db.GetUnitOffering( _Enrollment.UnitOfferingId );
             PopulateStudentDropDownList( );
             return View( db );
          }
@@ -496,6 +532,35 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          // Go to normal create page
 
          return RedirectToAction( "Index", "UnitOffering" );
+      }
+
+      /// <summary>
+      /// A shorthand method for getting a RedirectToAction() leading to the index page.
+      /// </summary>
+      private ActionResult RedirectToIndex( )
+      {
+         return RedirectToAction( "Index" );
+      }
+
+      /// <summary>
+      /// A shorthand method for getting a RedirectToAction() leading to the index page.
+      /// Also displays an error message based on the provided exception.
+      /// </summary>
+      private ActionResult RedirectToIndex( Exception e )
+      {
+         TempData[ LabelError ] = e.Message;
+         return RedirectToIndex( );
+      }
+
+      /// <summary>
+      /// A shorthand method for getting a RedirectToAction() leading to the index page.
+      /// Also displays an error message saying that the requested project does not exist.
+      /// </summary>
+      /// <param name="unitOfferingId">The project (ID) which could no be found.</param>
+      private ActionResult RedirectToIndexIdNotFound( int unitOfferingId )
+      {
+         TempData[ LabelError ] = "A Unit Offering with ID:" + unitOfferingId + " does not appear to exist";
+         return RedirectToIndex( );
       }
    }
 }

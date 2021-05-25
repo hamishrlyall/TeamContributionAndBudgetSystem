@@ -11,13 +11,14 @@
 <div class="form-horizontal">
    <h4>Team</h4>
    <hr />
-   @Html.ValidationSummary( true, "", new { @class = "text-danger" } )
+   @Html.ValidationSummary( false, "", new { @class = "text-danger" } )
 
    <div class="form-group">
-      @Html.LabelFor( model => model.Project, htmlAttributes: new { @class = "control-label col-md-2" } )
+      @Html.LabelFor( model => model.UnitOffering, htmlAttributes: new { @class = "control-label col-md-2" } )
       <div class="col-md-10">
-         @Html.DisplayFor( model => model.Project.Name, new { htmlAttributes = new { @class = "form-control" } } )
-         @Html.ValidationMessageFor( model => model.ProjectId, "", new { @class = "text-danger" } )
+         @Html.HiddenFor( model => model.UnitOfferingId )
+         @Html.DisplayFor( model => model.UnitOffering.Unit.Name, new { htmlAttributes = new { @class = "form-control" } } )
+         @Html.ValidationMessageFor( model => model.UnitOfferingId, "", new { @class = "text-danger" } )
       </div>
    </div>
 
@@ -46,6 +47,6 @@
 }
     
 <div>
-   @Html.ActionLink("Back to Project", "Details", "Project", new { id = Model.ProjectId }, new { @class = "ui-btn-right" } ))
+   @Html.ActionLink("Back to Project", "Details", "UnitOffering", new { id = Model.UnitOfferingId }, new { @class = "ui-btn-right" } )
 </div>
 

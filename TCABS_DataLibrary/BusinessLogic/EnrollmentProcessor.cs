@@ -100,22 +100,35 @@ namespace TCABS_DataLibrary.BusinessLogic
          return null;
       }
 
-      public static EnrollmentModel UpdateEnrollmentWithTeamId( int _EnrollmentId, int _TeamId )
+      public static EnrollmentModel SelectEnrollmentForEnrollmentId( int _Id )
+      {
+         string sql = "spSelectEnrollmentForEnrollmentId";
+
+         var dynamicData = new DynamicParameters( );
+         dynamicData.Add( "enrollmentid", _Id );
+
+         return SqlDataAccess.ExecuteStoredProcedure<EnrollmentModel>( sql, dynamicData );
+      }
+
+      public static void UpdateEnrollmentWithTeamId( int _EnrollmentId, int _TeamId )
       {
          try
          {
-            string sql = "spUpdateEnrollmentWithTeamId";
-            var dynamicData = new DynamicParameters( );
-            dynamicData.Add( "enrollmentid", _EnrollmentId );
-            dynamicData.Add( "teamid", _TeamId );
+            using( IDbConnection con = new SqlConnection( GetConnectionString( ) ) )
+            {
+               string sql = "spUpdateEnrollmentWithTeamId";
+               var dynamicData = new DynamicParameters( );
+               dynamicData.Add( "enrollmentid", _EnrollmentId );
+               dynamicData.Add( "teamid", _TeamId );
 
-            return SqlDataAccess.ExecuteStoredProcedure<EnrollmentModel>( sql, dynamicData );
+               con.Query<UnitModel>( sql, dynamicData, commandType: CommandType.StoredProcedure );
+            }
+
          }
          catch( Exception e)
          {
             SqlDataAccess.TryConvertExceptionMessage( e );
          }
-         return null;
       }
    }
 }
