@@ -123,6 +123,12 @@ namespace TCABS_DataLibrary.BusinessLogic
          return SqlDataAccess.LoadData<UserModel>( sql );
       }
 
+      public static List<UserModel> SelectSupervisors( )
+      {
+         string sql = "spSelectSupervisors";
+         return SqlDataAccess.LoadData<UserModel>( sql );
+      }
+
       public static List<UserModel> SelectConvenors( )
       {
          string sql = "spSelectConvenors";

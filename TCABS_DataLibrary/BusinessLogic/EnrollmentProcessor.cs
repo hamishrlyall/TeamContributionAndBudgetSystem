@@ -20,13 +20,30 @@ namespace TCABS_DataLibrary.BusinessLogic
          return ConfigurationManager.ConnectionStrings[ _ConnectionName ].ConnectionString;
       }
 
-      public static int SelectEnrollmentForUnitOfferingIdAndUserId( int _UnitOfferingId, int _UserId )
+      public static int SelectEnrollmentCountForUnitOfferingIdAndUserId( int _UnitOfferingId, int _UserId )
       {
          try
          {
             string sql = "spSelectEnrollmentCountForUnitOfferingIdAndUserId";
             var data = new DynamicParameters( );
             data.Add( "unitofferingid", _UnitOfferingId );
+            data.Add( "userid", _UserId );
+
+            return SqlDataAccess.SelectCount( sql, data );
+         }
+         catch( Exception e )
+         {
+            SqlDataAccess.TryConvertExceptionMessage( e );
+         }
+         return 0;
+      }
+      public static int SelectEnrollmentCountForTeamIdAndUserId( int _TeamId, int _UserId )
+      {
+         try
+         {
+            string sql = "spSelectEnrollmentCountForTeamIdAndUserId";
+            var data = new DynamicParameters( );
+            data.Add( "teamid", _TeamId );
             data.Add( "userid", _UserId );
 
             return SqlDataAccess.SelectCount( sql, data );
@@ -54,6 +71,15 @@ namespace TCABS_DataLibrary.BusinessLogic
          return SqlDataAccess.LoadData<EnrollmentModel>( sql, data );
       }
 
+      public static List<EnrollmentModel> LoadEnrollmentsForTeam( int _Id )
+      {
+         string sql = "spSelectEnrollmentsForTeamId";
+         var data = new DynamicParameters( );
+         data.Add( "teamid", _Id );
+
+         return SqlDataAccess.LoadData<EnrollmentModel>( sql, data );
+      }
+
       public static EnrollmentModel InsertEnrollmentModel( int _UnitOfferingId, int _UserId )
       {
          try
@@ -71,6 +97,24 @@ namespace TCABS_DataLibrary.BusinessLogic
             SqlDataAccess.TryConvertExceptionMessage( e );
          }
          
+         return null;
+      }
+
+      public static EnrollmentModel UpdateEnrollmentWithTeamId( int _EnrollmentId, int _TeamId )
+      {
+         try
+         {
+            string sql = "spUpdateEnrollmentWithTeamId";
+            var dynamicData = new DynamicParameters( );
+            dynamicData.Add( "enrollmentid", _EnrollmentId );
+            dynamicData.Add( "teamid", _TeamId );
+
+            return SqlDataAccess.ExecuteStoredProcedure<EnrollmentModel>( sql, dynamicData );
+         }
+         catch( Exception e)
+         {
+            SqlDataAccess.TryConvertExceptionMessage( e );
+         }
          return null;
       }
    }

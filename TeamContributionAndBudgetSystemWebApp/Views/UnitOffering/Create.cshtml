@@ -60,8 +60,7 @@
       <div class="form-group">
          @Html.LabelFor( model => model.Unit, htmlAttributes: new { @class = "control-label col-md-2" } )
          <div class="col-md-10">
-            @Html.DropDownList( "UnitId", String.Empty )
-            @*@Html.EditorFor( model => model.UnitId, new { htmlAttributes = new { @class = "form-control" } } )*@
+            @Html.DropDownList( "UnitId", "Select Unit" )
             @Html.ValidationMessageFor( model => model.UnitId, "", new { @class = "text-danger" } )
          </div>
       </div>
@@ -69,8 +68,7 @@
       <div class="form-group">
          @Html.LabelFor( model => model.TeachingPeriod, htmlAttributes: new { @class = "control-label col-md-2" } )
          <div class="col-md-10">
-            @Html.DropDownList( "TeachingPeriodId", String.Empty )
-            @*@Html.EditorFor( model => model.TeachingPeriodId, new { htmlAttributes = new { @class = "form-control" } } )*@
+            @Html.DropDownList( "TeachingPeriodId", "Select Teaching Period" )
             @Html.ValidationMessageFor( model => model.TeachingPeriodId, "", new { @class = "text-danger" } )
          </div>
       </div>
@@ -78,8 +76,7 @@
       <div class="form-group">
          @Html.LabelFor( model => model.Year, htmlAttributes: new { @class = "control-label col-md-2" } )
          <div class="col-md-10">
-            @Html.DropDownList( "YearId", String.Empty )
-            @*@Html.EditorFor( model => model.YearId, new { htmlAttributes = new { @class = "form-control" } } )*@
+            @Html.DropDownList( "YearId", "Select Year" )
             @Html.ValidationMessageFor( model => model.YearId, "", new { @class = "text-danger" } )
          </div>
       </div>
@@ -87,8 +84,7 @@
       <div class="form-group">
          @Html.LabelFor( model => model.Convenor, htmlAttributes: new { @class = "control-label col-md-2" } )
          <div class="col-md-10">
-            @Html.DropDownList( "ConvenorId", String.Empty )
-            @*@Html.EditorFor( model => model.ConvenorId, new { htmlAttributes = new { @class = "form-control" } } )*@
+            @Html.DropDownList( "ConvenorId", "Select Convenor" )
             @Html.ValidationMessageFor( model => model.ConvenorId, "", new { @class = "text-danger" } )
          </div>
       </div>

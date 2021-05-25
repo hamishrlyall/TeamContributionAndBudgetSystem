@@ -116,7 +116,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                throw new DataException( "No User Selected." );
 
             // Check if Student is already enrolled in this unit
-            var rowsFound = EnrollmentProcessor.SelectEnrollmentForUnitOfferingIdAndUserId( _Enrollment.UnitOffering.UnitOfferingId, _Enrollment.UserId );
+            var rowsFound = EnrollmentProcessor.SelectEnrollmentCountForUnitOfferingIdAndUserId( _Enrollment.UnitOffering.UnitOfferingId, _Enrollment.UserId );
             if( rowsFound > 0 )
                throw new DataException( $"User is already enrolled in this Unit Offering." );
 

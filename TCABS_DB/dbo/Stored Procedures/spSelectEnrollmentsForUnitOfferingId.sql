@@ -2,6 +2,6 @@
    @unitofferingid int
 AS
 BEGIN
-   SELECT * FROM [dbo].[Enrollments]
+   SELECT * FROM [dbo].[Enrollment]
    WHERE UnitOfferingId = @unitofferingid
 END;

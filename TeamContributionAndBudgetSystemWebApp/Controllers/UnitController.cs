@@ -50,7 +50,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       public ActionResult Edit( int id )
       {
          // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn ) return RedirectToLogin( );
+         if( !IsUserLoggedIn ) 
+            return RedirectToLogin( );
 
          if( id <= 0 )
          {

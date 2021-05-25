@@ -51,6 +51,7 @@
     <Compile Include="BusinessLogic\RoleProcessor.cs" />
     <Compile Include="BusinessLogic\ProjectProcessor.cs" />
     <Compile Include="BusinessLogic\TeachingPeriodProcessor.cs" />
+    <Compile Include="BusinessLogic\TeamProcessor.cs" />
     <Compile Include="BusinessLogic\UnitOfferingProcessor.cs" />
     <Compile Include="BusinessLogic\UnitProcessor.cs" />
     <Compile Include="BusinessLogic\UserProcessor.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\RolePermissionModel.cs" />
     <Compile Include="Models\TeachingPeriodModel.cs" />
+    <Compile Include="Models\TeamModel.cs" />
     <Compile Include="Models\UnitModel.cs" />
     <Compile Include="Models\UnitOfferingModel.cs" />
     <Compile Include="Models\UserModel.cs" />
