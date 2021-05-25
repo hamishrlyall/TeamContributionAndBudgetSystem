@@ -223,7 +223,6 @@
     <Content Include="Views\UnitOffering\Delete.cshtml" />
     <Content Include="Views\Unit\Delete.cshtml" />
     <Content Include="Views\TeachingPeriod\Delete.cshtml" />
-    </ItemGroup>
     <Content Include="Views\Project\Index.cshtml" />
     <Content Include="Views\Project\Details.cshtml" />
     <Content Include="Views\Project\Edit.cshtml" />

@@ -51,10 +51,10 @@ MERGE INTO [Permission] AS Target USING (
    (3, 'UserView', 'Users', 'Index', 'User'),
    (4, 'UserRoleModify', NULL, NULL, NULL),
    (5, 'UnitManagement', 'Unit Management', 'Index', 'UnitOffering'),
-   (6, 'ProjectView', 'Projects', 'Index', 'Project'),
-   (7, 'RolePermissionView', 'Role Permissions', 'Index', 'RolePermission')
-   (8, 'ViewProject', 'Projects', 'Index', 'Project'),
-   (9, 'ViewProjectRole', 'Project Roles', 'Index', 'ProjectRole')
+   (6, 'DummyPermission', NULL, NULL, NULL),
+   (7, 'Project', 'Projects', 'Index', 'Project'),
+   (8, 'ProjectRole', 'Project Roles', 'Index', 'ProjectRole'),
+   (9, 'ProjectRoleGroup', 'Project Role Groups', 'Index', 'ProjectRoleGroup')
 )
 AS Source ([PermissionId], [PermissionName], [LinkTitle], [LinkPage], [LinkController])
 ON Target.PermissionId = Source.PermissionId
