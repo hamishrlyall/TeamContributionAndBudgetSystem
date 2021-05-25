@@ -43,7 +43,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
             // Get all project role groups from the database
             // Convert the list to a dictionary
-            var projectRoleGroupModels = ProjectProcessor.GetAllProjectRoleGroups();
+            var projectRoleGroupModels = ProjectRoleGroupProcessor.GetAllProjectRoleGroups();
             Dictionary<int, string> projectRoleGroup = null;
             if (projectRoleGroupModels != null)
             {
@@ -94,7 +94,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 if (projectModel == null) return RedirectToIndexIdNotFound(projectId);
 
                 // Get name of assigned project role group
-                var roleGroup = ProjectProcessor.GetProjectRoleGroup(projectModel.ProjectRoleGroupId);
+                var roleGroup = ProjectRoleGroupProcessor.GetProjectRoleGroup(projectModel.ProjectRoleGroupId);
 
                 //var teams = TeamProcessor.SelectTeamsForUnitOfferingId( projectId );
 
@@ -131,7 +131,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 if (projectModel == null) return RedirectToIndexIdNotFound(projectId);
 
                 // Get all project role groups from the database
-                var projectRoleGroupModels = ProjectProcessor.GetAllProjectRoleGroups();
+                var projectRoleGroupModels = ProjectRoleGroupProcessor.GetAllProjectRoleGroups();
 
                 // Get list of available project role groups
                 // Store it in a list for a drop-down-list
@@ -181,7 +181,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
             // Get list of available project role groups
             // Store it in a list for a drop-down-list
-            ViewBag.RoleGroup = new SelectList(ProjectProcessor.GetAllProjectRoleGroups(), "ProjectRoleGroupId", "Name", project.ProjectRoleGroupId);
+            ViewBag.RoleGroup = new SelectList(ProjectRoleGroupProcessor.GetAllProjectRoleGroups(), "ProjectRoleGroupId", "Name", project.ProjectRoleGroupId);
 
             // Return to same page with same data
             return View(project);
@@ -255,7 +255,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
             // Get list of available project role groups
             // Store it in a list for a drop-down-list
-            ViewBag.RoleGroup = new SelectList(ProjectProcessor.GetAllProjectRoleGroups(), "ProjectRoleGroupId", "Name", null);
+            ViewBag.RoleGroup = new SelectList(ProjectRoleGroupProcessor.GetAllProjectRoleGroups(), "ProjectRoleGroupId", "Name", null);
 
             // Go to view
             return View();
@@ -294,7 +294,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
             // Get list of available project role groups
             // Store it in a list for a drop-down-list
-            ViewBag.RoleGroup = new SelectList(ProjectProcessor.GetAllProjectRoleGroups(), "ProjectRoleGroupId", "Name", project.ProjectRoleGroupId);
+            ViewBag.RoleGroup = new SelectList(ProjectRoleGroupProcessor.GetAllProjectRoleGroups(), "ProjectRoleGroupId", "Name", project.ProjectRoleGroupId);
 
             // Return to same page with same data
             return View(project);
