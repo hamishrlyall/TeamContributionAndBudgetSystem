@@ -19,7 +19,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         // GET: RolePermission
         public ActionResult Index()
         {
-            
+
             return View(db);
         }
 
@@ -27,7 +27,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             return View();
         }
-       [HttpGet]
+        [HttpGet]
         public ActionResult Details(int? id)
         {
             if (id == null) return RedirectToAction("Index");
@@ -46,7 +46,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             if (id == null) return RedirectToAction("Index");
             db.curRoleId = (int)id;
-           
+
 
             return View(db);
         }
@@ -54,8 +54,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
         private void PopulateRoleDropDownList()
         {
-            List<Permission> permissions = db.GetPermissions();
-            
+            //List<Permission> permissions = db.GetPermissions();
+
             ViewBag.PermissionId = new SelectList(db.GetPermissions(), "PermissionId", "PermissionName", null);
             ViewBag.RoleId = db.curRoleId;
 
@@ -67,7 +67,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Details(string id, string PermissionID) 
+        public ActionResult Details(string id, string PermissionID)
 
         {
 
@@ -105,17 +105,17 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 return View("Index", db);
 
             return View(db);
-            
+
         }
 
         public ActionResult Delete(string id)
         {
             if ((id == null) || (id.Length < 1)) return RedirectToAction("Index");
-            string[] c = id.Split(',') ;
+            string[] c = id.Split(',');
             db.curRoleId = int.Parse(c[1]);
             var permission = db.getRolePermissionByRoleId(db.curRoleId);
             var p = permission.Find(a => a.Permission.PermissionId == int.Parse(c[0]));
-            ViewBag.PermID=int.Parse(c[0]);
+            ViewBag.PermID = int.Parse(c[0]);
             //ViewBag.RoleName=db.Roles.Find(a => a.RoleId == db.curRoleId).Name;
             //ViewBag.TableName = param[1];
             //ViewBag.Action = param[2];
@@ -128,14 +128,14 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
             return View(db);
         }
-      
+
         public ActionResult DeleteP(string id)
         {
             if ((id == null) || (id.Length < 1)) return RedirectToAction("Index");
             string[] val = id.Split(',');
-            int d=RolePermissionProcessor.DeleteUserRole(int.Parse(val[0]), int.Parse(val[1]));
-            if(d>0)
-            return View("Index",db);
+            int d = RolePermissionProcessor.DeleteUserRole(int.Parse(val[0]), int.Parse(val[1]));
+            if (d > 0)
+                return View("Index", db);
 
             return View(db);
         }

@@ -20,6 +20,11 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         public const string LabelError = "projectError";
 
         /// <summary>
+        /// A string to use with TempData[] for project success messages shown on the Index() page.
+        /// </summary>
+        public const string LabelSuccess = "projectSuccess";
+
+        /// <summary>
         /// The main page of the project controller.
         /// Shows a list of all projects in the system.
         /// </summary>
@@ -86,7 +91,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             {
                 // Get the project data
                 var projectModel = ProjectProcessor.GetProject(projectId);
-                if (projectModel == null) return RedirectToIndexProjectNotFound(projectId);
+                if (projectModel == null) return RedirectToIndexIdNotFound(projectId);
 
                 // Get name of assigned project role group
                 var roleGroup = ProjectProcessor.GetProjectRoleGroup(projectModel.ProjectRoleGroupId);
@@ -123,7 +128,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             {
                 // Get the project data
                 var projectModel = ProjectProcessor.GetProject(projectId);
-                if (projectModel == null) return RedirectToIndexProjectNotFound(projectId);
+                if (projectModel == null) return RedirectToIndexIdNotFound(projectId);
 
                 // Get all project role groups from the database
                 var projectRoleGroupModels = ProjectProcessor.GetAllProjectRoleGroups();
@@ -145,7 +150,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         /// <summary>
         /// The POST edit page is called when a submit button is pressed on the project edit View.
         /// </summary>
-        /// <param name="id">The project information as returned by the View.</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Project project)
@@ -161,8 +165,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                         project.Name,
                         project.Description,
                         project.ProjectRoleGroupId);
-
-                    return RedirectToAction("Index");
+                    TempData[LabelSuccess] = "Updated project: " + project.Name;
+                    return RedirectToIndex();
                 }
                 catch (Exception e)
                 {
@@ -203,7 +207,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             {
                 // Get the project data
                 var projectModel = ProjectProcessor.GetProject(projectId);
-                if (projectModel == null) return RedirectToIndexProjectNotFound(projectId);
+                if (projectModel == null) return RedirectToIndexIdNotFound(projectId);
 
                 // Convert the model data to non-model data
                 // Pass the data to the view
@@ -218,7 +222,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         /// <summary>
         /// The POST edit page is called when a submit button is pressed on the project edit View.
         /// </summary>
-        /// <param name="id">The project information as returned by the View.</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Project project)
@@ -226,14 +229,12 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             // Make sure the user is logged in
             if (!IsUserLoggedIn) return RedirectToLogin();
 
-            // TODO: Need to add some checking before Delete occurs
-            // Cannot delete a project if there is a team assigned.
-
             // Delete the project from the database
             try
             {
                 ProjectProcessor.DeleteProject(project.ProjectId);
-                return RedirectToAction("Index");
+                TempData[LabelSuccess] = "Deleted project: " + project.Name;
+                return RedirectToIndex();
             }
             catch (Exception e)
             {
@@ -263,7 +264,6 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         /// <summary>
         /// The POST create page is called when a submit button is pressed on the project create View.
         /// </summary>
-        /// <param name="id">The project information as returned by the View.</param>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Project project)
@@ -278,8 +278,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                         project.Name,
                         project.Description,
                         project.ProjectRoleGroupId);
-
-                    return RedirectToAction("Index");
+                    TempData[LabelSuccess] = "Created new project: " + project.Name;
+                    return RedirectToIndex();
                 }
                 catch (Exception e)
                 {
@@ -323,7 +323,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         /// Also displays an error message saying that the requested project does not exist.
         /// </summary>
         /// <param name="projectId">The project (ID) which could no be found.</param>
-        private ActionResult RedirectToIndexProjectNotFound(int projectId)
+        private ActionResult RedirectToIndexIdNotFound(int projectId)
         {
             TempData[LabelError] = "A project with ID:" + projectId + " does not appear to exist";
             return RedirectToIndex();

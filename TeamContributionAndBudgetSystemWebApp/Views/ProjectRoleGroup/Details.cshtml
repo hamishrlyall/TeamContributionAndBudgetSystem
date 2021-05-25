@@ -1,0 +1,37 @@
+﻿@model TeamContributionAndBudgetSystemWebApp.Models.ProjectRoleGroup
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ProjectRoleGroup</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Links)
+        </dt>
+        <dd>
+            @if (Model.Links != null)
+            {
+                foreach (var link in Model.Links)
+                {
+                    @link.ProjectRoleName<br />
+                }
+            }
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ProjectRoleGroupId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
