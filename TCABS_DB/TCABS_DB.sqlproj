@@ -167,6 +167,15 @@
     <Build Include="dbo\Tables\Minute.sql" />
     <Build Include="dbo\Tables\MeetingAgendaItem.sql" />
     <Build Include="dbo\Tables\Task.sql" />
+    <Build Include="dbo\Stored Procedures\spCreateProjectTask.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateProjectTask.sql" />
+    <Build Include="dbo\Stored Procedures\spApproveProjectTask.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAllProjectTasks.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProjectTask.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProjectRolesForEnrollment.sql" />
+    <Build Include="dbo\Stored Procedures\spSelectUserFromEnrollment.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProjectsForUserId.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProjectsForUserIdOnlyStudents.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="LoadTestData">
@@ -176,5 +185,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Profiles\TCABS_DB.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="TCABS_DB.refactorlog" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="27f7c133-fc60-4ab9-bad7-b0ad8283c1aa" ChangeDateTime="05/25/2021 14:29:26">
+    <Property Name="ElementName" Value="[dbo].[Task]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[ProjectTask]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="84a20950-bce5-4bc4-bc99-0e0b3258ffc8" ChangeDateTime="05/25/2021 14:29:45">
+    <Property Name="ElementName" Value="[dbo].[ProjectTask].[TaskId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ProjectTask]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[ProjectTaskId]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2d1c8891-76f8-44d8-b02c-624d79615998" ChangeDateTime="05/25/2021 14:30:39">
+    <Property Name="ElementName" Value="[dbo].[spApproveTask]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[spApproveProjectTask]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="beb09dfd-9866-4f5d-9b7d-c0f59917c547" ChangeDateTime="05/25/2021 16:03:11">
+    <Property Name="ElementName" Value="[dbo].[ProjectTask].[StudentUserId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ProjectTask]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[EnrollmentId]" />
+  </Operation>
+</Operations>

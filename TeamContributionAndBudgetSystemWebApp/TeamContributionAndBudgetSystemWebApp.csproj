@@ -127,6 +127,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Controllers\ProjectTaskController.cs" />
     <Compile Include="Controllers\TeachingPeriodController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="Controllers\UnitController.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Models\ProjectRoleGroup.cs" />
     <Compile Include="Models\ProjectRoleLink.cs" />
     <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\ProjectTask.cs" />
     <Compile Include="Models\TCABS_Db_Context.cs" />
     <Compile Include="Models\RolePermission.cs" />
     <Compile Include="Models\TeachingPeriod.cs" />
@@ -238,11 +240,16 @@
     <Content Include="Views\Team\Delete.cshtml" />
     <Content Include="Views\Team\Details.cshtml" />
     <Content Include="Views\Team\Edit.cshtml" />
+    <Content Include="Views\ProjectTask\Index.cshtml" />
+    <Content Include="Views\ProjectTask\Details.cshtml" />
+    <Content Include="Views\ProjectTask\Edit.cshtml" />
+    <Content Include="Views\ProjectTask\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Enrollment\" />
     <Folder Include="Views\Menu\" />
+    <Folder Include="Views\Task\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
