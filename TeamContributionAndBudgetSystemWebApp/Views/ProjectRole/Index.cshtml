@@ -1,0 +1,44 @@
+﻿@model IEnumerable<TeamContributionAndBudgetSystemWebApp.Models.ProjectRole>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@if (TempData[TeamContributionAndBudgetSystemWebApp.Controllers.ProjectRoleController.LabelSuccess] != null)
+{
+    <p class="text-success">
+        @TempData[TeamContributionAndBudgetSystemWebApp.Controllers.ProjectRoleController.LabelSuccess]
+    </p>
+}
+@if (TempData[TeamContributionAndBudgetSystemWebApp.Controllers.ProjectRoleController.LabelError] != null)
+{
+    <p class="text-danger">
+        @TempData[TeamContributionAndBudgetSystemWebApp.Controllers.ProjectRoleController.LabelError]
+    </p>
+}
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ProjectRoleId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ProjectRoleId })
+            </td>
+        </tr>
+    }
+
+</table>

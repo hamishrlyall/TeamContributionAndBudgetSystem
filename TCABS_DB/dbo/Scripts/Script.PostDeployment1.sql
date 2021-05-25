@@ -51,8 +51,10 @@ MERGE INTO [Permission] AS Target USING (
    (3, 'UserView', 'Users', 'Index', 'User'),
    (4, 'UserRoleModify', NULL, NULL, NULL),
    (5, 'UnitManagement', 'Unit Management', 'Index', 'UnitOffering'),
-   (6, 'ProjectView', 'Projects', 'Index', 'Project'),
-   (7, 'RolePermissionView', 'Role Permissions', 'Index', 'RolePermission')
+   (6, 'DummyPermission', NULL, NULL, NULL),
+   (7, 'Project', 'Projects', 'Index', 'Project'),
+   (8, 'ProjectRole', 'Project Roles', 'Index', 'ProjectRole'),
+   (9, 'ProjectRoleGroup', 'Project Role Groups', 'Index', 'ProjectRoleGroup')
 )
 AS Source ([PermissionId], [PermissionName], [LinkTitle], [LinkPage], [LinkController])
 ON Target.PermissionId = Source.PermissionId
@@ -90,7 +92,13 @@ MERGE INTO [RolePermission] AS Target USING (
    (9, 2, 3),
    (10, 2, 4),
    (11, 2, 5),
-   (12, 2, 6)
+   (12, 2, 6),
+   (13, 1, 7),
+   (14, 2, 7),
+   (15, 1, 8),
+   (16, 2, 8),
+   (17, 1, 9),
+   (18, 2, 9)
 )
 AS Source ([RolePermissionId], [RoleId], [PermissionId])
 ON Target.RolePermissionId = Source.RolePermissionId
@@ -151,6 +159,19 @@ WHEN NOT MATCHED BY TARGET THEN
 INSERT ( [ConvenorId], [UnitId], [TeachingPeriodId], [YearId] )
 VALUES ( [ConvenorId], [UnitId], [TeachingPeriodId], [YearId] );
 
+-- Create project roles
+MERGE INTO [ProjectRole] AS Target USING (
+   VALUES
+   (1, 'Team Leader'),
+   (2, 'Programmer')
+)
+AS Source ([ProjectRoleId], [Name])
+ON Target.[ProjectRoleId] = Source.[ProjectRoleId]
+WHEN NOT MATCHED BY TARGET THEN
+INSERT ([Name])
+VALUES ([Name]);
+
+
 -- Create project role groups
 MERGE INTO [ProjectRoleGroup] AS Target USING (
    VALUES
@@ -175,6 +196,20 @@ ON Target.ProjectId = Source.ProjectRoleGroupId
 WHEN NOT MATCHED BY TARGET THEN
 INSERT ([Name], [Description], [ProjectRoleGroupId])
 VALUES ([Name], [Description], [ProjectRoleGroupId]);
+
+
+-- Create project role linkss
+MERGE INTO [ProjectRoleLink] AS Target USING (
+   VALUES
+   (1, 1, 1),
+   (2, 2, 1)
+)
+AS Source ([ProjectRoleLinkId], [ProjectRoleId], [ProjectRoleGroupId])
+ON Target.ProjectRoleLinkId = Source.ProjectRoleLinkId
+WHEN NOT MATCHED BY TARGET THEN
+INSERT ([ProjectRoleId], [ProjectRoleGroupId])
+VALUES ([ProjectRoleId], [ProjectRoleGroupId]);
+
 
 
 END;

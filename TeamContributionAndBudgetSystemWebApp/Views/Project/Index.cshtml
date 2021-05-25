@@ -4,6 +4,12 @@
 }
 
 <h2>Index</h2>
+@if (TempData[TeamContributionAndBudgetSystemWebApp.Controllers.ProjectController.LabelSuccess] != null)
+{
+    <p class="text-success">
+        @TempData[TeamContributionAndBudgetSystemWebApp.Controllers.ProjectController.LabelSuccess]
+    </p>
+}
 @if (TempData[TeamContributionAndBudgetSystemWebApp.Controllers.ProjectController.LabelError] != null)
 {
     <p class="text-danger">
@@ -15,9 +21,6 @@
 </p>
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ProjectId)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
@@ -33,9 +36,6 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectId)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
