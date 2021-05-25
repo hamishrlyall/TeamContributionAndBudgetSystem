@@ -153,6 +153,11 @@
     <Build Include="dbo\Stored Procedures\spGetProjectRoleLinksForGroup.sql" />
     <Build Include="dbo\Stored Procedures\spDeleteProjectRoleLink.sql" />
     <Build Include="dbo\Stored Procedures\spCreateProjectRoleLink.sql" />
+    <Build Include="dbo\Tables\MeetingAttendee.sql" />
+    <Build Include="dbo\Tables\MeetingComment.sql" />
+    <Build Include="dbo\Tables\Minute.sql" />
+    <Build Include="dbo\Tables\MeetingAgendaItem.sql" />
+    <Build Include="dbo\Tables\Task.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="LoadTestData">
