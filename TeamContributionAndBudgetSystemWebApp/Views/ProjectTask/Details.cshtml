@@ -1,0 +1,82 @@
+﻿@model TeamContributionAndBudgetSystemWebApp.Models.ProjectTask
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ProjectTask</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EnrollmentId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EnrollmentId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StudentUsername)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StudentUsername)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectRoleId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectRoleId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectRoleName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectRoleName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Duration)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Duration)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Approved)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Approved)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Modified)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Modified)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ProjectTaskId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
