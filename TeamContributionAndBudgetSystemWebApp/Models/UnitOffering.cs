@@ -14,27 +14,27 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
       public UnitOffering( )
       {
          Enrollments = new HashSet<Enrollment>( );
-         Teams = new HashSet<Team>( );
+         ProjectOfferings = new HashSet<ProjectOffering>( );
       }
 
-      public UnitOffering( TCABS_DataLibrary.Models.UnitOfferingModel unitOfferingModel )
-      {
-         UnitOfferingId = unitOfferingModel.UnitOfferingId;
-         ConvenorId = unitOfferingModel.ConvenorId;
-         UnitId = unitOfferingModel.UnitId;
-         TeachingPeriodId = unitOfferingModel.TeachingPeriodId;
-         YearId = unitOfferingModel.YearId;
+      //public UnitOffering( TCABS_DataLibrary.Models.UnitOfferingModel unitOfferingModel )
+      //{
+      //   UnitOfferingId = unitOfferingModel.UnitOfferingId;
+      //   ConvenorId = unitOfferingModel.ConvenorId;
+      //   UnitId = unitOfferingModel.UnitId;
+      //   TeachingPeriodId = unitOfferingModel.TeachingPeriodId;
+      //   YearId = unitOfferingModel.YearId;
 
-         Enrollments = new HashSet<Enrollment>( );
-         Teams = new HashSet<Team>( );
-      }
+      //   Enrollments = new HashSet<Enrollment>( );
+      //   ProjectOfferings = new HashSet<Team>( );
+      //}
 
       public UnitOffering( TCABS_DataLibrary.Models.UnitOfferingModel unitOffering, 
                            TCABS_DataLibrary.Models.UnitModel unit,
                            TCABS_DataLibrary.Models.TeachingPeriodModel teachingperiod,
                            TCABS_DataLibrary.Models.YearModel year,
                            TCABS_DataLibrary.Models.UserModel convenor,
-                           List<TCABS_DataLibrary.Models.TeamModel> teams,
+                           List<TCABS_DataLibrary.Models.ProjectOfferingModel> projectOfferings,
                            List<TCABS_DataLibrary.Models.EnrollmentModel> enrollments )
       {
          UnitOfferingId = unitOffering.UnitOfferingId;
@@ -73,26 +73,25 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
             Convenor.UserId = convenor.UserId;
          }
 
-         Teams = new List<Team>( );
+         ProjectOfferings = new List<ProjectOffering>( );
 
-         foreach( var t in teams )
+         foreach( var po in projectOfferings )
          {
-            var team = new Team( )
+            var projectOffering = new ProjectOffering( )
             {
-               TeamId = t.TeamId,
-               Name = t.Name,
-               UnitOfferingId = t.UnitOfferingId,
-               SupervisorId = t.SupervisorId
+               ProjectOfferingId = po.ProjectOfferingId,
+               UnitOfferingId = po.UnitOfferingId,
+               ProjectId = po.ProjectId
             };
-            team.UnitOffering = this;
-            var supervisorModel = UserProcessor.SelectUserForUserId( team.SupervisorId );
-            team.Supervisor = new User( )
-            {
-               UserId = supervisorModel.UserId,
-               Username = supervisorModel.Username
-            };
+            projectOffering.UnitOffering = this;
+            //var supervisorModel = UserProcessor.SelectUserForUserId( projectOffering. );
+            //projectOffering.Supervisor = new User( )
+            //{
+            //   UserId = supervisorModel.UserId,
+            //   Username = supervisorModel.Username
+            //};
 
-            Teams.Add( team );
+            ProjectOfferings.Add( projectOffering );
          }
 
          Enrollments = new List<Enrollment>( );
@@ -154,10 +153,12 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
       public virtual TeachingPeriod TeachingPeriod { get; set; }
       public virtual Year Year { get; set; }
 
-      public virtual ICollection<Enrollment> Enrollments { get; set; }
-      public virtual ICollection<Team> Teams { get; set; }
+      public string UnitName { get; set; }
 
-      public Team TeamHeadings = null;
+      public virtual ICollection<Enrollment> Enrollments { get; set; }
+      public virtual ICollection<ProjectOffering> ProjectOfferings { get; set; }
+
+      //public Team TeamHeadings = null;
 
 
       public List<User> GetStudents( )

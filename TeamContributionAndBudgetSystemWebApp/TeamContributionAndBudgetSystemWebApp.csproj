@@ -127,6 +127,8 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Controllers\ProjectOfferingController.cs" />
+    <Compile Include="Controllers\RolePermissionController.cs" />
     <Compile Include="Controllers\TeachingPeriodController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="Controllers\UnitController.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="Models\Permission.cs" />
     <Compile Include="Models\PermissionName.cs" />
     <Compile Include="Models\Project.cs" />
+    <Compile Include="Models\ProjectOffering.cs" />
     <Compile Include="Models\ProjectRole.cs" />
     <Compile Include="Models\ProjectRoleGroup.cs" />
     <Compile Include="Models\ProjectRoleLink.cs" />
@@ -238,6 +241,14 @@
     <Content Include="Views\Team\Delete.cshtml" />
     <Content Include="Views\Team\Details.cshtml" />
     <Content Include="Views\Team\Edit.cshtml" />
+    <Content Include="Views\ProjectRole\Create.cshtml" />
+    <Content Include="Views\ProjectRole\Delete.cshtml" />
+    <Content Include="Views\ProjectRole\Edit.cshtml" />
+    <Content Include="Views\ProjectRole\Index.cshtml" />
+    <Content Include="Views\ProjectOffering\Index.cshtml" />
+    <Content Include="Views\ProjectOffering\Details.cshtml" />
+    <Content Include="Views\ProjectOffering\Delete.cshtml" />
+    <Content Include="Views\ProjectOffering\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

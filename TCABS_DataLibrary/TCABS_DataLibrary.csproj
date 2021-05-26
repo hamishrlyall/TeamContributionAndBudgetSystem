@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="BusinessLogic\EnrollmentProcessor.cs" />
     <Compile Include="BusinessLogic\PermissionProcessor.cs" />
+    <Compile Include="BusinessLogic\ProjectOfferingProcessor.cs" />
     <Compile Include="BusinessLogic\RolePermissionProcessor.cs" />
     <Compile Include="BusinessLogic\RoleProcessor.cs" />
     <Compile Include="BusinessLogic\ProjectProcessor.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Models\EnrollmentModel.cs" />
     <Compile Include="Models\PermissionModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
+    <Compile Include="Models\ProjectOfferingModel.cs" />
     <Compile Include="Models\ProjectRoleLinkModel.cs" />
     <Compile Include="Models\ProjectRoleModel.cs" />
     <Compile Include="Models\ProjectRoleGroupModel.cs" />

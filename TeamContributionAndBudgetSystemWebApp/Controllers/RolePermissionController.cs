@@ -19,7 +19,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         // GET: RolePermission
         public ActionResult Index()
         {
-
+            db.GetUsers( );
+            db.GetRoles( );
+            db.GetUserRole( );
             return View(db);
         }
 
@@ -56,7 +58,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             //List<Permission> permissions = db.GetPermissions();
 
-            ViewBag.PermissionId = new SelectList(db.GetPermissions(), "PermissionId", "PermissionName", null);
+            ViewBag.PermissionId = new SelectList( db.GetPermissions(), "PermissionId", "PermissionName", null);
             ViewBag.RoleId = db.curRoleId;
 
         }

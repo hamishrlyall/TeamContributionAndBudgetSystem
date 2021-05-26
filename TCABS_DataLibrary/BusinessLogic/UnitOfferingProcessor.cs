@@ -49,6 +49,16 @@ namespace TCABS_DataLibrary.BusinessLogic
          return SqlDataAccess.ExecuteStoredProcedure<UnitOfferingModel>( sql, data );
       }
 
+      //public static UnitOfferingModel SelectUnitOfferingForProjectOfferingId( int ProjectOfferingId )
+      //{
+      //   string sql = "spSelectUnitOfferingForProjectOfferingId";
+
+      //   var data = new DynamicParameters( );
+      //   data.Add( "projectofferingid", ProjectOfferingId );
+
+      //   return SqlDataAccess.ExecuteStoredProcedure<UnitOfferingModel>( sql, data );
+      //}
+
       public static UnitOfferingModel SelectUnitOfferingWithEnrollments( int _Id )
       {
          string sql = "spSelectUnitOfferingWithEnrollments";

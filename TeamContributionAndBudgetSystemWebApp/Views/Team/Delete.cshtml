@@ -18,11 +18,11 @@
       </dd>
 
       <dt>
-         @Html.DisplayNameFor( model => model.UnitOffering.Unit )
+         @Html.DisplayNameFor( model => model.ProjectOffering.Project.Name )
       </dt>
 
       <dd>
-         @Html.DisplayFor( model => model.UnitOffering.Unit.Name )
+         @Html.DisplayFor( model => model.ProjectOffering.Project.Name )
       </dd>
 
       <dt>
@@ -39,11 +39,11 @@
    {
       @Html.AntiForgeryToken( )
       @Html.ValidationSummary( false, "", new { @class = "text-danger" } )
-      @Html.HiddenFor( model => model.UnitOfferingId )
+      @Html.HiddenFor( model => model.ProjectOffering )
       @Html.HiddenFor( model => model.TeamId )
       <div class="form-actions no-color">
          <input type="submit" value="Delete" class="btn btn-default" /> |
-         @Html.ActionLink( "Back to Unit Offering", "Details", "UnitOffering", new { id = Model.UnitOfferingId }, new { @class = "ui-btn-right" } )
+         @Html.ActionLink( "Back to Project Offering", "Details", "ProjectOffering", new { id = Model.ProjectOfferingId }, new { @class = "ui-btn-right" } )
       </div>
    }
 </div>

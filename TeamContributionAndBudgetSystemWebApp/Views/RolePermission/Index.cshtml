@@ -1,60 +1,60 @@
 ﻿@model TeamContributionAndBudgetSystemWebApp.Models.TCABS_Db_Context
 
 @{
-    ViewBag.Title = "Index";
+   ViewBag.Title = "Index";
 }
 
 <h2>Role Permission</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+   @Html.ActionLink( "Create New", "Create" )
 </p>
 
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.User.UserId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Role.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserRole.RoleId)
-        </th>
-        <th>
-            @Html.DisplayName("Details")
-        </th>
-        <th></th>
-    </tr>
+   <tr>
+      <th>
+         @Html.DisplayNameFor( model => model.User.UserId )
+      </th>
+      <th>
+         @Html.DisplayNameFor( model => model.Role.Name )
+      </th>
+      <th>
+         @Html.DisplayNameFor( model => model.UserRole.RoleId )
+      </th>
+      <th>
+         @Html.DisplayName( "Details" )
+      </th>
+      <th></th>
+   </tr>
 
-    @foreach (var u in Model.Users)
-    {
-        foreach (var ur in Model.UserRoles)
-        {
-            foreach (var r in Model.Roles)
+   @foreach( var u in Model.Users )
+   {
+      foreach( var ur in Model.UserRoles )
+      {
+         foreach( var r in Model.Roles )
+         {
+            if( r.RoleId == ur.RoleId && ur.UserId == u.UserId )
             {
-                if (r.RoleId == ur.RoleId && ur.UserId == u.UserId)
-                {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => u.UserId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => r.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => ur.RoleId)
-                    </td>
-                    <td>
-                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
-                        <button>@Html.ActionLink("View", "Details", new { id = ur.RoleId }) </button>
-                        @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
-                    </td>
-                </tr>
-              
-                    }
-                }
-            }
-        }
+               <tr>
+                  <td>
+                     @Html.DisplayFor( modelItem => u.UserId )
+                  </td>
+                  <td>
+                     @Html.DisplayFor( modelItem => r.Name )
+                  </td>
+                  <td>
+                     @Html.DisplayFor( modelItem => ur.RoleId )
+                  </td>
+                  <td>
+                     @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
+                     <button>@Html.ActionLink( "View", "Details", new { id = ur.RoleId } ) </button>
+                     @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                  </td>
+               </tr>
 
-    </table>
+            }
+         }
+      }
+   }
+
+</table>

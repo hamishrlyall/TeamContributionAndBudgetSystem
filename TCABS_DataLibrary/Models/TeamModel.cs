@@ -10,7 +10,7 @@ namespace TCABS_DataLibrary.Models
    {
       public int TeamId { get; set; }
       public int SupervisorId { get; set; }
-      public int UnitOfferingId { get; set; }
+      public int ProjectofferingId { get; set; }
       public string Name { get; set; }
    }
 }

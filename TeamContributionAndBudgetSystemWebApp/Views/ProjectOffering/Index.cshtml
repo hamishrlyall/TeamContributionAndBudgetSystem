@@ -1,0 +1,45 @@
+﻿@model IEnumerable<TeamContributionAndBudgetSystemWebApp.Models.ProjectOffering>
+
+@{
+   ViewBag.Title = "Index";
+}
+
+<h2>View Projects</h2>
+
+<div>
+   <p>
+      <a class="btn btn-primary btn-lg" href="~/Project "> Set up Project Types </a>
+   </p>
+</div>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Unit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitOffering.Unit.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.Name)
+            </td>
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { id=item.ProjectOfferingId }) |*@
+                @Html.ActionLink("Set up Teams", "Details", new { id=item.ProjectOfferingId })
+                @*@Html.ActionLink("Delete", "Delete", new { id=item.ProjectOfferingId })*@
+            </td>
+        </tr>
+    }
+    
+    </table>

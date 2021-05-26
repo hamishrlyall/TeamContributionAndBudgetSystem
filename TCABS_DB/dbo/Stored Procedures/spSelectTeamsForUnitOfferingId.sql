@@ -1,7 +1,7 @@
-﻿CREATE PROCEDURE [dbo].[spSelectTeamsForUnitOfferingId]
-   @unitofferingid int
+﻿CREATE PROCEDURE [dbo].[spSelectTeamsForProjectOfferingId]
+   @projectofferingid int
 AS
 BEGIN
    SELECT * FROM [dbo].[Team]
-   WHERE UnitOfferingId = @unitofferingid
+   WHERE ProjectOfferingId = @projectofferingid
 END;

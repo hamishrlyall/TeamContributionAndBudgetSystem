@@ -80,6 +80,19 @@ namespace TCABS_DataLibrary.BusinessLogic
             }
         }
 
+      //public static ProjectModel GetProjectForProjectOfferingId( int projectOfferingId )
+      //{
+      //   string sql = "spGetProjectForProjectOfferingId";
+      //   var data = new DynamicParameters( );
+      //   data.Add( "projectofferingid", projectOfferingId );
+
+      //   //Execute stored procedure
+      //   using( IDbConnection con = SqlDataAccess.OpenDatabaseConnection( ) )
+      //   {
+      //      return con.QuerySingle<ProjectModel>( sql, data, commandType: CommandType.StoredProcedure );
+      //   }
+      //}
+
         /// <summary>
         /// Returns the details of a single project role group.
         /// </summary>

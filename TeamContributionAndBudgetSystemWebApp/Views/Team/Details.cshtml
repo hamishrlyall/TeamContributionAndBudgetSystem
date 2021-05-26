@@ -17,11 +17,11 @@
       </dd>
 
       <dt>
-         @Html.DisplayNameFor( model => model.UnitOffering.Unit )
+         @Html.DisplayNameFor( model => model.ProjectOffering.Project )
       </dt>
 
       <dd>
-         @Html.DisplayFor( model => model.UnitOffering.Unit.Name )
+         @Html.DisplayFor( model => model.ProjectOffering.Project.Name )
       </dd>
 
       <dt>
@@ -81,5 +81,5 @@
 </div>
 <p>
    @Html.ActionLink( "Edit", "Edit", "Team", new { id = Model.TeamId }, new { @class = "ui-btn-right" } )|
-   @Html.ActionLink( "Back to Unit Offering", "Details", "UnitOffering", new { id = Model.UnitOfferingId }, new { @class = "ui-btn-right" } )
+   @Html.ActionLink( "Back to Project Offering", "Details", "ProjectOffering", new { id = Model.ProjectOfferingId }, new { @class = "ui-btn-right" } )
 </p>

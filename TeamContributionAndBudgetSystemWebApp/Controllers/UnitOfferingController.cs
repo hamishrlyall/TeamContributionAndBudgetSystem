@@ -71,12 +71,12 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             var year = YearProcessor.SelectYearForYearId( unitOfferingModel.YearId );
             var convenor = UserProcessor.SelectUserForUserId( unitOfferingModel.ConvenorId );
 
-            var teams = TeamProcessor.SelectTeamsForUnitOfferingId( id );
+            var projectOfferings = ProjectOfferingProcessor.SelectProjectOfferingsForUnitOfferingId( id );
             var enrollments = EnrollmentProcessor.LoadEnrollmentsForUnitOffering( id );
 
             // Convert the model data to non-model data
             // Pass the data to the view
-            var unitOffering = new UnitOffering( unitOfferingModel, unit, teachingPeriod, year, convenor, teams, enrollments );
+            var unitOffering = new UnitOffering( unitOfferingModel, unit, teachingPeriod, year, convenor, projectOfferings, enrollments );
 
             ViewBag.UserId = new SelectList( unitOffering.GetStudents( ), "UserId", "Username", null );
             return View( unitOffering );

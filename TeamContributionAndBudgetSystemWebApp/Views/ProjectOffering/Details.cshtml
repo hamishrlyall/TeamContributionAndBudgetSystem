@@ -1,0 +1,75 @@
+﻿@model TeamContributionAndBudgetSystemWebApp.Models.ProjectOffering
+
+@{
+   ViewBag.Title = "Details";
+}
+
+<div>
+   <h2>ProjectOffering</h2>
+   <hr />
+   <dl class="dl-horizontal">
+      <dt>
+         @Html.DisplayNameFor( model => model.UnitOffering.Unit )
+      </dt>
+
+      <dd>
+         @Html.DisplayFor( model => model.UnitOffering.Unit.Name )
+      </dd>
+
+      <dt>
+         @Html.DisplayNameFor( model => model.Project )
+      </dt>
+
+      <dd>
+         @Html.DisplayFor( model => model.Project.Name )
+      </dd>
+
+   </dl>
+</div>
+
+
+<div>
+   <h4>Teams</h4>
+   <p>
+      @Html.ActionLink( "Create New", "Create", "Team", new { id = Model.ProjectOfferingId }, new { @class = "ui-btn-right" } )
+   </p>
+   <table class="table">
+      <tr>
+         <th>
+            @Html.DisplayNameFor( model => model.TeamHeadings.TeamId )
+         </th>
+         <th>
+            @Html.DisplayNameFor( model => model.TeamHeadings.Name )
+         </th>
+         <th>
+            @Html.DisplayNameFor( model => model.TeamHeadings.Supervisor )
+         </th>
+      </tr>
+      <tr>
+      </tr>
+
+      @foreach( var item in Model.Teams )
+      {
+         <tr>
+            <td>
+               @Html.DisplayFor( modelItem => item.TeamId )
+            </td>
+            <td>
+               @Html.DisplayFor( modelItem => item.Name )
+            </td>
+            <td>
+               @Html.DisplayFor( modelItem => item.Supervisor.Username )
+            </td>
+            <td>
+               @Html.ActionLink( "Edit", "Edit", "Team", new { id = item.TeamId }, new { @class = "ui-btn-right" } ) |
+               @Html.ActionLink( "Add Team Members", "Details", "Team", new { id = item.TeamId }, new { @class = "ui-btn-right" } ) |
+               @Html.ActionLink( "Delete", "Delete", "Team", new { id = item.TeamId }, new { @class = "ui-btn-right" } )
+            </td>
+         </tr>
+      }
+   </table>
+</div>
+<p>
+   @*@Html.ActionLink( "Edit", "Edit", new { id = Model.ProjectOfferingId } ) |*@
+   @Html.ActionLink( "Back to List", "Index" )
+</p>

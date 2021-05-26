@@ -29,12 +29,16 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
       public virtual TeachingPeriod TeachingPeriod { get; set; }
       public virtual UnitOffering UnitOffering { get; set; }
       public virtual Enrollment Enrollment { get; set; }
+      public virtual Project Project { get; set; }
+      public virtual ProjectOffering ProjectOffering { get; set; }
 
       public virtual List<User> Users { get; set; }
       public virtual List<Role> Roles { get; set; }
       public virtual List<UserRole> UserRoles { get; set; }
       public virtual List<MenuItem> MenuItems { get; set; }
       public virtual List<UnitOffering> UnitOfferings { get; set; }
+      public virtual List<Project> Projects { get; set; }
+      public virtual List<ProjectOffering> ProjectOfferings { get; set; }
       public virtual List<Enrollment> Enrollments { get; set; }
       public virtual List<Unit> Units { get; set; }
       public virtual List<TeachingPeriod> TeachingPeriods { get; set; }
@@ -47,57 +51,73 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
       /// Default constructor for TCABS_Db_Context
       /// </summary>
       public TCABS_Db_Context( )
-        {
-            string username = System.Web.HttpContext.Current.User.Identity.Name;
-            if( !string.IsNullOrEmpty( username ) )
-            {
-               GetMenu( username );
-            }
-        }
+      {
+         string username = System.Web.HttpContext.Current.User.Identity.Name;
+         if( !string.IsNullOrEmpty( username ) )
+         {
+            GetMenu( username );
+         }
+      }
 
       /// <summary>
       /// Check if a user (any user) is logged in.
       /// </summary>
       /// <returns>True if a user is already logged in, or false if not.</returns>
-      public bool IsUserLoggedIn()
+      public bool IsUserLoggedIn( )
       {
-         return (User != null) && (User.Username != null);
+         return ( User != null ) && ( User.Username != null );
       }
 
       private void GetMenu( string _Username )
       {
-            /*
-         MenuItems = new List<Models.MenuItem>( );
-         var permissions = GetPermissions( _Username );
+         /*
+      MenuItems = new List<Models.MenuItem>( );
+      var permissions = GetPermissions( _Username );
 
-         MenuItems.Add( new Models.MenuItem( ) { LinkText = "Home", ActionName = "Index", ControllerName = "Home" } );
+      MenuItems.Add( new Models.MenuItem( ) { LinkText = "Home", ActionName = "Index", ControllerName = "Home" } );
 
-         foreach( var permission in permissions )
-         {
-            if( !MenuItems.Any( m => m.LinkText == permission.TableName ) )
-               MenuItems.Add( new Models.MenuItem( ) { LinkText = permission.TableName, ActionName = "Index", ControllerName = permission.TableName + "/Index" } );
-         }
-
-         MenuItems.Add( new Models.MenuItem( ) { LinkText = "Logout", ActionName = "Logout", ControllerName = "Home" } );
-            */
+      foreach( var permission in permissions )
+      {
+         if( !MenuItems.Any( m => m.LinkText == permission.TableName ) )
+            MenuItems.Add( new Models.MenuItem( ) { LinkText = permission.TableName, ActionName = "Index", ControllerName = permission.TableName + "/Index" } );
       }
 
-      private List<Permission> GetPermissions( string _Username )
+      MenuItems.Add( new Models.MenuItem( ) { LinkText = "Logout", ActionName = "Logout", ControllerName = "Home" } );
+         */
+      }
+
+      //public List<Permission> GetPermissions( string _Username )
+      //{
+      //   var user = GetUserForUsername( _Username );
+
+      //   List<Permission> permissions = new List<Permission>( );
+
+      //   foreach( var userRole in user.UserRoles )
+      //   {
+      //      foreach( var rolePermission in userRole.Role.RolePermissions )
+      //      {
+      //         if( !permissions.Any( p => p.PermissionId == rolePermission.Permission.PermissionId ) )
+      //            permissions.Add( rolePermission.Permission );
+      //      }
+      //   }
+
+      //   return permissions;
+      //}
+
+      public List<Permission> GetPermissions( )
       {
-         var user = GetUserForUsername( _Username );
 
-         List<Permission> permissions = new List<Permission>( );
+         var data = PermissionProcessor.SelectPermissions( );
 
-         foreach( var userRole in user.UserRoles )
+         Permissions = new List<Permission>( );
+
+         foreach( var row in data )
          {
-            foreach( var rolePermission in userRole.Role.RolePermissions )
-            {
-               if( !permissions.Any( p => p.PermissionId == rolePermission.Permission.PermissionId ) )
-                  permissions.Add( rolePermission.Permission );
-            }
+            Permissions.Add( new Permission( row ) );
          }
 
-         return permissions;
+         return Permissions;
+
       }
 
       public User GetUser( int id )
@@ -134,7 +154,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
                rolePermission.Role = role;
 
                var permissionData = PermissionProcessor.SelectPermission( rolePermissionData.PermissionId );
-               var permission = new Permission(permissionData);
+               var permission = new Permission( permissionData );
 
                rolePermission.Permission = permission;
 
@@ -291,7 +311,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
                rolePermission.Role = role;
 
                var permissionData = PermissionProcessor.SelectPermission( rolePermissionData.PermissionId );
-               var permission = new Permission(permissionData);
+               var permission = new Permission( permissionData );
 
                rolePermission.Permission = permission;
 
@@ -344,6 +364,33 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
 
          Year = year;
          return Year;
+      }
+
+      public ProjectOffering GetProjectOffering( int projectOfferingId )
+      {
+         var data = ProjectOfferingProcessor.SelectProjectOfferingForProjectOfferingId( projectOfferingId );
+         ProjectOffering = new ProjectOffering( )
+         {
+            ProjectOfferingId = data.ProjectOfferingId,
+            ProjectId = data.ProjectId,
+            UnitOfferingId = data.UnitOfferingId
+         };
+         ProjectOffering.Project = GetProject( data.ProjectId );
+         ProjectOffering.UnitOffering = GetUnitOffering( data.UnitOfferingId );
+
+         return ProjectOffering;
+      }
+
+      public Project GetProject( int projectId )
+      {
+         var data = ProjectProcessor.GetProject( projectId );
+         Project = new Project( )
+         {
+            ProjectId = data.ProjectId,
+            Name = data.Name,
+            ProjectRoleGroupId = data.ProjectRoleGroupId
+         };
+         return Project;
       }
 
       public void GetUsers( )
@@ -459,6 +506,44 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
          return Years;
       }
 
+      public List<ProjectOffering> GetProjectOfferings( )
+      {
+         var data = ProjectOfferingProcessor.SelectProjectOfferings( );
+         ProjectOfferings = new List<ProjectOffering>( );
+         foreach( var row in data )
+         {
+            var projectOffering = new ProjectOffering( )
+            {
+               ProjectOfferingId = row.ProjectOfferingId,
+               ProjectId = row.ProjectId,
+               UnitOfferingId = row.ProjectId
+            };
+            projectOffering.Project = GetProject( row.ProjectId );
+            projectOffering.UnitOffering = GetUnitOffering( row.UnitOfferingId );
+
+            ProjectOfferings.Add( projectOffering );
+         }
+         return ProjectOfferings;
+      }
+
+      public List<Project> GetProjects( )
+      {
+         var data = ProjectProcessor.GetAllProjects( );
+         Projects = new List<Project>( );
+         foreach( var row in data )
+         {
+            var project = new Project( )
+            {
+               ProjectId = row.ProjectId,
+               Name = row.Name,
+               ProjectRoleGroupId = row.ProjectRoleGroupId
+            };
+            Projects.Add( project );
+         }
+
+         return Projects;
+      }
+
       public List<UnitOffering> GetUnitOfferings( )
       {
          var data = UnitOfferingProcessor.SelectUnitOfferings( );
@@ -479,6 +564,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
             unitOffering.Unit = GetUnit( row.UnitId );
             unitOffering.Year = GetYear( row.YearId );
             unitOffering.TeachingPeriod = GetTeachingPeriod( row.TeachingPeriodId );
+            unitOffering.UnitName = unitOffering.Unit.Name;
 
             UnitOfferings.Add( unitOffering );
          }
@@ -523,6 +609,41 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
          }
 
          return Roles;
+      }
+
+      public List<RolePermission> getRolePermissionByRoleId( int roleId )
+      {
+         var roleData = RoleProcessor.SelectRoleWithPermissions( roleId );
+         var role = new Role( );
+         role.RoleId = roleData.RoleId;
+         role.Name = roleData.Name;
+         foreach( var rolePermissionData in roleData.RolePermissions )
+         {
+            var rolePermission = new RolePermission( );
+            rolePermission.RoleId = rolePermissionData.RoleId;
+            rolePermission.PermissionId = rolePermissionData.RoleId;
+            rolePermission.Role = role;
+
+            var permissionData = PermissionProcessor.SelectPermission( rolePermissionData.PermissionId );
+            var permission = new Permission( );
+            permission.PermissionId = permissionData.PermissionId;
+            permission.PermissionName = permissionData.PermissionName;
+            rolePermission.Permission = permission;
+
+            role.RolePermissions.Add( rolePermission );
+         }
+         return role.RolePermissions.ToList( );
+      }
+
+      public void GetUserRole( )
+      {
+         var userRoles = UserRoleProcessor.SelectUserRoles( );
+         UserRoles = new List<UserRole>( );
+         foreach( var row in userRoles )
+         {
+            UserRoles.Add( new UserRole( ) { UserId = row.UserId, RoleId = row.RoleId, UserRoleId = row.UserRoleId } );
+         }
+
       }
    }
 }
