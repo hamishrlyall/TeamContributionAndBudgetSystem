@@ -594,18 +594,22 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
 
          return Users;
       }
-      public List<Role> GetRoles( )
+      public List<Role> GetRoles( int id = 0 )
       {
          var data = RoleProcessor.SelectRoles( );
          Roles = new List<Role>( );
 
          foreach( var row in data )
          {
-            Roles.Add( new Role
+            var role = new Role( )
             {
                RoleId = row.RoleId,
                Name = row.Name,
-            } );
+            };
+
+            if( id == role.RoleId )
+               Role = role;
+            Roles.Add( role );
          }
 
          return Roles;

@@ -3,24 +3,15 @@
     ViewBag.Title = "Details";
 }
 
-<h2 id="h2"></h2>
-@{
-    var x = 0;
-}
-
-@*<h4>RolePermission</h4>*@
-<hr />
-<table border="1">
+<h2>@Html.DisplayFor( model => model.Role.Name )</h2>
+<table class="table">
     <tr>
-        <th>#</th>
         <th>Action</th>
         <th>Delete</th>
     </tr>
     @foreach (TeamContributionAndBudgetSystemWebApp.Models.RolePermission rolePermission in @Model.getRolePermissionByRoleId(Model.curRoleId))
     {
-          x= x + 1;
         <tr>
-            <td width="5">@rolePermission.Permission.PermissionId</td>
             <td>@rolePermission.Permission.PermissionName</td>
             <td>@Html.ActionLink("DELETE", "Delete", new { id =rolePermission.Permission.PermissionId+","+rolePermission.RoleId})</td>
 
@@ -35,10 +26,8 @@
     <div class="form-group">
         <label class="control-label col-md-2" for="PermissionId">Add New Permission</label>
         <div class="col-md-10">
-           @Html.DisplayNameFor( model => model.Role.RoleId )
-           @Html.Display( "RoleId", ( int ) ViewBag.RoleId )
-           @*(IEnumerable<SelectListItem>
-      )ViewBag.PermissionId*@
+
+           @*@Html.Display( "RoleId", ( int ) ViewBag.RoleId )*@
            @Html.DropDownList( "PermissionId", ( IEnumerable<SelectListItem> ) ViewBag.PermissionId, new { @class = "form-control" } )
            @Html.ValidationMessageFor( model => model.UserRoles )
         </div>
@@ -52,7 +41,6 @@
 
 
 <p>
-    @Html.ActionLink("Create", "Create") |
     @Html.ActionLink("Back to List", "Index")
 </p>
 

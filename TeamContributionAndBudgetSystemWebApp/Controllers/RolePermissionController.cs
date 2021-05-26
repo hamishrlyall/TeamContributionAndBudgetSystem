@@ -19,6 +19,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         // GET: RolePermission
         public ActionResult Index()
         {
+         // Make sure the user is logged in and that they have permission
+         if( !IsUserLoggedIn )
+            return RedirectToLogin( );
+
             db.GetUsers( );
             db.GetRoles( );
             db.GetUserRole( );
@@ -31,18 +35,21 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         }
 
         [HttpGet]
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
+            // Make sure the user is logged in and that they have permission
+            if( !IsUserLoggedIn )
+               return RedirectToLogin( );
+
             if (id == null) return RedirectToAction("Index");
-            db.curRoleId = (int)id;
-            //List<RolePermission> lstRolePermission =db.getRolePermissionByRoleId(id);
-            // base on role id , need to get list of rolePermissions
+               db.curRoleId = (int)id;
+               //List<RolePermission> lstRolePermission =db.getRolePermissionByRoleId(id);
+               // base on role id , need to get list of rolePermissions
 
-            //return View(lstRolePermission);
-
-            PopulateRoleDropDownList();
-
-            return View(db);
+               //return View(lstRolePermission);
+               var roles = db.GetRoles( db.curRoleId );
+               PopulateRoleDropDownList();
+               return View(db);
         }
 
         public ActionResult Save(int? id)
@@ -75,7 +82,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             db.GetUsers( );
             db.GetRoles( );
             db.GetUserRole( );
-
+            if( id == null )
+            {
+               return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+            }
             //if (p == null)
             //{
             //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -115,23 +125,33 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
         public ActionResult Delete(string id)
         {
+         // Make sure the user is logged in and that they have permission
+            if( !IsUserLoggedIn )
+               return RedirectToLogin( );
+
+            if( id == null )
+            {
+               return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+            }
+
+
             if ((id == null) || (id.Length < 1)) return RedirectToAction("Index");
-            string[] c = id.Split(',');
-            db.curRoleId = int.Parse(c[1]);
-            var permission = db.getRolePermissionByRoleId(db.curRoleId);
-            var p = permission.Find(a => a.Permission.PermissionId == int.Parse(c[0]));
-            ViewBag.PermID = int.Parse(c[0]);
-            //ViewBag.RoleName=db.Roles.Find(a => a.RoleId == db.curRoleId).Name;
-            //ViewBag.TableName = param[1];
-            //ViewBag.Action = param[2];
-            //List<RolePermission> lstRolePermission =db.getRolePermissionByRoleId(id);
-            // base on role id , need to get list of rolePermissions
+               string[] c = id.Split(',');
+               db.curRoleId = int.Parse(c[1]);
+               var permission = db.getRolePermissionByRoleId(db.curRoleId);
+               var p = permission.Find(a => a.Permission.PermissionId == int.Parse(c[0]));
+               ViewBag.PermID = int.Parse(c[0]);
+               //ViewBag.RoleName=db.Roles.Find(a => a.RoleId == db.curRoleId).Name;
+               //ViewBag.TableName = param[1];
+               //ViewBag.Action = param[2];
+               //List<RolePermission> lstRolePermission =db.getRolePermissionByRoleId(id);
+               // base on role id , need to get list of rolePermissions
 
-            //return View(lstRolePermission);
+               //return View(lstRolePermission);
 
-            PopulateRoleDropDownList();
+               PopulateRoleDropDownList();
 
-            return View(db);
+               return View(db);
         }
 
         public ActionResult DeleteP(string id)

@@ -4,25 +4,17 @@
    ViewBag.Title = "Index";
 }
 
-<h2>Role Permission</h2>
-
-<p>
-   @Html.ActionLink( "Create New", "Create" )
-</p>
+<h2>Role Manager</h2>
 
 <table class="table">
    <tr>
       <th>
-         @Html.DisplayNameFor( model => model.User.UserId )
+         @Html.DisplayNameFor( model => model.User.Username )
       </th>
       <th>
          @Html.DisplayNameFor( model => model.Role.Name )
       </th>
       <th>
-         @Html.DisplayNameFor( model => model.UserRole.RoleId )
-      </th>
-      <th>
-         @Html.DisplayName( "Details" )
       </th>
       <th></th>
    </tr>
@@ -37,13 +29,10 @@
             {
                <tr>
                   <td>
-                     @Html.DisplayFor( modelItem => u.UserId )
+                     @Html.DisplayFor( modelItem => u.Username )
                   </td>
                   <td>
                      @Html.DisplayFor( modelItem => r.Name )
-                  </td>
-                  <td>
-                     @Html.DisplayFor( modelItem => ur.RoleId )
                   </td>
                   <td>
                      @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
