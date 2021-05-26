@@ -169,7 +169,6 @@
     <Build Include="dbo\Tables\Task.sql" />
     <Build Include="dbo\Stored Procedures\spSelectEnrollmentForEnrollmentId.sql" />
     <Build Include="dbo\Tables\ProjectOffering.sql" />
-    <Build Include="dbo\Stored Procedures\spSelectUnitOfferingForProjectOfferingId.sql" />
     <Build Include="dbo\Stored Procedures\spGetProjectForProjectOfferingId.sql" />
     <Build Include="dbo\Stored Procedures\spSelectProjectOfferings.sql" />
     <Build Include="dbo\Stored Procedures\spSelectProjectOfferingForProjectOfferingId.sql" />
