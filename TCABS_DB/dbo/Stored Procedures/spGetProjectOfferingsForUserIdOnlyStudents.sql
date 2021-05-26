@@ -1,12 +1,12 @@
-﻿CREATE PROCEDURE [dbo].[spGetProjectsForUserIdOnlyStudents]
+﻿CREATE PROCEDURE [dbo].[spGetProjectOfferingsForUserIdOnlyStudents]
 	@UserId int
 AS
 BEGIN
 
-	-- Get list of projects
+	-- Get list of project offerings
 	SELECT *
-	FROM [dbo].[Project]
-	WHERE ProjectId IN (
+	FROM [dbo].[ProjectOffering]
+	WHERE UnitOfferingId IN (
 
 		-- Get unit offering ID from user ID (via Enrollment, for students)
 		SELECT UnitOfferingId

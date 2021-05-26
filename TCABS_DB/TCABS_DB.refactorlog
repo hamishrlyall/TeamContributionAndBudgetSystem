@@ -28,4 +28,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="[EnrollmentId]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="446556e7-f308-41d1-a5ad-250103348a36" ChangeDateTime="05/26/2021 07:43:51">
+    <Property Name="ElementName" Value="[dbo].[spGetProjectsForUserId]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[spGetProjectOfferingsForUserId]" />
+  </Operation>
 </Operations>

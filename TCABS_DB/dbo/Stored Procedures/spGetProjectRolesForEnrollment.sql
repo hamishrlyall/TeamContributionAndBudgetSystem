@@ -11,16 +11,16 @@ BEGIN
 		-- Get list of project role IDs
 		SELECT ProjectRoleId
 		FROM [dbo].[ProjectRoleLink]
-		WHERE ProjectRoleGroupId = (
+		WHERE ProjectRoleGroupId IN (
 
-			-- Get project role group ID
+			-- Get list of project role group ID
 			SELECT ProjectRoleGroupId
 			FROM [dbo].[Project]
-			WHERE ProjectId = (
+			WHERE ProjectId IN (
 
-				-- Get project ID
+				-- Get list of project IDs
 				SELECT ProjectId
-				FROM [dbo].[UnitOffering]
+				FROM [dbo].[ProjectOffering]
 				WHERE UnitOfferingId = (
 
 					-- Get unit offering ID

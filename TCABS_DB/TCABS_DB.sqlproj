@@ -182,8 +182,8 @@
     <Build Include="dbo\Stored Procedures\spGetProjectTask.sql" />
     <Build Include="dbo\Stored Procedures\spGetProjectRolesForEnrollment.sql" />
     <Build Include="dbo\Stored Procedures\spSelectUserFromEnrollment.sql" />
-    <Build Include="dbo\Stored Procedures\spGetProjectsForUserId.sql" />
-    <Build Include="dbo\Stored Procedures\spGetProjectsForUserIdOnlyStudents.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProjectOfferingsForUserId.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProjectOfferingsForUserIdOnlyStudents.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="LoadTestData">
