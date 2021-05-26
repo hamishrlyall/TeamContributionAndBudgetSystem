@@ -29,8 +29,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             return View();
         }
+
         [HttpGet]
-        public ActionResult Details(int? id)
+        public ActionResult Details(int id)
         {
             if (id == null) return RedirectToAction("Index");
             db.curRoleId = (int)id;
@@ -70,8 +71,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Details(string id, string PermissionID)
-
         {
+            db.GetUsers( );
+            db.GetRoles( );
+            db.GetUserRole( );
 
             //if (p == null)
             //{
@@ -133,9 +136,16 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
         public ActionResult DeleteP(string id)
         {
-            if ((id == null) || (id.Length < 1)) return RedirectToAction("Index");
+            db.GetUsers( );
+            db.GetRoles( );
+            db.GetUserRole( );
+            if ((id == null) || (id.Length < 1)) 
+               return RedirectToAction("Index");
+
             string[] val = id.Split(',');
+
             int d = RolePermissionProcessor.DeleteUserRole(int.Parse(val[0]), int.Parse(val[1]));
+
             if (d > 0)
                 return View("Index", db);
 

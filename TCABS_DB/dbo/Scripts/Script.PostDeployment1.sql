@@ -51,7 +51,7 @@ MERGE INTO [Permission] AS Target USING (
    (3, 'UserView', 'Users', 'Index', 'User'),
    (4, 'UserRoleModify', NULL, NULL, NULL),
    (5, 'UnitManagement', 'Unit Management', 'Index', 'UnitOffering'),
-   (6, 'DummyPermission', NULL, NULL, NULL),
+   (6, 'RolePermission', 'Permissions', 'Index', 'RolePermission'),
    (7, 'Project', 'Projects', 'Index', 'ProjectOffering'),
    (8, 'ProjectRole', 'Project Roles', 'Index', 'ProjectRole'),
    (9, 'ProjectRoleGroup', 'Project Role Groups', 'Index', 'ProjectRoleGroup')

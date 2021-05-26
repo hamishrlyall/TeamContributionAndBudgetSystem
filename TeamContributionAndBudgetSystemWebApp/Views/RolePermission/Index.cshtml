@@ -47,7 +47,7 @@
                   </td>
                   <td>
                      @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
-                     <button>@Html.ActionLink( "View", "Details", new { id = ur.RoleId } ) </button>
+                     @Html.ActionLink( "Add Permissions", "Details", new { id = ur.RoleId } )
                      @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
                   </td>
                </tr>

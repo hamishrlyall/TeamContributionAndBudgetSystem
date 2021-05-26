@@ -33,14 +33,14 @@
     @Html.AntiForgeryToken()
 
     <div class="form-group">
-        <label class="control-label col-md-2" for="PermissionId">Add New Perrmission</label>
+        <label class="control-label col-md-2" for="PermissionId">Add New Permission</label>
         <div class="col-md-10">
-            @Html.DisplayNameFor(model=>model.Role.RoleId)
-            @Html.Display("RoleId",(int)ViewBag.RoleId);
-            @*(IEnumerable<SelectListItem>
-                )ViewBag.PermissionId*@
-                @Html.DropDownList("PermissionId", (IEnumerable<SelectListItem>)ViewBag.PermissionId, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.UserRoles)
+           @Html.DisplayNameFor( model => model.Role.RoleId )
+           @Html.Display( "RoleId", ( int ) ViewBag.RoleId )
+           @*(IEnumerable<SelectListItem>
+      )ViewBag.PermissionId*@
+           @Html.DropDownList( "PermissionId", ( IEnumerable<SelectListItem> ) ViewBag.PermissionId, new { @class = "form-control" } )
+           @Html.ValidationMessageFor( model => model.UserRoles )
         </div>
     </div>
     <div class="form-group">
