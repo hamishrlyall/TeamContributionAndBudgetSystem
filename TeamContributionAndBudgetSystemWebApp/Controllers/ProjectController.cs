@@ -43,10 +43,12 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             ViewBag.CanModify = canModify;
 
             // Get all projects from the database
-            List<TCABS_DataLibrary.Models.ProjectModel> projectModels =
+            var projectModels = ProjectProcessor.GetAllProjects();
+            /*List<TCABS_DataLibrary.Models.ProjectModel> projectModels =
                 canModify ?
                 ProjectProcessor.GetAllProjects() :
-                ProjectProcessor.GetProjectsForUserId(CurrentUser.UserId);
+                ProjectOfferingProcessor.GetProjectOfferingsForUserId(CurrentUser.UserId);
+            */
 
             // Get all project role groups from the database
             // Convert the list to a dictionary

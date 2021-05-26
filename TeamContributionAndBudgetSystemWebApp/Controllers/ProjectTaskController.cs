@@ -182,7 +182,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             if (!IsUserLoggedIn) return RedirectToLogin();
 
             // Get the list of projects which can be accessed by the current user
-            var projectModels = ProjectProcessor.GetProjectsForUserId(CurrentUser.UserId);
+            var projectModels = ProjectOfferingProcessor.GetProjectOfferingsForUserId(CurrentUser.UserId);
 
             // Setup the project drop-down list
             ViewBag.Projects = new SelectList(projectModels, "ProjectId", "Name");
