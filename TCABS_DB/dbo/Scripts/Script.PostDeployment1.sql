@@ -51,10 +51,15 @@ MERGE INTO [Permission] AS Target USING (
    (3, 'UserView', 'Users', 'Index', 'User'),
    (4, 'UserRoleModify', NULL, NULL, NULL),
    (5, 'UnitManagement', 'Unit Management', 'Index', 'UnitOffering'),
-   (6, 'DummyPermission', NULL, NULL, NULL),
-   (7, 'Project', 'Projects', 'Index', 'Project'),
-   (8, 'ProjectRole', 'Project Roles', 'Index', 'ProjectRole'),
-   (9, 'ProjectRoleGroup', 'Project Role Groups', 'Index', 'ProjectRoleGroup')
+   (6, 'DummyPermission1', NULL, NULL, NULL),
+   (7, 'ProjectRead', 'Projects', 'Index', 'Project'),
+   (8, 'ProjectWrite', NULL, NULL, NULL),
+   (9, 'ProjectRoleRead', 'Project Roles', 'Index', 'ProjectRole'),
+   (10, 'ProjectRoleReadWrite', NULL, NULL, NULL),
+   (11, 'ProjectRoleGroupRead', 'Project Role Groups', 'Index', 'ProjectRoleGroup'),
+   (12, 'ProjectRoleGroupWrite', NULL, NULL, NULL),
+   (12, 'DummyPermission2', NULL, NULL, NULL),
+   (12, 'DummyPermission3', NULL, NULL, NULL)
 )
 AS Source ([PermissionId], [PermissionName], [LinkTitle], [LinkPage], [LinkController])
 ON Target.PermissionId = Source.PermissionId
@@ -98,7 +103,20 @@ MERGE INTO [RolePermission] AS Target USING (
    (15, 1, 8),
    (16, 2, 8),
    (17, 1, 9),
-   (18, 2, 9)
+   (18, 2, 9),
+   (19, 1, 10),
+   (20, 2, 10),
+   (21, 1, 11),
+   (22, 2, 11),
+   (23, 1, 12),
+   (24, 2, 12),
+   (25, 1, 13),
+   (26, 2, 13),
+   (27, 1, 14),
+   (28, 2, 14),
+   (29, 4, 7),
+   (30, 4, 9),
+   (31, 4, 11)
 )
 AS Source ([RolePermissionId], [RoleId], [PermissionId])
 ON Target.RolePermissionId = Source.RolePermissionId
