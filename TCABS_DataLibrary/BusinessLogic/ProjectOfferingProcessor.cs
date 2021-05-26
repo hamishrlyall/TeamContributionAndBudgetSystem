@@ -68,5 +68,38 @@ namespace TCABS_DataLibrary.BusinessLogic
          }
          return 0;
       }
-   }
+
+        /// <summary>
+        /// Returns a list of projects which are assigned to a given user, either students through enrollments or conveners through unit offerings.
+        /// </summary>
+        public static List<ProjectModel> GetProjectOfferingsForUserId(int userId)
+        {
+            // Set query parameters
+            var param = new DynamicParameters();
+            param.Add("UserId", userId);
+
+            // Execute stored procedure
+            using (IDbConnection con = SqlDataAccess.OpenDatabaseConnection())
+            {
+                return con.Query<ProjectModel>("spGetProjectOfferingsForUserId", param, commandType: CommandType.StoredProcedure).AsList();
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of projects which are assigned to a given student.
+        /// </summary>
+        public static List<ProjectModel> GetProjectOfferingsForUserIdOnlyStudents(int userId)
+        {
+            // Set query parameters
+            var param = new DynamicParameters();
+            param.Add("UserId", userId);
+
+            // Execute stored procedure
+            using (IDbConnection con = SqlDataAccess.OpenDatabaseConnection())
+            {
+                return con.Query<ProjectModel>("spGetProjectsForUserIdOnlyStudents", param, commandType: CommandType.StoredProcedure).AsList();
+            }
+        }
+
+    }
 }

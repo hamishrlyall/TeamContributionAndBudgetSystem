@@ -172,7 +172,22 @@ namespace TCABS_DataLibrary.BusinessLogic
 
       }
 
-      public static List<UserRoleModel> SelectUserRolesForUserId( int _Id )
+        /// <summary>
+        /// Use an enrollment ID to get the related user data.
+        /// </summary>
+        public static UserModel SelectUserForEnrollment(int enrollmentId)
+        {
+            {
+                string sql = "spSelectUserFromEnrollment";
+
+                var dynamicData = new DynamicParameters();
+                dynamicData.Add("EnrollmentId", enrollmentId);
+
+                return SqlDataAccess.ExecuteStoredProcedure<UserModel>(sql, dynamicData);
+            }
+        }
+
+        public static List<UserRoleModel> SelectUserRolesForUserId( int _Id )
       {
          string sql = "spSelectUserRolesForUserId";
 

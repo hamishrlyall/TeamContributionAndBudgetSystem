@@ -32,10 +32,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             //if (!UserHasPermission(PermissionName.UserView)) return RedirectToPermissionDenied();
 
             // Set the page message
-            ViewBag.Message = "Project List";
+            ViewBag.Message = "Project Role List";
 
             // Get all project roles from the database
-            var projectRoleModels = ProjectProcessor.GetAllProjectRoles();
+            var projectRoleModels = ProjectRoleProcessor.GetAllProjectRoles();
 
             // Convert the list to the correct type
             List<ProjectRole> projectRoles = new List<ProjectRole>();
@@ -64,7 +64,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             try
             {
                 // Get the project role data
-                var projectRoleModel = ProjectProcessor.GetProjectRole(projectRoleId);
+                var projectRoleModel = ProjectRoleProcessor.GetProjectRole(projectRoleId);
                 if (projectRoleModel == null) return RedirectToIndexIdNotFound(projectRoleId);
 
                 // Convert the model data to non-model data
@@ -90,7 +90,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 // Update the project role within the database
                 try
                 {
-                    ProjectProcessor.UpdateProjectRole(
+                    ProjectRoleProcessor.UpdateProjectRole(
                         projectRole.ProjectRoleId,
                         projectRole.Name);
                     TempData[LabelSuccess] = "Updated role: " + projectRole.Name;
@@ -130,7 +130,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             try
             {
                 // Get the project role data
-                var projectRoleModel = ProjectProcessor.GetProjectRole(projectRoleId);
+                var projectRoleModel = ProjectRoleProcessor.GetProjectRole(projectRoleId);
                 if (projectRoleModel == null) return RedirectToIndexIdNotFound(projectRoleId);
 
                 // Convert the model data to non-model data
@@ -156,7 +156,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             // Delete the project from the database
             try
             {
-                ProjectProcessor.DeleteProjectRole(projectRole.ProjectRoleId);
+                ProjectRoleProcessor.DeleteProjectRole(projectRole.ProjectRoleId);
                 TempData[LabelSuccess] = "Deleted role: " + projectRole.Name;
                 return RedirectToIndex();
             }
@@ -193,7 +193,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 // Update the project within the database
                 try
                 {
-                    ProjectProcessor.CreateProjectRole(projectRole.Name);
+                    ProjectRoleProcessor.CreateProjectRole(projectRole.Name);
                     TempData[LabelSuccess] = "Created new role: " + projectRole.Name;
                     return RedirectToIndex();
                 }

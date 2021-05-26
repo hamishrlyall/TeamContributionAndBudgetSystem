@@ -35,7 +35,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             ViewBag.Message = "Project List";
 
             // Get all project role groups from the database
-            var projectRoleGroupModels = ProjectProcessor.GetAllProjectRoleGroups();
+            var projectRoleGroupModels = ProjectRoleGroupProcessor.GetAllProjectRoleGroups();
 
             // Convert the list to the correct type
             List<ProjectRoleGroup> projectRoleGroups = new List<ProjectRoleGroup>();
@@ -64,14 +64,14 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             try
             {
                 // Get the project role group data
-                var projectRoleGroupModel = ProjectProcessor.GetProjectRoleGroup(projectRoleGroupId);
+                var projectRoleGroupModel = ProjectRoleGroupProcessor.GetProjectRoleGroup(projectRoleGroupId);
                 if (projectRoleGroupModel == null) return RedirectToIndexIdNotFound(projectRoleGroupId);
 
                 // Convert the model data to non-model data
                 ProjectRoleGroup projectRoleGroup = new ProjectRoleGroup(projectRoleGroupModel);
 
                 // Get list of all project roles
-                var projectRoleModels = ProjectProcessor.GetAllProjectRoles();
+                var projectRoleModels = ProjectRoleProcessor.GetAllProjectRoles();
 
                 // Get the links which are assigned to this group
                 projectRoleGroup.Links = GetLinksForGroup(projectRoleGroup.ProjectRoleGroupId, projectRoleModels);
@@ -104,14 +104,14 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             try
             {
                 // Get the project role group data
-                var projectRoleGroupModel = ProjectProcessor.GetProjectRoleGroup(projectRoleGroupId);
+                var projectRoleGroupModel = ProjectRoleGroupProcessor.GetProjectRoleGroup(projectRoleGroupId);
                 if (projectRoleGroupModel == null) return RedirectToIndexIdNotFound(projectRoleGroupId);
 
                 // Convert the model data to non-model data
                 ProjectRoleGroup projectRoleGroup = new ProjectRoleGroup(projectRoleGroupModel);
 
                 // Get list of all project roles
-                var projectRoleModels = ProjectProcessor.GetAllProjectRoles();
+                var projectRoleModels = ProjectRoleProcessor.GetAllProjectRoles();
 
                 // Get the links which are assigned to this group
                 projectRoleGroup.Links = GetLinksForGroup(projectRoleGroup.ProjectRoleGroupId, projectRoleModels);
@@ -150,7 +150,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                         // Update the project role group within the database
                         try
                         {
-                            ProjectProcessor.UpdateProjectRoleGroup(
+                            ProjectRoleGroupProcessor.UpdateProjectRoleGroup(
                                 projectRoleGroup.ProjectRoleGroupId,
                                 projectRoleGroup.Name);
                             TempData[LabelSuccess] = "Updated group: " + projectRoleGroup.Name;
@@ -172,7 +172,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                     // Add a role link the project role group
                     try
                     {
-                        ProjectProcessor.CreateProjectRoleLink(
+                        ProjectRoleLinkProcessor.CreateProjectRoleLink(
                             projectRoleGroup.AddLink,
                             projectRoleGroup.ProjectRoleGroupId);
                         ViewBag.Added = "Added project role to group";
@@ -192,7 +192,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                         {
                             if (key.StartsWith(marker))
                             {
-                                ProjectProcessor.DeleteProjectRoleLink(Convert.ToInt32(key.Substring(marker.Length)));
+                                ProjectRoleLinkProcessor.DeleteProjectRoleLink(Convert.ToInt32(key.Substring(marker.Length)));
                                 ViewBag.Removed = "Removed project role from group";
                                 break;
                             }
@@ -205,14 +205,14 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 }
 
                 // Get the project role group data
-                var projectRoleGroupModel = ProjectProcessor.GetProjectRoleGroup(projectRoleGroup.ProjectRoleGroupId);
+                var projectRoleGroupModel = ProjectRoleGroupProcessor.GetProjectRoleGroup(projectRoleGroup.ProjectRoleGroupId);
                 if (projectRoleGroupModel == null) return RedirectToIndexIdNotFound(projectRoleGroup.ProjectRoleGroupId);
 
                 // Convert the model data to non-model data
                 projectRoleGroup = new ProjectRoleGroup(projectRoleGroupModel);
 
                 // Get list of all project roles
-                var projectRoleModels = ProjectProcessor.GetAllProjectRoles();
+                var projectRoleModels = ProjectRoleProcessor.GetAllProjectRoles();
 
                 // Get the links which are assigned to this group
                 projectRoleGroup.Links = GetLinksForGroup(projectRoleGroup.ProjectRoleGroupId, projectRoleModels);
@@ -248,7 +248,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             try
             {
                 // Get the project role group data
-                var projectRoleGroupModel = ProjectProcessor.GetProjectRoleGroup(projectRoleGroupId);
+                var projectRoleGroupModel = ProjectRoleGroupProcessor.GetProjectRoleGroup(projectRoleGroupId);
                 if (projectRoleGroupModel == null) return RedirectToIndexIdNotFound(projectRoleGroupId);
 
                 // Convert the model data to non-model data
@@ -274,7 +274,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             // Delete the project from the database
             try
             {
-                ProjectProcessor.DeleteProjectRoleGroup(projectRoleGroup.ProjectRoleGroupId);
+                ProjectRoleGroupProcessor.DeleteProjectRoleGroup(projectRoleGroup.ProjectRoleGroupId);
                 TempData[LabelSuccess] = "Deleted group: " + projectRoleGroup.Name;
                 return RedirectToIndex();
             }
@@ -311,7 +311,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 // Update the project within the database
                 try
                 {
-                    ProjectProcessor.CreateProjectRoleGroup(projectRoleGroup.Name);
+                    ProjectRoleGroupProcessor.CreateProjectRoleGroup(projectRoleGroup.Name);
                     TempData[LabelSuccess] = "Created new group: " + projectRoleGroup.Name;
                     return RedirectToIndex();
                 }
@@ -336,7 +336,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         private List<ProjectRoleLink> GetLinksForGroup(int projectRoleGroupId, List<TCABS_DataLibrary.Models.ProjectRoleModel> projectRoleModels)
         {
             // Get all project role links which use this project role group
-            var linkModels = ProjectProcessor.GetProjectRoleLinksForGroup(projectRoleGroupId);
+            var linkModels = ProjectRoleLinkProcessor.GetProjectRoleLinksForGroup(projectRoleGroupId);
 
             // Create a new list of projet role links (non-model)
             List<ProjectRoleLink> links = new List<ProjectRoleLink>();
