@@ -140,7 +140,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
             // Setup the list of permissions and menu items
             currentPermissions = null;
-            if (currentUser != null)
+            if (true) // currentUser != null)
             {
                 // Try to load the permissions and menu items from the http session data
                 currentPermissions = (List<Permission>)System.Web.HttpContext.Current.Session[sessionLabelCurrentPermissions];
