@@ -193,5 +193,30 @@ namespace TCABS_DataLibrary.BusinessLogic
 
          return SqlDataAccess.LoadData<UserRoleModel>( sql );
       }
-   }
+
+        public static void DeleteUser(int userId)
+        {
+            try
+            {
+                // Open a connection to the database
+                using (IDbConnection con = new SqlConnection(GetConnectionString()))
+                {
+                    // Run the database command
+                    string sql = "spDeleteUser";
+                    con.Query<UserModel>(
+                        sql,
+                        new
+                        {
+                            UserId = userId
+                        },
+                        commandType: CommandType.StoredProcedure
+                    );
+                }
+            }
+            catch (Exception e)
+            {
+                SqlDataAccess.TryConvertExceptionMessage(e);
+            }
+        }
+    }
 }

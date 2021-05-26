@@ -184,6 +184,7 @@
     <Build Include="dbo\Stored Procedures\spSelectUserFromEnrollment.sql" />
     <Build Include="dbo\Stored Procedures\spGetProjectOfferingsForUserId.sql" />
     <Build Include="dbo\Stored Procedures\spGetProjectOfferingsForUserIdOnlyStudents.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="LoadTestData">
