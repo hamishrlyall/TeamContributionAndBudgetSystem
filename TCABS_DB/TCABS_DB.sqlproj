@@ -175,6 +175,15 @@
     <Build Include="dbo\Stored Procedures\spSelectProjectOfferingsForUnitOfferingId.sql" />
     <Build Include="dbo\Stored Procedures\spInsertProjectOffering.sql" />
     <Build Include="dbo\Stored Procedures\spDeleteProjectOffering.sql" />
+    <Build Include="dbo\Stored Procedures\spCreateProjectTask.sql" />
+    <Build Include="dbo\Stored Procedures\spUpdateProjectTask.sql" />
+    <Build Include="dbo\Stored Procedures\spApproveProjectTask.sql" />
+    <Build Include="dbo\Stored Procedures\spGetAllProjectTasks.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProjectTask.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProjectRolesForEnrollment.sql" />
+    <Build Include="dbo\Stored Procedures\spSelectUserFromEnrollment.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProjectOfferingsForUserId.sql" />
+    <Build Include="dbo\Stored Procedures\spGetProjectOfferingsForUserIdOnlyStudents.sql" />
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="LoadTestData">
@@ -184,5 +193,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Publish Profiles\TCABS_DB.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="TCABS_DB.refactorlog" />
   </ItemGroup>
 </Project>

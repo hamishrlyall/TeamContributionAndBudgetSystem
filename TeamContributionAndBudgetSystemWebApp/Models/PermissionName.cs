@@ -22,5 +22,18 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
         /// </summary>
         public const string UserRolesModify = "UserRolesModify";
 
+        public const string ProjectRead = "ProjectRead";
+        public const string ProjectWrite = "ProjectWrite";
+
+        public const string ProjectRoleRead = "ProjectRoleRead";
+        public const string ProjectRoleWrite = "ProjectRoleWrite";
+        
+        public const string ProjectRoleGroupRead = "ProjectRoleGroupRead";
+        public const string ProjectRoleGroupWrite = "ProjectRoleGroupWrite";
+        
+        public const string ProjectTaskRead = "ProjectTaskRead";
+        public const string ProjectTaskWrite = "ProjectTaskWrite";
+        public const string ProjectTaskApprove = "ProjectTaskApprove";
+
     }
 }

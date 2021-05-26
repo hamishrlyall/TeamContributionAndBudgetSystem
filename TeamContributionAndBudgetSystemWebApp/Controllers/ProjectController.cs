@@ -28,22 +28,31 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         /// The main page of the project controller.
         /// Shows a list of all projects in the system.
         /// </summary>
-        [HttpGet]
         public ActionResult Index()
         {
             // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
-            //if (!UserHasPermission(PermissionName.UserView)) return RedirectToPermissionDenied();
+            if (!UserHasPermission(PermissionName.ProjectRead) &&
+                !UserHasPermission(PermissionName.ProjectWrite)) return RedirectToPermissionDenied();
 
             // Set the page message
             ViewBag.Message = "Project List";
 
+            // Check if the current user can create new projects
+            bool canModify = UserHasPermission(PermissionName.ProjectWrite);
+            ViewBag.CanModify = canModify;
+
             // Get all projects from the database
             var projectModels = ProjectProcessor.GetAllProjects();
+            /*List<TCABS_DataLibrary.Models.ProjectModel> projectModels =
+                canModify ?
+                ProjectProcessor.GetAllProjects() :
+                ProjectOfferingProcessor.GetProjectOfferingsForUserId(CurrentUser.UserId);
+            */
 
             // Get all project role groups from the database
             // Convert the list to a dictionary
-            var projectRoleGroupModels = ProjectProcessor.GetAllProjectRoleGroups();
+            var projectRoleGroupModels = ProjectRoleGroupProcessor.GetAllProjectRoleGroups();
             Dictionary<int, string> projectRoleGroup = null;
             if (projectRoleGroupModels != null)
             {
@@ -80,10 +89,15 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             // Make sure the user is logged in
             if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.ProjectRead) &&
+                !UserHasPermission(PermissionName.ProjectWrite)) return RedirectToPermissionDenied();
 
             // Check if a project ID was provided
             if (id == null) return RedirectToIndex();
             int projectId = (int)id;
+
+            // Check if the current user can create new projects
+            ViewBag.CanModify = UserHasPermission(PermissionName.ProjectWrite);
 
             // Entry try-catch from here
             // Make sure any errors are displayed
@@ -94,7 +108,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 if (projectModel == null) return RedirectToIndexIdNotFound(projectId);
 
                 // Get name of assigned project role group
-                var roleGroup = ProjectProcessor.GetProjectRoleGroup(projectModel.ProjectRoleGroupId);
+                var roleGroup = ProjectRoleGroupProcessor.GetProjectRoleGroup(projectModel.ProjectRoleGroupId);
 
                 //var teams = TeamProcessor.SelectTeamsForUnitOfferingId( projectId );
 
@@ -117,6 +131,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             // Make sure the user is logged in
             if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.ProjectWrite)) return RedirectToPermissionDenied();
 
             // Check if a project ID was provided
             if (id == null) return RedirectToIndex();
@@ -131,7 +146,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 if (projectModel == null) return RedirectToIndexIdNotFound(projectId);
 
                 // Get all project role groups from the database
-                var projectRoleGroupModels = ProjectProcessor.GetAllProjectRoleGroups();
+                var projectRoleGroupModels = ProjectRoleGroupProcessor.GetAllProjectRoleGroups();
 
                 // Get list of available project role groups
                 // Store it in a list for a drop-down-list
@@ -154,6 +169,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Project project)
         {
+            // Make sure the user is logged in
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.ProjectWrite)) return RedirectToPermissionDenied();
+
             // Make sure the entered data is valid
             if (ModelState.IsValid)
             {
@@ -181,7 +200,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
             // Get list of available project role groups
             // Store it in a list for a drop-down-list
-            ViewBag.RoleGroup = new SelectList(ProjectProcessor.GetAllProjectRoleGroups(), "ProjectRoleGroupId", "Name", project.ProjectRoleGroupId);
+            ViewBag.RoleGroup = new SelectList(ProjectRoleGroupProcessor.GetAllProjectRoleGroups(), "ProjectRoleGroupId", "Name", project.ProjectRoleGroupId);
 
             // Return to same page with same data
             return View(project);
@@ -196,6 +215,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             // Make sure the user is logged in
             if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.ProjectWrite)) return RedirectToPermissionDenied();
 
             // Check if a project ID was provided
             if (id == null) return RedirectToIndex();
@@ -228,6 +248,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             // Make sure the user is logged in
             if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.ProjectWrite)) return RedirectToPermissionDenied();
 
             // Delete the project from the database
             try
@@ -252,10 +273,11 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             // Make sure the user is logged in
             if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.ProjectWrite)) return RedirectToPermissionDenied();
 
             // Get list of available project role groups
             // Store it in a list for a drop-down-list
-            ViewBag.RoleGroup = new SelectList(ProjectProcessor.GetAllProjectRoleGroups(), "ProjectRoleGroupId", "Name", null);
+            ViewBag.RoleGroup = new SelectList(ProjectRoleGroupProcessor.GetAllProjectRoleGroups(), "ProjectRoleGroupId", "Name", null);
 
             // Go to view
             return View();
@@ -268,6 +290,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Project project)
         {
+            // Make sure the user is logged in
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.ProjectWrite)) return RedirectToPermissionDenied();
+
             // Make sure the entered data is valid
             if (ModelState.IsValid)
             {
@@ -294,7 +320,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
             // Get list of available project role groups
             // Store it in a list for a drop-down-list
-            ViewBag.RoleGroup = new SelectList(ProjectProcessor.GetAllProjectRoleGroups(), "ProjectRoleGroupId", "Name", project.ProjectRoleGroupId);
+            ViewBag.RoleGroup = new SelectList(ProjectRoleGroupProcessor.GetAllProjectRoleGroups(), "ProjectRoleGroupId", "Name", project.ProjectRoleGroupId);
 
             // Return to same page with same data
             return View(project);
