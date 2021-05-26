@@ -124,9 +124,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       /// The _UserRoleId which will be sent to the database to remove the referenced UserRole row.
       /// <returns>This method will Redirect to the Details view with the UserRole removed.</returns>
       [HttpPost]
-      [MultiButton(MatchFormKey = "action", MatchFormValue = "Delete")]
+      [MultiButton(MatchFormKey = "action", MatchFormValue = "DeleteUserRole")]
       [ValidateAntiForgeryToken]
-      public ActionResult Delete(int _UserRoleId)
+      public ActionResult DeleteUserRole(int _UserRoleId)
       {
          // Null safe check to prevent crashes.
          if (_UserRoleId <= 0)
@@ -236,6 +236,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       //   return View( User );
       //}
 
+        /*
       [HttpGet]
       public ActionResult DeleteUserRole( int id )
       {
@@ -266,6 +267,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
          return View( User );
       }
+        */
 
       /// <summary>
       /// Called when a GET request is made for the create user page.
@@ -408,6 +410,47 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             // All file processing has been completed
             // Go to the normal create page
             return RedirectToAction("Create", "User");
+        }
+
+
+        // GET: Employees/Delete/1
+        [HttpGet]
+        public ActionResult Delete(int? id)
+        {
+            if (id == null) return RedirectToAction("Index");
+            int userId = (int)id;
+
+            TCABS_DataLibrary.Models.UserModel userModel = UserProcessor.SelectUserForUserId(userId);
+
+            UserEdit user = new UserEdit(userModel);
+
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(UserEdit user)
+        {
+
+            if (user.UserId == 1) // <-- TODO: Make this check better!!!
+            {
+                ModelState.AddModelError("", "Cannot delete super-user");
+            }
+            else
+            {
+                // Update the user within the database
+                try
+                {
+                    UserProcessor.DeleteUser(user.UserId);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    //ModelState.AddModelError("", e.Message);
+                    ModelState.AddModelError("", "Cannot delete this user");
+                }
+            }
+            return View(user);
         }
     }
 }
