@@ -246,10 +246,37 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             // Check if a user is logged in
             if (permissions != null)
             {
-                // Loop through the list of permissions and add the related menu items
+                // Loop through the list of permissions and use them to create menu items
+                // Place the menu items in the relevant list
                 foreach (Permission p in permissions)
                 {
-                    if (p.IsValidLink()) menuItems.Add(new MenuItem(p));
+                    if (p.IsValidLink())
+                    {
+                        // Check if the menu item should be grouped with other items
+                        if (p.LinkGroup == null)
+                        {
+                            // Add the non-grouped item to the menu
+                            menuItems.Add(new MenuItem(p));
+                        }
+                        else
+                        {
+                            // Find the group header
+                            var header = menuItems.Find(x => x.Title == p.LinkGroup);
+
+                            // Make sure group header exists
+                            if (header == null)
+                            {
+                                header = new MenuItem() { Title = p.LinkGroup };
+                                menuItems.Add(header);
+                            }
+
+                            // Make sure group header has somewhere to place sub-menu-item
+                            if (header.SubMenu == null) header.SubMenu = new List<MenuItem>();
+                            
+                            // Add the sub-menu-item
+                            header.SubMenu.Add(new MenuItem(p));
+                        }
+                    }
                 }
 
                 // Add a menu item for the logout page

@@ -1,45 +1,62 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-   <meta charset="utf-8" />
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>@ViewBag.Title TCABS</title>
-   @Styles.Render( "~/Content/css" )
-   @Scripts.Render( "~/bundles/modernizr" )
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title TCABS</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-   <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-               <span class="icon-bar"></span>
-               <span class="icon-bar"></span>
-               <span class="icon-bar"></span>
-            </button>
-            @Html.ActionLink( "TCABS", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" } )
-         </div>
-         <div class="navbar-collapse collapse">
-             <ul class="nav navbar-nav">
-                 @foreach (var item in (List<TeamContributionAndBudgetSystemWebApp.Models.MenuItem>)ViewBag.MenuItems)
-                 {
-                     <li class="nav-item">
-                         @Html.ActionLink(item.Title, item.Page, item.Controller)
-                     </li>
-                 }
-             </ul>
-         </div>
-      </div>
-   </div>
-   <div class="container body-content">
-      @RenderBody( )
-      <hr />
-      <footer>
-         <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-      </footer>
-   </div>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("TCABS", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @foreach (var item in (List<TeamContributionAndBudgetSystemWebApp.Models.MenuItem>)ViewBag.MenuItems)
+                    {
+                        if (item.SubMenu == null)
+                        {
+                            <li class="nav-item">
+                                @Html.ActionLink(item.Title, item.Page, item.Controller)
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" id="dropdownCommonMenu" data-toggle="dropdown">@item.Title</a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownCommonMenu">
+                                    @foreach (var subItem in item.SubMenu)
+                                    {
+                                    <li role="menuitem" class="nav-header text-info">
+                                        @Html.ActionLink(subItem.Title, subItem.Page, subItem.Controller)
+                                    </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
 
-   @Scripts.Render( "~/bundles/jquery" )
-   @Scripts.Render( "~/bundles/bootstrap" )
-   @RenderSection( "scripts", required: false )
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
 </body>
 </html>

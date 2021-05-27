@@ -46,18 +46,18 @@ VALUES ([Name]);
 -- [PermissionId], [PermissionName], [LinkTitle], [LinkPage], [LinkController]
 MERGE INTO [Permission] AS Target USING (
    VALUES
-   (1, 'RolePermission', 'Permissions', 'Index', 'RolePermission'),
-   (2, 'User', 'Users', 'Index', 'User'),
-   (3, 'Project', NULL, NULL, NULL),
-   (4, 'ProjectOffering', 'Projects', 'Index', 'ProjectOffering'),
-   (5, 'ProjectRole', NULL, NULL, NULL),
-   (6, 'ProjectRoleGroup', NULL, NULL, NULL),
-   (7, 'ProjectTask', NULL, NULL, NULL),
-   (8, 'TeachingPeriod', NULL, NULL, NULL),
-   (9, 'UnitOffering', 'Unit Offerings', 'Index', 'UnitOffering'),
-   (10, 'Team', NULL, NULL, NULL),
-   (11, 'Unit', NULL, NULL, NULL),
-   (12, 'Year', NULL, NULL, NULL)
+   (1,  'RolePermission',   NULL,      'Permissions',         'Index', 'RolePermission'),
+   (2,  'User',             NULL,      'Users',               'Index', 'User'),
+   (3,  'Project',          'Project', 'Project Types',       'Index', 'Project'),
+   (4,  'ProjectOffering',  'Project', 'Projects',            'Index', 'ProjectOffering'),
+   (5,  'ProjectRole',      'Project', 'Project Roles',       'Index', 'ProjectRole'),
+   (6,  'ProjectRoleGroup', 'Project', 'Project Role Groups', 'Index', 'ProjectRoleGroup'),
+   (7,  'ProjectTask',      NULL,      NULL,                  NULL, NULL),
+   (9,  'UnitOffering',     'Unit',    'Unit Offerings',      'Index', 'UnitOffering'),
+   (8,  'TeachingPeriod',   'Unit',    'Teaching Periods',    'Index', 'TeachingPeriod'),
+   (10, 'Team',             'Unit',    NULL,                  NULL, NULL),
+   (11, 'Unit',             'Unit',    'Unit Types',          'Index', 'Unit'),
+   (12, 'Year',             'Unit',    'Years',               'Index', 'Year')
 )
 AS Source ([PermissionId], [PermissionName], [LinkTitle], [LinkPage], [LinkController])
 ON Target.PermissionId = Source.PermissionId
