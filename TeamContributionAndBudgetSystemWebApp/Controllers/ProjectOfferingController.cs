@@ -121,11 +121,13 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             // Show ModelState errors
             var errors = ModelState.Values.SelectMany( v => v.Errors );
          }
-         ViewBag.UnitofferingId = new SelectList( db.GetUnitOfferings( ), "UnitOfferingId", "UnitName", null );
-         ViewBag.ProjectId = new SelectList( db.GetProjects( ), "ProjectId", "Name", null );
+         var projectOffering = new ProjectOffering( );
+         // Generate drop down lists for each field.
+         ViewBag.UnitofferingId = new SelectList( projectOffering.GetUnitOfferings( ), "UnitOfferingId", "UnitName", null );
+         ViewBag.ProjectId = new SelectList( projectOffering.GetProjects( ), "ProjectId", "Name", null );
 
          // Navigate to View
-         return View( db );
+         return View( );
       }
 
       [HttpGet]

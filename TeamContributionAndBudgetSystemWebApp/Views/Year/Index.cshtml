@@ -4,7 +4,7 @@
    ViewBag.Title = "Index";
 }
 
-<h2>View Years</h2>
+<h2>Years</h2>
 
 <p>
    @Html.ActionLink( "Create New", "Create" )
@@ -24,15 +24,9 @@
             @Html.DisplayFor( modelItem => item.YearValue )
          </td>
          <td>
-            @*@Html.ActionLink( "Edit", "Edit", new { id = item.YearId } ) |
-            @Html.ActionLink( "Details", "Details", new { id = item.YearId } ) |*@
             @Html.ActionLink( "Delete", "Delete", new { id = item.YearId } )
          </td>
       </tr>
    }
 
 </table>
-
-<p>
-   @Html.ActionLink( "Return to Unit Offerings", "Index", "UnitOffering" )
-</p>

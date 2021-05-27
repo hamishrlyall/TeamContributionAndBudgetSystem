@@ -279,7 +279,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          PopulateYearDropDownList( );
 
          // return to create view
-         return View( db );
+         return View( );
       }
 
       // Ensure Year value, Month value, and Day value are a valid date.

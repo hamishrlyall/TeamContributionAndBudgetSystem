@@ -55,7 +55,7 @@
    <div class="form-horizontal">
       <h4>UnitOffering</h4>
       <hr />
-      @Html.ValidationSummary( false, "", new { @class = "text-danger" } )
+      @Html.ValidationSummary( true, "", new { @class = "text-danger" } )
 
       <div class="form-group">
          @Html.LabelFor( model => model.Unit, htmlAttributes: new { @class = "control-label col-md-2" } )
