@@ -30,6 +30,11 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
         public string Controller { get; set; }
 
         /// <summary>
+        /// (optional) A list of sub menu items.
+        /// </summary>
+        public List<MenuItem> SubMenu { get; set; }
+
+        /// <summary>
         /// Default constructor.
         /// </summary>
         public MenuItem() { }

@@ -18,6 +18,13 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
         public string PermissionName { get; set; }
 
         /// <summary>
+        /// A name used to group several items together.
+        /// This label will be visable to the user.
+        /// This field is optional.
+        /// </summary>
+        public string LinkGroup { get; set; }
+
+        /// <summary>
         /// The name of the menu item to be created for this permission.
         /// This label will be visable to the user.
         /// This field is optional.
@@ -48,6 +55,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
         {
             PermissionId = p.PermissionId;
             PermissionName = p.PermissionName;
+            LinkGroup = p.LinkGroup;
             LinkTitle = p.LinkTitle;
             LinkPage = p.LinkPage;
             LinkController = p.LinkController;

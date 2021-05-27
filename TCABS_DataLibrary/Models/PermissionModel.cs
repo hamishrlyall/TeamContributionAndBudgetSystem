@@ -14,6 +14,13 @@ namespace TCABS_DataLibrary.Models
         public string PermissionName { get; set; }
 
         /// <summary>
+        /// A name used to group several items together.
+        /// This label will be visable to the user.
+        /// This field is optional.
+        /// </summary>
+        public string LinkGroup { get; set; }
+
+        /// <summary>
         /// The name of the menu item to be created for this permission.
         /// This label will be visable to the user.
         /// This field is optional.
