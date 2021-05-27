@@ -31,9 +31,16 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
         {
             User result = null;
             bool isUsernameAndPasswordValid = false;
+            TCABS_DataLibrary.Models.UserModel user = null;
 
-            // Get the user data, if any
-            var user = UserProcessor.SelectUserForUsername(Username);
+            // Try to get the user data from the database
+            try
+            {
+                user = UserProcessor.SelectUserForUsername(Username);
+            }
+            catch { }
+
+            // Check if any user data was found
             if (user != null)
             {
 
