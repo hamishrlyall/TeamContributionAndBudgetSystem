@@ -34,8 +34,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [HttpGet]
       public ActionResult Index()
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn ) return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.UnitOffering)) return RedirectToPermissionDenied();
 
          // Set the page message
          ViewBag.Message = "UnitOffering List";
@@ -52,9 +53,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       /// <returns></returns>
       public ActionResult Details( int id )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.UnitOffering)) return RedirectToPermissionDenied();
 
          if( id == 0 )
          {
@@ -106,9 +107,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [ValidateAntiForgeryToken]
       public ActionResult Unenrol( int _EnrollmentId )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.UnitOffering)) return RedirectToPermissionDenied();
 
          if( _EnrollmentId <= 0 )
          {
@@ -136,9 +137,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [ValidateAntiForgeryToken]
       public ActionResult Enrol( Enrollment _Enrollment )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.UnitOffering)) return RedirectToPermissionDenied();
 
          // Ensure Enrollment Model is associated with UnitOffering
          if( _Enrollment.UnitOfferingId <= null )
@@ -187,9 +188,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       /// <returns></returns>
       public ActionResult Create( )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.UnitOffering)) return RedirectToPermissionDenied();
 
          ViewBag.Message = "Create New UnitOffering";
          // Generate drop down lists for each field.
@@ -236,9 +237,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [ValidateAntiForgeryToken]
       public ActionResult Create( UnitOffering model )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.UnitOffering)) return RedirectToPermissionDenied();
 
          if( ModelState.IsValid )
          {
@@ -302,9 +303,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [HttpGet]
       public ActionResult Delete( int id )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.UnitOffering)) return RedirectToPermissionDenied();
 
          if( id == null )
          {
@@ -328,9 +329,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [ValidateAntiForgeryToken]
       public ActionResult Delete( UnitOffering unitoffering )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.UnitOffering)) return RedirectToPermissionDenied();
 
          try
          {
@@ -367,8 +368,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [ValidateAntiForgeryToken]
       public ActionResult CreateBulkUnitOffering( HttpPostedFileBase file )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn ) return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.UnitOffering)) return RedirectToPermissionDenied();
 
          //Create data which needs to be outside the try-catch block
          FileCSV data = null;
@@ -450,8 +452,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [ValidateAntiForgeryToken]
       public ActionResult CreateBulkEnrollment( HttpPostedFileBase file )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn ) return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.UnitOffering)) return RedirectToPermissionDenied();
 
          //Create data which needs to be outside the try-catch block
          FileCSV data = null;

@@ -32,15 +32,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
-            if (!UserHasPermission(PermissionName.ProjectRead) &&
-                !UserHasPermission(PermissionName.ProjectWrite)) return RedirectToPermissionDenied();
+            if (!UserHasPermission(PermissionName.Project)) return RedirectToPermissionDenied();
 
             // Set the page message
             ViewBag.Message = "Project List";
-
-            // Check if the current user can create new projects
-            bool canModify = UserHasPermission(PermissionName.ProjectWrite);
-            ViewBag.CanModify = canModify;
 
             // Get all projects from the database
             var projectModels = ProjectProcessor.GetAllProjects();
@@ -87,17 +82,13 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [HttpGet]
         public ActionResult Details(int? id)
         {
-            // Make sure the user is logged in
+            // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
-            if (!UserHasPermission(PermissionName.ProjectRead) &&
-                !UserHasPermission(PermissionName.ProjectWrite)) return RedirectToPermissionDenied();
+            if (!UserHasPermission(PermissionName.Project)) return RedirectToPermissionDenied();
 
             // Check if a project ID was provided
             if (id == null) return RedirectToIndex();
             int projectId = (int)id;
-
-            // Check if the current user can create new projects
-            ViewBag.CanModify = UserHasPermission(PermissionName.ProjectWrite);
 
             // Entry try-catch from here
             // Make sure any errors are displayed
@@ -129,9 +120,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [HttpGet]
         public ActionResult Edit(int? id)
         {
-            // Make sure the user is logged in
+            // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
-            if (!UserHasPermission(PermissionName.ProjectWrite)) return RedirectToPermissionDenied();
+            if (!UserHasPermission(PermissionName.Project)) return RedirectToPermissionDenied();
 
             // Check if a project ID was provided
             if (id == null) return RedirectToIndex();
@@ -169,9 +160,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Project project)
         {
-            // Make sure the user is logged in
+            // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
-            if (!UserHasPermission(PermissionName.ProjectWrite)) return RedirectToPermissionDenied();
+            if (!UserHasPermission(PermissionName.Project)) return RedirectToPermissionDenied();
 
             // Make sure the entered data is valid
             if (ModelState.IsValid)
@@ -213,9 +204,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [HttpGet]
         public ActionResult Delete(int? id)
         {
-            // Make sure the user is logged in
+            // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
-            if (!UserHasPermission(PermissionName.ProjectWrite)) return RedirectToPermissionDenied();
+            if (!UserHasPermission(PermissionName.Project)) return RedirectToPermissionDenied();
 
             // Check if a project ID was provided
             if (id == null) return RedirectToIndex();
@@ -246,9 +237,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Project project)
         {
-            // Make sure the user is logged in
+            // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
-            if (!UserHasPermission(PermissionName.ProjectWrite)) return RedirectToPermissionDenied();
+            if (!UserHasPermission(PermissionName.Project)) return RedirectToPermissionDenied();
 
             // Delete the project from the database
             try
@@ -271,9 +262,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            // Make sure the user is logged in
+            // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
-            if (!UserHasPermission(PermissionName.ProjectWrite)) return RedirectToPermissionDenied();
+            if (!UserHasPermission(PermissionName.Project)) return RedirectToPermissionDenied();
 
             // Get list of available project role groups
             // Store it in a list for a drop-down-list
@@ -290,9 +281,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Project project)
         {
-            // Make sure the user is logged in
+            // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
-            if (!UserHasPermission(PermissionName.ProjectWrite)) return RedirectToPermissionDenied();
+            if (!UserHasPermission(PermissionName.Project)) return RedirectToPermissionDenied();
 
             // Make sure the entered data is valid
             if (ModelState.IsValid)
