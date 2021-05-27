@@ -21,9 +21,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         // GET: RolePermission
         public ActionResult Index()
         {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.RolePermission)) return RedirectToPermissionDenied();
 
             db.GetUsers( );
             db.GetRoles( );
@@ -33,6 +33,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
         public ActionResult Create()
         {
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.RolePermission)) return RedirectToPermissionDenied();
+
             return View();
         }
 
@@ -40,8 +44,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         public ActionResult Details(int? id)
         {
             // Make sure the user is logged in and that they have permission
-            if( !IsUserLoggedIn )
-               return RedirectToLogin( );
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.RolePermission)) return RedirectToPermissionDenied();
 
             if (id == null) return RedirectToAction("Index");
                db.curRoleId = (int)id;
@@ -56,6 +60,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
         public ActionResult Save(int? id)
         {
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.RolePermission)) return RedirectToPermissionDenied();
+
             if (id == null) return RedirectToAction("Index");
             db.curRoleId = (int)id;
 
@@ -81,10 +89,14 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Details(string id, string PermissionID)
         {
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.RolePermission)) return RedirectToPermissionDenied();
 
-            if( id == null )
+            if ( id == null )
             {
-               return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+                //return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+                return RedirectToAction("Index");
             }
             //if (p == null)
             //{
@@ -120,22 +132,27 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             db.GetUserRole( );
 
             RolePermissionModel rolePermission = RolePermissionProcessor.CreateRolePermission( int.Parse( PermissionID ), int.Parse( id ) );
-            if( rolePermission != null )
+
+            return RedirectToAction("Details", new System.Web.Routing.RouteValueDictionary(
+                        new { controller = "RolePermission", action = "Details", id = Convert.ToInt32(id) }));
+            /*
+            if ( rolePermission != null )
                return RedirectToAction( "Index" );
 
             return View(db);
-
+            */
         }
 
         public ActionResult Delete(string id)
         {
-         // Make sure the user is logged in and that they have permission
-            if( !IsUserLoggedIn )
-               return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.RolePermission)) return RedirectToPermissionDenied();
 
-            if( id == null )
+            if ( id == null )
             {
-               return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+                //return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+                return RedirectToAction("Index");
             }
 
 
@@ -160,6 +177,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
         public ActionResult DeleteP(string id)
         {
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.RolePermission)) return RedirectToPermissionDenied();
 
             if ((id == null) || (id.Length < 1)) 
                return RedirectToAction("Index");
@@ -170,7 +190,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
 
             if (d > 0)
-               return RedirectToAction( "Index", "RolePermission" );
+                //return RedirectToAction( "Index", "RolePermission" );
+                return RedirectToAction("Details", new System.Web.Routing.RouteValueDictionary(
+                    new { controller = "RolePermission", action = "Details", id = Convert.ToInt32(val[1]) }));
 
             db.GetUsers( );
             db.GetRoles( );

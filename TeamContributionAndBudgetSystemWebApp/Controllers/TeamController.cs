@@ -24,9 +24,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       // Details
       public ActionResult Details( int? id )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Team)) return RedirectToPermissionDenied();
 
          if( id == null )
          {
@@ -87,9 +87,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [ValidateAntiForgeryToken]
       public ActionResult AddTeamMember( Enrollment _Enrollment )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Team)) return RedirectToPermissionDenied();
 
          if( _Enrollment.TeamId <= 0 )
          {
@@ -135,9 +135,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       // Create
       public ActionResult Create( int? id )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Team)) return RedirectToPermissionDenied();
 
          if( id == null )
          {
@@ -169,9 +169,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [ValidateAntiForgeryToken]
       public ActionResult Create( Team model )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Team)) return RedirectToPermissionDenied();
 
          if( ModelState.IsValid )
          {
@@ -204,9 +204,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       // Edit
       public ActionResult Edit(int? id)
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Team)) return RedirectToPermissionDenied();
 
          if( id == null )
          {
@@ -236,9 +236,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [ValidateAntiForgeryToken]
       public ActionResult Edit( Team team )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn ) 
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Team)) return RedirectToPermissionDenied();
 
          if( ModelState.IsValid )
          {
@@ -272,9 +272,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [HttpGet]
       public ActionResult Delete( int? id )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Team)) return RedirectToPermissionDenied();
 
          if( id == null )
          {
@@ -301,9 +301,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [ValidateAntiForgeryToken]
       public ActionResult Delete( Team team )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Team)) return RedirectToPermissionDenied();
 
          try
          {

@@ -16,12 +16,9 @@
         @TempData[TeamContributionAndBudgetSystemWebApp.Controllers.ProjectController.LabelError]
     </p>
 }
-@if (ViewBag.CanModify)
-{
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
-}
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
 <table class="table">
     <tr>
         <th>
@@ -49,20 +46,11 @@
                 @Html.DisplayFor(modelItem => item.ProjectRoleGroupName)
             </td>
 
-            @if (ViewBag.CanModify)
-            {
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ProjectId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.ProjectId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ProjectId })
-                </td>
-            }
-            else
-            {
-                <td>
-                    @Html.ActionLink("Details", "Details", new { id = item.ProjectId })
-                </td>
-            }
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ProjectId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ProjectId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ProjectId })
+            </td>
         </tr>
     }
 

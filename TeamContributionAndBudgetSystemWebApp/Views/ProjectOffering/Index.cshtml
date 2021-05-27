@@ -1,32 +1,45 @@
 ﻿@model IEnumerable<TeamContributionAndBudgetSystemWebApp.Models.ProjectOffering>
 
 @{
-   ViewBag.Title = "Index";
+    ViewBag.Title = "Index";
 }
 
 <h2>View Projects</h2>
 
 <div>
-   <p>
-      <a class="btn btn-primary btn-lg" href="~/Project "> Set up Project Types </a>
-   </p>
+    <p>
+        <a class="btn btn-primary btn-lg" href="~/Project">Project Types</a>
+    </p>
 </div>
 
+<div>
     <p>
-        @Html.ActionLink("Create New", "Create")
+        <a class="btn btn-primary btn-lg" href="~/ProjectRole">Project Roles</a>
     </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Unit)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Project)
-            </th>
-            <th></th>
-        </tr>
-    
-    @foreach (var item in Model) {
+</div>
+
+<div>
+    <p>
+        <a class="btn btn-primary btn-lg" href="~/ProjectRoleGroup">Project Role Groups</a>
+    </p>
+</div>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Unit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Project)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.UnitOffering.Unit.Name)
@@ -36,10 +49,10 @@
             </td>
             <td>
                 @*@Html.ActionLink("Edit", "Edit", new { id=item.ProjectOfferingId }) |*@
-                @Html.ActionLink("Set up Teams", "Details", new { id=item.ProjectOfferingId })
+                @Html.ActionLink("Set up Teams", "Details", new { id = item.ProjectOfferingId })
                 @*@Html.ActionLink("Delete", "Delete", new { id=item.ProjectOfferingId })*@
             </td>
         </tr>
     }
-    
-    </table>
+
+</table>

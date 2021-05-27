@@ -22,8 +22,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       /// <returns></returns>
       public ActionResult Index()
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn ) return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Year)) return RedirectToPermissionDenied();
 
          // Set the page message
          ViewBag.Message = "Years List";
@@ -46,6 +47,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       /// <returns></returns>
       public ActionResult Create( )
       {
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Year)) return RedirectToPermissionDenied();
+
          ViewBag.Message = "Create New Year";
 
          return View( );
@@ -60,9 +65,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [ValidateAntiForgeryToken]
       public ActionResult Create( Year model )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Year)) return RedirectToPermissionDenied();
 
          if( ModelState.IsValid )
          {
@@ -98,9 +103,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [HttpGet]
       public ActionResult Delete( int id )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Year)) return RedirectToPermissionDenied();
 
          if( id <= 0 )
          {
@@ -124,9 +129,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [ValidateAntiForgeryToken]
       public ActionResult Delete( Year year )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn )
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Year)) return RedirectToPermissionDenied();
 
          try
          {

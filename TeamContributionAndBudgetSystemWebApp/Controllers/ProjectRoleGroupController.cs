@@ -29,7 +29,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
-            //if (!UserHasPermission(PermissionName.UserView)) return RedirectToPermissionDenied();
+            if (!UserHasPermission(PermissionName.ProjectRoleGroup)) return RedirectToPermissionDenied();
 
             // Set the page message
             ViewBag.Message = "Project List";
@@ -52,8 +52,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [HttpGet]
         public ActionResult Details(int? id)
         {
-            // Make sure the user is logged in
+            // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.ProjectRoleGroup)) return RedirectToPermissionDenied();
 
             // Check if a project role group ID was provided
             if (id == null) return RedirectToIndex();
@@ -92,8 +93,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [HttpGet]
         public ActionResult Edit(int? id)
         {
-            // Make sure the user is logged in
+            // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.ProjectRoleGroup)) return RedirectToPermissionDenied();
 
             // Check if a project role group ID was provided
             if (id == null) return RedirectToIndex();
@@ -135,6 +137,11 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ProjectRoleGroup projectRoleGroup)
         {
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.ProjectRoleGroup)) return RedirectToPermissionDenied();
+
+            // Enter main body of the function
             try
             {
                 // Check which submit button was pressed
@@ -236,8 +243,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [HttpGet]
         public ActionResult Delete(int? id)
         {
-            // Make sure the user is logged in
+            // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.ProjectRoleGroup)) return RedirectToPermissionDenied();
 
             // Check if a project role group ID was provided
             if (id == null) return RedirectToIndex();
@@ -268,8 +276,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(ProjectRoleGroup projectRoleGroup)
         {
-            // Make sure the user is logged in
+            // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.ProjectRoleGroup)) return RedirectToPermissionDenied();
 
             // Delete the project from the database
             try
@@ -291,8 +300,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            // Make sure the user is logged in
+            // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.ProjectRoleGroup)) return RedirectToPermissionDenied();
 
             // Go to view
             return View();
@@ -305,6 +315,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ProjectRoleGroup projectRoleGroup)
         {
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.ProjectRoleGroup)) return RedirectToPermissionDenied();
+
             // Make sure the entered data is valid
             if (ModelState.IsValid)
             {

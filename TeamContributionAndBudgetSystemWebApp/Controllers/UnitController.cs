@@ -24,8 +24,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       /// <returns></returns>
       public ActionResult Index()
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn ) return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Unit)) return RedirectToPermissionDenied();
 
          // Set the page message
          ViewBag.Message = "Units List";
@@ -49,9 +50,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       /// <returns></returns>
       public ActionResult Edit( int id )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn ) 
-            return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Unit)) return RedirectToPermissionDenied();
 
          if( id <= 0 )
          {
@@ -81,8 +82,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [ValidateAntiForgeryToken]
       public ActionResult Edit( Unit unit )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn ) return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Unit)) return RedirectToPermissionDenied();
 
          if( ModelState.IsValid )
          {
@@ -122,8 +124,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       /// <returns></returns>
       public ActionResult Create( )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn ) return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Unit)) return RedirectToPermissionDenied();
 
          ViewBag.Message = "Create New Unit";
 
@@ -141,8 +144,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [ValidateAntiForgeryToken]
       public ActionResult Create( Unit model )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn ) return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Unit)) return RedirectToPermissionDenied();
 
          if( ModelState.IsValid )
          {
@@ -178,8 +182,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [HttpGet]
       public ActionResult Delete( int id )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn ) return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Unit)) return RedirectToPermissionDenied();
 
          if( id <= 0 )
          {
@@ -200,8 +205,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       [ValidateAntiForgeryToken]
       public ActionResult Delete( Unit unit )
       {
-         // Make sure the user is logged in and that they have permission
-         if( !IsUserLoggedIn ) return RedirectToLogin( );
+            // Make sure the user is logged in and that they have permission
+            if (!IsUserLoggedIn) return RedirectToLogin();
+            if (!UserHasPermission(PermissionName.Unit)) return RedirectToPermissionDenied();
 
          try
          {

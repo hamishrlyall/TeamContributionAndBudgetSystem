@@ -7,33 +7,28 @@ namespace TeamContributionAndBudgetSystemWebApp.Models
     /// </summary>
     public static class PermissionName
     {
-        /// <summary>
-        /// Allowed to modify user data.
-        /// </summary>
-        public const string UserModify = "UserModify";
+        public const string User = "User";
 
-        /// <summary>
-        /// Allowed to view user data (readonly).
-        /// </summary>
-        public const string UserView = "UserView";
+        public const string Project = "Project";
+
+        public const string ProjectOffering = "ProjectOffering";
+
+        public const string ProjectRole = "ProjectRole";
+
+        public const string ProjectRoleGroup = "ProjectRoleGroup";
         
-        /// <summary>
-        /// Allowed to modify user-role data.
-        /// </summary>
-        public const string UserRolesModify = "UserRolesModify";
+        public const string ProjectTask = "ProjectTask";
 
-        public const string ProjectRead = "ProjectRead";
-        public const string ProjectWrite = "ProjectWrite";
-
-        public const string ProjectRoleRead = "ProjectRoleRead";
-        public const string ProjectRoleWrite = "ProjectRoleWrite";
+        public const string RolePermission = "RolePermission";
         
-        public const string ProjectRoleGroupRead = "ProjectRoleGroupRead";
-        public const string ProjectRoleGroupWrite = "ProjectRoleGroupWrite";
-        
-        public const string ProjectTaskRead = "ProjectTaskRead";
-        public const string ProjectTaskWrite = "ProjectTaskWrite";
-        public const string ProjectTaskApprove = "ProjectTaskApprove";
+        public const string TeachingPeriod = "TeachingPeriod";
 
+        public const string Team = "Team";
+
+        public const string Unit = "Unit";
+
+        public const string UnitOffering = "UnitOffering";
+
+        public const string Year = "Year";
     }
 }

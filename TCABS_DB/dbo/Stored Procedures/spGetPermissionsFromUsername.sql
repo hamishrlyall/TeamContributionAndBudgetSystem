@@ -18,5 +18,6 @@ BEGIN
 			SELECT [UserId] FROM [User] WHERE [Username] = @Username
 		)
 	)
+	ORDER BY p.[PermissionName] ASC;
 
 END;
