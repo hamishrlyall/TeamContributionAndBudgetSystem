@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/tcabs/databases/TCABS_DB",
+      "type": "mssql.azure",
+      "connectionId": "TCABS_DB",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}
