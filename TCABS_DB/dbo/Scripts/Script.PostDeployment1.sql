@@ -43,7 +43,7 @@ VALUES ([Name]);
 
 -- Create permissions
 -- Update this when new stored procedures are added
--- [PermissionId], [PermissionName], [LinkTitle], [LinkPage], [LinkController]
+-- [PermissionId], [PermissionName], [LinkGroup], [LinkTitle], [LinkPage], [LinkController]
 MERGE INTO [Permission] AS Target USING (
    VALUES
    (1,  'RolePermission',   NULL,      'Permissions',         'Index', 'RolePermission'),
@@ -59,11 +59,11 @@ MERGE INTO [Permission] AS Target USING (
    (11, 'Unit',             'Unit',    'Unit Types',          'Index', 'Unit'),
    (12, 'Year',             'Unit',    'Years',               'Index', 'Year')
 )
-AS Source ([PermissionId], [PermissionName], [LinkTitle], [LinkPage], [LinkController])
+AS Source ([PermissionId], [PermissionName], [LinkGroup], [LinkTitle], [LinkPage], [LinkController])
 ON Target.PermissionId = Source.PermissionId
 WHEN NOT MATCHED BY TARGET THEN
-INSERT ([PermissionName], [LinkTitle], [LinkPage], [LinkController])
-VALUES ([PermissionName], [LinkTitle], [LinkPage], [LinkController]);
+INSERT ([PermissionName], [LinkGroup], [LinkTitle], [LinkPage], [LinkController])
+VALUES ([PermissionName], [LinkGroup], [LinkTitle], [LinkPage], [LinkController]);
 
 
 -- Link Users to roles
@@ -106,8 +106,7 @@ MERGE INTO [RolePermission] AS Target USING (
    (20, 2, 9),
    (21, 2, 10),
    (22, 2, 11),
-   (23, 2, 12),
-   (24, 2, 12)
+   (23, 2, 12)
 )
 AS Source ([RolePermissionId], [RoleId], [PermissionId])
 ON Target.RolePermissionId = Source.RolePermissionId

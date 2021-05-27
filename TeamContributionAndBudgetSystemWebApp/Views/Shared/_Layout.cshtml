@@ -28,6 +28,12 @@
                                 @Html.ActionLink(item.Title, item.Page, item.Controller)
                             </li>
                         }
+                        else if (item.SubMenu.Count == 1)
+                        {
+                            <li class="nav-item">
+                                @Html.ActionLink(item.SubMenu[0].Title, item.SubMenu[0].Page, item.SubMenu[0].Controller)
+                            </li>
+                        }
                         else
                         {
                             <li class="dropdown">
@@ -35,9 +41,9 @@
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownCommonMenu">
                                     @foreach (var subItem in item.SubMenu)
                                     {
-                                    <li role="menuitem" class="nav-header text-info">
-                                        @Html.ActionLink(subItem.Title, subItem.Page, subItem.Controller)
-                                    </li>
+                                        <li role="menuitem" class="nav-header text-info">
+                                            @Html.ActionLink(subItem.Title, subItem.Page, subItem.Controller)
+                                        </li>
                                     }
                                 </ul>
                             </li>

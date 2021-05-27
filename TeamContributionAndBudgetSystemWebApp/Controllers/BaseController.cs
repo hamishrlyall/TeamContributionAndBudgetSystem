@@ -279,6 +279,15 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                     }
                 }
 
+                // Sort all sub-menus
+                foreach (var item in menuItems)
+                {
+                    if (item.SubMenu != null)
+                    {
+                        item.SubMenu = item.SubMenu.OrderBy(x => x.Title).ToList();
+                    }
+                }
+
                 // Add a menu item for the logout page
                 menuItems.Add(new MenuItem()
                 {

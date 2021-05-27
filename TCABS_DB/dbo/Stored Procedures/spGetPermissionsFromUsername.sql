@@ -5,7 +5,7 @@ BEGIN
 	SET NOCOUNT ON;
 
 	-- Get permission data
-	SELECT p.[PermissionId], p.[PermissionName], p.[LinkTitle], p.[LinkPage], p.[LinkController]
+	SELECT p.[PermissionId], p.[PermissionName], p.[LinkGroup], p.[LinkTitle], p.[LinkPage], p.[LinkController]
 	FROM [Permission] p
 	INNER JOIN [RolePermission] r
 	ON p.[PermissionId] = r.[PermissionId]
