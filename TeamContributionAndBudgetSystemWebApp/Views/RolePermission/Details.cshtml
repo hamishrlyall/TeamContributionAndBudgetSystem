@@ -11,11 +11,14 @@
     </tr>
     @foreach (TeamContributionAndBudgetSystemWebApp.Models.RolePermission rolePermission in @Model.getRolePermissionByRoleId(Model.curRoleId))
     {
-        <tr>
-            <td>@rolePermission.Permission.PermissionName</td>
-            <td>@Html.ActionLink("DELETE", "Delete", new { id =rolePermission.Permission.PermissionId+","+rolePermission.RoleId})</td>
-
-        </tr>
+<tr>
+      <td>@rolePermission.Permission.PermissionName</td>
+      @if( rolePermission.Permission.PermissionName != "RolePermission" )
+      {
+         @*<input type="submit" name="action" value="DeleteUserRole" class="btn btn-default" />*@
+         <td>@Html.ActionLink( "DELETE", "Delete", new { id = rolePermission.Permission.PermissionId + "," + rolePermission.RoleId } )</td>
+      }
+</tr>
     }
 </table>
 

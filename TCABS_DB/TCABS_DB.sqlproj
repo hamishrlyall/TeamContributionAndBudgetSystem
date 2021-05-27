@@ -103,8 +103,8 @@
     <Build Include="dbo\Stored Procedures\spGetProjectRoleGroup.sql" />
     <Build Include="dbo\Stored Procedures\spCreateProject.sql" />
     <Build Include="dbo\Stored Procedures\spDeleteProject.sql" />
-    <Build Include="dbo\Stored Procedures\sp_CreateUserRole.sql" />
-    <Build Include="dbo\Stored Procedures\spDeleteUserRoles.sql" />
+    <Build Include="dbo\Stored Procedures\spCreateRolePermission.sql" />
+    <Build Include="dbo\Stored Procedures\spDeleteRolePermission.sql" />
     <Build Include="dbo\Stored Procedures\spSelectPermissions.sql" />
     <Build Include="dbo\Stored Procedures\spDeleteEnrollment.sql" />
     <Build Include="dbo\Stored Procedures\spDeleteTeachingPeriod.sql" />

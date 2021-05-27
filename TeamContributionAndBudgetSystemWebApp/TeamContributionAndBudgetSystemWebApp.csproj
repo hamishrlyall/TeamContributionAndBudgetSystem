@@ -257,6 +257,11 @@
     <Content Include="Views\ProjectTask\Edit.cshtml" />
     <Content Include="Views\ProjectTask\Create.cshtml" />
     <Content Include="Views\User\Delete.cshtml" />
+    <Content Include="Views\ProjectRoleGroup\Create.cshtml" />
+    <Content Include="Views\ProjectRoleGroup\Delete.cshtml" />
+    <Content Include="Views\ProjectRoleGroup\Details.cshtml" />
+    <Content Include="Views\ProjectRoleGroup\Edit.cshtml" />
+    <Content Include="Views\ProjectRoleGroup\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

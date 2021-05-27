@@ -39,10 +39,10 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          // Get all users from the database
          var userModels = UserProcessor.SelectUsers();
 
-      // Change the format of the user list
-      List<User> users = new List<User>( );
-      foreach( var u in userModels ) 
-         users.Add( new User( u ) );
+         // Change the format of the user list
+         List<User> users = new List<User>( );
+         foreach( var u in userModels ) 
+            users.Add( new User( u ) );
 
          // Return the view, with the list of users
          return View(users);
@@ -135,11 +135,11 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
          }
          try
          {
-               // Attempt to delete UserRole from database
-               var rowsDeleted = UserRoleProcessor.DeleteUserRole(_UserRoleId);
-               // If Delete operation was unsuccessful throw an error.
-               if (rowsDeleted <= 0)
-                  throw new DataException("Unable to delete UserRole");
+            // Attempt to delete UserRole from database
+            var rowsDeleted = UserRoleProcessor.DeleteUserRole(_UserRoleId);
+            // If Delete operation was unsuccessful throw an error.
+            if (rowsDeleted <= 0)
+               throw new DataException("Unable to delete UserRole");
          }
          catch (DataException _Ex)
          {
@@ -179,6 +179,17 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                if( rowsFound > 0 )
                   throw new DataException( $"User is already assigned this Role." );
 
+               var user = db.GetUser( _UserRole.User.UserId );
+               
+               if( user.UserRoles.Any( ur => ur.Role.Name == "Student" ) )
+                  throw new DataException( "A User with a Role of Student cannot be assigned additional roles." );
+
+               var role = RoleProcessor.SelectRole( _UserRole.RoleId );
+
+               if( user.UserRoles.Count( ) > 0 && user.UserRoles.Any( ur => ur.Role.Name != "Student" ) && role.Name == "Student" )
+                  throw new DataException( "A User with an Employee role type cannot be a Student." );
+
+
                // Attempt to insert new UserRole to database using data from parameter
                var data = UserRoleProcessor.InsertUserRole( _UserRole.User.UserId, _UserRole.RoleId );
                // Checks if Insert operation was successful. If not throws an error.
@@ -203,7 +214,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
       /// </summary>
       private void PopulateRoleDropDownList( )
       {
-         ViewBag.RoleId = new SelectList( db.GetRoles( ), "RoleId", "Name", null );
+         ViewBag.RoleId = new SelectList( db.GetRoles( ).Where( r => r.Name != "Super Admin" ), "RoleId", "Name", null );
       }
 
       //public ActionResult Delete( int id )

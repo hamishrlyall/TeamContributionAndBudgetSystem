@@ -19,25 +19,25 @@ namespace TCABS_DataLibrary.BusinessLogic
         {
             return ConfigurationManager.ConnectionStrings[_ConnectionName].ConnectionString;
         }
-        public static int DeleteUserRole(int _PermissionId, int _RoleId)
+        public static int DeleteRolePermission(int _PermissionId, int _RoleId)
         {
-            string sql = @"spDeleteUserRoles";
+            string sql = @"spDeleteRolePermission";
             var data = new DynamicParameters();
-            data.Add("@param2", _PermissionId);
-            data.Add("@param1", _RoleId);
+            data.Add( "@permissionid", _PermissionId);
+            data.Add( "@roleid", _RoleId);
             
             return SqlDataAccess.DeleteRecord(sql, data);
 
         }
-        public static int CreateUserRole(int _PermissionId, int _RoleId)
+        public static RolePermissionModel CreateRolePermission(int _PermissionId, int _RoleId)
         {
-            string sql = @"sp_createRolePermission";
+            string sql = @"spCreateRolePermission";
             var data = new DynamicParameters();
-            data.Add("@permissionid", _PermissionId);
-            data.Add("@roleid", _RoleId);
+            data.Add( "@permissionid", _PermissionId );
+            data.Add( "@roleid", _RoleId );
+            data.Add( "@rolepermissionid", null );
 
-            return SqlDataAccess.DeleteRecord(sql, data);
-
+            return SqlDataAccess.ExecuteStoredProcedure<RolePermissionModel>( sql, data );
         }
         //public static RolePermissionModel SelectPermission(int _Id)
         //{

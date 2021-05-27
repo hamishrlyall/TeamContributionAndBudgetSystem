@@ -159,7 +159,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 // Generate default menu bar
                 menuItems = GenerateMenuItems(null);
             }
-
+            RefreshPermissions( );
             // Update the viewbag object
             ViewBag.MenuItems = menuItems;
         }

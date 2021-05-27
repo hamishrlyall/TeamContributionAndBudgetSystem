@@ -11,6 +11,8 @@ using System.Net;
 using System.Xml.Serialization;
 using System.Data;
 using System.Web.Security;
+using TCABS_DataLibrary.Models;
+
 namespace TeamContributionAndBudgetSystemWebApp.Controllers
 {
     public class RolePermissionController : BaseController
@@ -79,9 +81,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Details(string id, string PermissionID)
         {
-            db.GetUsers( );
-            db.GetRoles( );
-            db.GetUserRole( );
+
             if( id == null )
             {
                return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
@@ -115,9 +115,13 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
                PopulateRoleDropDownList();
                */
-            int d = RolePermissionProcessor.CreateUserRole(int.Parse(PermissionID), int.Parse(id));
-            if (d > 0)
-                return View("Index", db);
+            db.GetUsers( );
+            db.GetRoles( );
+            db.GetUserRole( );
+
+            RolePermissionModel rolePermission = RolePermissionProcessor.CreateRolePermission( int.Parse( PermissionID ), int.Parse( id ) );
+            if( rolePermission != null )
+               return RedirectToAction( "Index" );
 
             return View(db);
 
@@ -156,22 +160,22 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
         public ActionResult DeleteP(string id)
         {
-            db.GetUsers( );
-            db.GetRoles( );
-            db.GetUserRole( );
+
             if ((id == null) || (id.Length < 1)) 
                return RedirectToAction("Index");
 
             string[] val = id.Split(',');
 
-            int d = RolePermissionProcessor.DeleteUserRole(int.Parse(val[0]), int.Parse(val[1]));
+            int d = RolePermissionProcessor.DeleteRolePermission(int.Parse(val[0]), int.Parse(val[1]));
+
 
             if (d > 0)
-                return View("Index", db);
+               return RedirectToAction( "Index", "RolePermission" );
 
+            db.GetUsers( );
+            db.GetRoles( );
+            db.GetUserRole( );
             return View(db);
         }
-
-
     }
 }

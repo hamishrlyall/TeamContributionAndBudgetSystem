@@ -17,7 +17,6 @@ BEGIN
 		RAISERROR('Already assigned', 16, 1);
 	ELSE
 	BEGIN
-		
 		-- Create project role link
 		INSERT INTO [dbo].[ProjectRoleLink] ([ProjectRoleId], [ProjectRoleGroupId])
 		VALUES (@ProjectRoleId, @ProjectRoleGroupId)
