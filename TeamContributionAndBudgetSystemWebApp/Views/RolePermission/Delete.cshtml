@@ -50,8 +50,10 @@
 
     }
 
-
-    @Html.ActionLink("Back to List", "Index")
-
+    <hr />
+<p>
+    @Html.ActionLink("Back", "Details", new { id = Model.curRoleId })
+</p>
+    
 
 </div>

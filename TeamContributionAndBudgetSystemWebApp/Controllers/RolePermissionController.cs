@@ -84,7 +84,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
             if( id == null )
             {
-               return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+                //return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+                return RedirectToAction("Index");
             }
             //if (p == null)
             //{
@@ -120,11 +121,15 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
             db.GetUserRole( );
 
             RolePermissionModel rolePermission = RolePermissionProcessor.CreateRolePermission( int.Parse( PermissionID ), int.Parse( id ) );
-            if( rolePermission != null )
+
+            return RedirectToAction("Details", new System.Web.Routing.RouteValueDictionary(
+                        new { controller = "RolePermission", action = "Details", id = Convert.ToInt32(id) }));
+            /*
+            if ( rolePermission != null )
                return RedirectToAction( "Index" );
 
             return View(db);
-
+            */
         }
 
         public ActionResult Delete(string id)
@@ -135,7 +140,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
             if( id == null )
             {
-               return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+                //return new HttpStatusCodeResult( HttpStatusCode.BadRequest );
+                return RedirectToAction("Index");
             }
 
 
@@ -170,7 +176,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
 
             if (d > 0)
-               return RedirectToAction( "Index", "RolePermission" );
+                //return RedirectToAction( "Index", "RolePermission" );
+                return RedirectToAction("Details", new System.Web.Routing.RouteValueDictionary(
+                    new { controller = "RolePermission", action = "Details", id = Convert.ToInt32(val[1]) }));
 
             db.GetUsers( );
             db.GetRoles( );

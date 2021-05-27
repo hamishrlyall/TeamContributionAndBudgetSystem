@@ -5,10 +5,30 @@
 AS
 BEGIN
 
-   insert into RolePermission( RoleId, PermissionId )
-   values( @roleid, @permissionid )
+	DECLARE @count INT;
 
-   SET @rolepermissionid = scope_identity();
+	SELECT @count = COUNT(*)
+	FROM [dbo].[RolePermission]
+	WHERE RoleId = @roleid AND PermissionId = @permissionid;
+
+	IF (@count > 0)
+	BEGIN
+
+		SELECT TOP 1 @rolepermissionid = RolePermissionId
+		FROM [dbo].[RolePermission]
+		WHERE RoleId = @roleid AND PermissionId = @permissionid;
+
+	END
+	ELSE
+	BEGIN
+
+	   insert into RolePermission( RoleId, PermissionId )
+	   values( @roleid, @permissionid )
+
+	   SET @rolepermissionid = scope_identity();
+
+   END;
+
    SELECT * FROM [dbo].[RolePermission]
    WHERE [RolePermissionId] = @rolepermissionid;
 

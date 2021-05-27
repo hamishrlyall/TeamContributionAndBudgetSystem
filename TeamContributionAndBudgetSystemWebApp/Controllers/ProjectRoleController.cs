@@ -29,7 +29,7 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
         {
             // Make sure the user is logged in and that they have permission
             if (!IsUserLoggedIn) return RedirectToLogin();
-            //if (!UserHasPermission(PermissionName.UserView)) return RedirectToPermissionDenied();
+            if (!UserHasPermission(PermissionName.ProjectRoleGroupRead)) return RedirectToPermissionDenied();
 
             // Set the page message
             ViewBag.Message = "Project Role List";
