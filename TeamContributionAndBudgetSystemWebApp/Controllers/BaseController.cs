@@ -140,7 +140,8 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
 
             // Setup the list of permissions and menu items
             currentPermissions = null;
-            if (true) // currentUser != null)
+            /*
+            if (currentUser != null)
             {
                 // Try to load the permissions and menu items from the http session data
                 currentPermissions = (List<Permission>)System.Web.HttpContext.Current.Session[sessionLabelCurrentPermissions];
@@ -159,7 +160,9 @@ namespace TeamContributionAndBudgetSystemWebApp.Controllers
                 // Generate default menu bar
                 menuItems = GenerateMenuItems(null);
             }
-            RefreshPermissions( );
+            //*/
+            RefreshPermissions(); // Just refresh every load, to solve issues when changing permissions
+
             // Update the viewbag object
             ViewBag.MenuItems = menuItems;
         }

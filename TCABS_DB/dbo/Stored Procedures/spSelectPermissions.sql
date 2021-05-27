@@ -2,7 +2,7 @@
 AS
 BEGIN
    SET NOCOUNT ON;
-   SELECT * FROM [dbo].[Permission]
+   SELECT * FROM [dbo].[Permission] ORDER BY [PermissionName] ASC;
 END;
 
 
