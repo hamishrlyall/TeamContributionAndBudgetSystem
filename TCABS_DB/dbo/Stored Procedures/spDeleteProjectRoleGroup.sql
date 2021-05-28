@@ -11,16 +11,12 @@ BEGIN
 	ELSE
 	BEGIN
 		
-		-- Check if this ProjectRoleGroup is being used by a ProjectRoleLink
-		SELECT @temp = COUNT(*) FROM [dbo].[ProjectRoleLink] WHERE ProjectRoleGroupId = @ProjectRoleGroupId;
-		IF (@temp > 0)
-			RAISERROR('Cannot delete project role group while it has assigned project roles', 16, 1);
-		ELSE
-		BEGIN
+		-- Delete any project role links which are using this role group
+		DELETE FROM [dbo].[ProjectRoleLink]
+		WHERE ProjectRoleGroupId = @ProjectRoleGroupId;
 
-			-- Delete project role group
-			DELETE FROM [dbo].[ProjectRoleGroup]
-			WHERE ProjectRoleGroupId = @ProjectRoleGroupId
-		END;
+		-- Delete project role group
+		DELETE FROM [dbo].[ProjectRoleGroup]
+		WHERE ProjectRoleGroupId = @ProjectRoleGroupId;
 	END;
 END;
